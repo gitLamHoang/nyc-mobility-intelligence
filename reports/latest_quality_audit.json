@@ -1,0 +1,220 @@
+{
+  "audit_id": "20260914T183522Z-419381",
+  "created_at": "2026-09-14T18:35:23.023271+00:00",
+  "git_revision": "7cd16a390e63b2b663930d6089877f1f7a733a19",
+  "git_worktree_dirty": true,
+  "source_hashes": {
+    "yellow_tripdata_2025-12.parquet": "eaba7ff61ebb6453fc6f673fda43d621380307f869b768b124992e8486c785e1",
+    "yellow_tripdata_2026-01.parquet": "8b3933fe6f0d7b6d8826613c0dd724edc680ff7c49e2bd4c7635c05102728637",
+    "yellow_tripdata_2026-02.parquet": "5352ca800f29c40a221ed5b0c6392c451fde7fcd236a73651bd5aea74713a26c",
+    "yellow_tripdata_2026-03.parquet": "d7af794a7ac06cbbb5afb4d1df9e86d84f2e878584de708ff2ffca4bd7d234d9",
+    "yellow_tripdata_2026-04.parquet": "e03b82d5722a6b21d4fbce011afd8837495202c0b5db77ff0d8d15dd80834ba8",
+    "taxi_zone_lookup.csv": "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed"
+  },
+  "canonical_panel_sha256": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+  "code_hashes": {
+    "src/nyc_mobility/__init__.py": "972276259858cb18539f09afe82a8a5308adba6c3157ac480daea2c2505783ec",
+    "src/nyc_mobility/api/__init__.py": "e96493dbe22a9f5a4566d226cfec3bb1f25eee6b7447b311bfd8d9f46c19c5ed",
+    "src/nyc_mobility/api/app.py": "93b1210bb0c1368d2489d5426ff3d9117f752c823b4ee4e19f5688f359f338a0",
+    "src/nyc_mobility/cli.py": "46cb50f721e37208643d36de57716cffda5a38f149f61f07ab2a448928c558a0",
+    "src/nyc_mobility/config.py": "db6549338c9fd727b1bbfe31ae9acc105ec899e49d81fd2341472245dd828008",
+    "src/nyc_mobility/data/__init__.py": "1df8af0faf37759551399b621d14f19125bce7101d0ed5f8a7b6c666d6a9a82a",
+    "src/nyc_mobility/data/download.py": "ffbd83be90af8c7e3d83110abcf243427038657c2555ae2310df0290a723ff37",
+    "src/nyc_mobility/data/prepare.py": "2d6a517b8fc7236646a9c5d1729decd57d997bea6a985cdfbade0d5d2de9b350",
+    "src/nyc_mobility/data/quality_audit.py": "adbb209fef176d00f8ff3f8952fa8a0db070660475d2e534290cf40e0b26aa53",
+    "src/nyc_mobility/evaluation/__init__.py": "c4612313390d2d028934de19e004658a69d043e1ad0c025678b30497ca9f4245",
+    "src/nyc_mobility/evaluation/metrics.py": "a5c3890219adbf0ebd3e0241f861bd24a04e7461cc44b8f331c4e86320c158c9",
+    "src/nyc_mobility/evaluation/splits.py": "e14710193dd6d0f5a28bb90b5731c21307f5be12648fed85f6646b9be4604ebb",
+    "src/nyc_mobility/features/__init__.py": "92f2d4ad0d188c1f5d6c9e95fb1746690d8ff3d09b7cdb2e747cf7030bc18de0",
+    "src/nyc_mobility/features/temporal.py": "02f50e6db416b0e1c0192939c8111da9b4f801c456cfdc567359628ca66ff240",
+    "src/nyc_mobility/models/__init__.py": "d61ac20fd997e369f05c453949a87dde5b0383570a60f0721f54f86359932682",
+    "src/nyc_mobility/models/baselines.py": "f8426e2062782ddb671ce928e076bf87ba131f86c036414531e573e7aa031210",
+    "src/nyc_mobility/models/train.py": "c69f753bf46736f6fbb92ead1a6505f84ab3defcecb7a0ed53f8dd11d1a7a42b",
+    "src/nyc_mobility/visualization/__init__.py": "f0c25192077f688b02ef2530d18fdff025c73dbf410b6216001f852124f591d6",
+    "src/nyc_mobility/visualization/report.py": "783d9dea31897ee4292b5433aab4f6af89de47d3089e53003bcf5fff51d1209b"
+  },
+  "lockfile_sha256": "aba990defaa41d82a00398a29e0d20c22883f58fe35f2454b66624efa3d83ff3",
+  "config": {
+    "data": {
+      "start": "2025-12",
+      "end": "2026-05",
+      "timezone": "America/New_York",
+      "service": "yellow"
+    },
+    "split": {
+      "train_start": "2025-12-01",
+      "validation_start": "2026-04-01",
+      "test_start": "2026-05-01",
+      "test_end": "2026-06-01"
+    },
+    "model": {
+      "random_seed": 42,
+      "boosting_iterations": 120,
+      "learning_rate": 0.08,
+      "max_leaf_nodes": 31,
+      "l2_regularization": 1.0
+    }
+  },
+  "development_start_local": "2025-12-01 00:00:00",
+  "development_end_local_exclusive": "2026-05-01 00:00:00",
+  "source_months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "months": [
+    {
+      "month": "2025-12",
+      "eligible_pickups": 4296671,
+      "exact_duplicate_excess": 0,
+      "exact_duplicate_groups": 0,
+      "repeated_rows": 0,
+      "max_copies": 1,
+      "affected_zone_hours": 0
+    },
+    {
+      "month": "2026-01",
+      "eligible_pickups": 3718466,
+      "exact_duplicate_excess": 0,
+      "exact_duplicate_groups": 0,
+      "repeated_rows": 0,
+      "max_copies": 1,
+      "affected_zone_hours": 0
+    },
+    {
+      "month": "2026-02",
+      "eligible_pickups": 3394422,
+      "exact_duplicate_excess": 0,
+      "exact_duplicate_groups": 0,
+      "repeated_rows": 0,
+      "max_copies": 1,
+      "affected_zone_hours": 0
+    },
+    {
+      "month": "2026-03",
+      "eligible_pickups": 3945656,
+      "exact_duplicate_excess": 0,
+      "exact_duplicate_groups": 0,
+      "repeated_rows": 0,
+      "max_copies": 1,
+      "affected_zone_hours": 0
+    },
+    {
+      "month": "2026-04",
+      "eligible_pickups": 3824727,
+      "exact_duplicate_excess": 0,
+      "exact_duplicate_groups": 0,
+      "repeated_rows": 0,
+      "max_copies": 1,
+      "affected_zone_hours": 0
+    }
+  ],
+  "eligible_pickups": 19179942,
+  "utc_hours": 3623,
+  "nyc_zones": 262,
+  "exact_duplicate_excess": 0,
+  "exact_duplicate_excess_pct": 0.0,
+  "affected_zone_hours": 0,
+  "max_zone_hour_reduction": 0,
+  "city_zero_hours": 0,
+  "vendor_zero_hours": {
+    "vendor_1": 0,
+    "vendor_2": 0,
+    "vendor_6": 386,
+    "vendor_7": 44
+  },
+  "vendor_pickups": {
+    "vendor_1": 3686716,
+    "vendor_2": 15219500,
+    "vendor_6": 33442,
+    "vendor_7": 240284
+  },
+  "volume_flags_by_series": {
+    "city": 4,
+    "vendor_1": 9,
+    "vendor_2": 1,
+    "vendor_7": 5
+  },
+  "coverage_rule": {
+    "prior_week_offsets_hours": [
+      168,
+      336,
+      504,
+      672
+    ],
+    "minimum_matches": 3,
+    "minimum_median": 100,
+    "flag_ratio_below": 0.1
+  },
+  "baseline_metrics": {
+    "recorded_counts": {
+      "previous_hour": {
+        "mae": 5.585930873621713,
+        "rmse": 16.829264114011902,
+        "r2": 0.9144198738735176,
+        "smape_pct": 61.65384727952853
+      },
+      "previous_day_24h": {
+        "mae": 6.329664970313825,
+        "rmse": 22.496325446814435,
+        "r2": 0.8470794532240189,
+        "smape_pct": 61.91496065247574
+      },
+      "previous_week_168h": {
+        "mae": 4.3054707379134864,
+        "rmse": 13.01444604151862,
+        "r2": 0.9488207350529168,
+        "smape_pct": 57.397374586123114
+      },
+      "zone_hour_average": {
+        "mae": 6.154857246186729,
+        "rmse": 20.270854145956417,
+        "r2": 0.875838552389105,
+        "smape_pct": 99.43165186121239
+      },
+      "rolling_mean_24h": {
+        "mae": 12.198960983884648,
+        "rmse": 35.654322451444756,
+        "r2": 0.6158798891372644,
+        "smape_pct": 100.24000400974427
+      }
+    },
+    "exact_dedup_scenario": {
+      "previous_hour": {
+        "mae": 5.585930873621713,
+        "rmse": 16.829264114011902,
+        "r2": 0.9144198738735176,
+        "smape_pct": 61.65384727952853
+      },
+      "previous_day_24h": {
+        "mae": 6.329664970313825,
+        "rmse": 22.496325446814435,
+        "r2": 0.8470794532240189,
+        "smape_pct": 61.91496065247574
+      },
+      "previous_week_168h": {
+        "mae": 4.3054707379134864,
+        "rmse": 13.01444604151862,
+        "r2": 0.9488207350529168,
+        "smape_pct": 57.397374586123114
+      },
+      "zone_hour_average": {
+        "mae": 6.154857246186729,
+        "rmse": 20.270854145956417,
+        "r2": 0.875838552389105,
+        "smape_pct": 99.43165186121239
+      },
+      "rolling_mean_24h": {
+        "mae": 12.198960983884648,
+        "rmse": 35.654322451444756,
+        "r2": 0.6158798891372644,
+        "smape_pct": 100.24000400974427
+      }
+    }
+  },
+  "test_metrics": null,
+  "canonical_labels_changed": false,
+  "interpretation": "All-column SQL-equal rows are suspicious, not proven duplicate trips. Dedup scores use changed labels and features, not a model improvement. Low reporting volume is not proof of an outage. No automatic removal."
+}

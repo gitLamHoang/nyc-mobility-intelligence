@@ -1,5 +1,13 @@
 # Changelog
 
+## September 14, 2026 · data-quality hardening
+
+- Added `nyc-mobility audit-quality`: development-only exact all-column duplicate search, hash-verified source preflight, canonical count reconciliation, and a separate alternate-label baseline sensitivity evaluation.
+- Audited 19,179,942 eligible December–April pickups: no exact duplicates, unchanged baseline metrics, no citywide zero-count hours. Retained all recorded labels and the existing model.
+- Added causal historical reporting-volume references for city/vendor series. Documented 19 overlapping investigation flags, official February 23 blizzard/travel-restriction context, and an unresolved January 5–6 Vendor 7 anomaly. Flags are not automatic outage labels.
+- Hardened densification against silent out-of-range count loss, noninteger/invalid counts, overflow and invalid timestamps. The six-month real preparation reproduces the existing Parquet byte-for-byte.
+- Expanded the suite from 26 to 45 passing tests, including source-integrity failures, duplicate definitions, temporal causality, test-file exclusion and canonical-artifact preservation. Ruff passes. Saved immutable, reproducible audit evidence without evaluating May model performance.
+
 ## 0.1.0 · initial milestone
 
 - Created public repository, Python package, locked environment, and CI.

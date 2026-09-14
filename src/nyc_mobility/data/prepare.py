@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import duckdb
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -55,16 +56,34 @@ def local_hours_to_utc(values: pd.Series) -> pd.Series:
 def densify(counts: pd.DataFrame, zones: pd.DataFrame, start: str, end: str) -> pd.DataFrame:
     begin = pd.Timestamp(start, tz=TIMEZONE).tz_convert("UTC")
     stop = pd.Timestamp(end, tz=TIMEZONE).tz_convert("UTC")
+    if begin >= stop or begin != begin.floor("h") or stop != stop.floor("h"):
+        raise ValueError("Panel bounds must be increasing hour boundaries")
     hours = pd.date_range(begin, stop, freq="h", inclusive="left")
     # Raw TLC fall-back hours cannot be disambiguated. Refuse to turn missing hours into zeros.
     if hours.tz_convert(TIMEZONE).tz_localize(None).duplicated().any():
         raise ValueError("Fall-back DST range requires an explicit ambiguity strategy")
+    if zones.empty or zones.zone_id.isna().any() or zones.zone_id.duplicated().any():
+        raise ValueError("Panel zones must be nonempty, nonmissing and unique")
+    if not isinstance(counts.hour.dtype, pd.DatetimeTZDtype) or counts.hour.isna().any():
+        raise ValueError("Count timestamps must be nonmissing and timezone-aware")
+    values_array = counts.demand.to_numpy(dtype=float)
+    if (
+        not np.isfinite(values_array).all()
+        or (values_array < 0).any()
+        or (values_array % 1 != 0).any()
+        or (values_array > np.iinfo(np.int32).max).any()
+    ):
+        raise ValueError("Counts must be nonnegative integers representable as int32")
     index = pd.MultiIndex.from_product([zones.zone_id, hours], names=["zone_id", "hour"])
     values = counts.set_index(["zone_id", "hour"])["demand"]
     if values.index.duplicated().any():
         raise ValueError("Duplicate zone/hour counts")
+    if not values.index.isin(index).all():
+        raise ValueError("Counts contain a zone or hour outside the requested panel")
     panel = values.reindex(index, fill_value=0).rename("demand").reset_index()
     panel["demand"] = panel.demand.astype("int32")
+    if int(panel.demand.sum()) != int(counts.demand.sum()):
+        raise ValueError("Densification did not conserve accepted pickups")
     return panel.merge(zones, on="zone_id", how="left", validate="many_to_one")
 
 

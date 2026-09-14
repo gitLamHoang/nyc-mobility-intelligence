@@ -31,6 +31,16 @@ Aggregate pickup timestamps to local hours with DuckDB, then localize to `Americ
 
 Output: `zone_id` (integer), `hour` (UTC timestamp at start of target interval), `demand` (nonnegative integer), `borough`, `Zone`. Key: `(zone_id, hour)`; unique, contiguous one-hour steps per zone. Target interval is `[hour, hour + 1 hour)`.
 
+Densification rejects counts outside the declared zones/time interval rather than silently discarding them. It also rejects invalid counts, overflow and naive/missing timestamps, and asserts count conservation.
+
+## Optional development data-quality audit
+
+`uv run nyc-mobility audit-quality` inspects December–April only by default. All source-file hashes must match the acquisition manifest, and independently reconstructed demand must match the canonical panel. Exact duplicate groups use every original source column under DuckDB SQL equality, with equal NULL values grouped together. Recompute all five baselines under the hypothetical exact-deduplication policy; do not overwrite recorded counts or promote a model based on changed-label scores.
+
+The audit also checks city/provider volume against preceding weekly-hour medians. These are investigation flags, not proof of outages or instructions to impute demand. A zero count from a small provider is not sufficient evidence of a missing feed. All-column exact duplication is narrower than physical-trip duplication; near-duplicates and corrections are not resolved.
+
+Small reports and immutable audit metadata are committed under `reports/quality_audits/`. Full alternate-label and reporting-volume Parquet files stay ignored under `artifacts/quality_audits/`. Each run can require temporary DuckDB spill space in `work/`; its configured working memory limit is 2 GB. See [the measured review](../reports/DATA_QUALITY_REVIEW.md) and [latest audit record](../reports/latest_quality_audit.json).
+
 ## Geographic and future weather joins
 
 Join lookup and geometry by `LocationID` / `zone_id`, never by a fuzzy zone name. Dissolve multipart/duplicate geographic IDs before joining. Maps use EPSG:2263; NYC membership comes from the official borough lookup. Geometry is not yet a model feature.

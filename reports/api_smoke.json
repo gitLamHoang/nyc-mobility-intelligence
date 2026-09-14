@@ -1,0 +1,22 @@
+{
+  "health": {
+    "status": "ok",
+    "model": "hist_gradient_boosting",
+    "experiment_id": "20260914T061321Z-c34c1f"
+  },
+  "response": {
+    "zone_id": 237,
+    "target_hour_utc": "2026-04-08T04:00:00+00:00",
+    "target_end_utc": "2026-04-08T05:00:00+00:00",
+    "latest_observed_hour_utc": "2026-04-08T03:00:00+00:00",
+    "predicted_pickups": 26.63416045124431,
+    "model": "hist_gradient_boosting",
+    "experiment_id": "20260914T061321Z-c34c1f",
+    "assumption": "All pickups in the previous hour are available at the forecast boundary"
+  },
+  "offline_prediction": 26.63416045124431,
+  "actual_pickups": 31,
+  "history_rows": 168,
+  "short_history_status": 422,
+  "api_offline_agree": true
+}

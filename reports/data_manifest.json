@@ -1,0 +1,80 @@
+[
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-12.parquet",
+    "file": "data/raw/yellow_tripdata_2025-12.parquet",
+    "bytes": 73701327,
+    "sha256": "eaba7ff61ebb6453fc6f673fda43d621380307f869b768b124992e8486c785e1",
+    "downloaded_at": "2026-09-14T06:02:20.526596+00:00",
+    "etag": "\"2c31ea7afe9bc1a94e01fd0833a06490-15\"",
+    "last_modified": "Wed, 25 Mar 2026 15:55:54 GMT",
+    "rows": 4305006
+  },
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-01.parquet",
+    "file": "data/raw/yellow_tripdata_2026-01.parquet",
+    "bytes": 64165080,
+    "sha256": "8b3933fe6f0d7b6d8826613c0dd724edc680ff7c49e2bd4c7635c05102728637",
+    "downloaded_at": "2026-09-14T06:02:25.092803+00:00",
+    "etag": "\"715f1a37bbf83f6ec7b8d21038e8dc22-13\"",
+    "last_modified": "Wed, 25 Mar 2026 15:46:09 GMT",
+    "rows": 3724889
+  },
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-02.parquet",
+    "file": "data/raw/yellow_tripdata_2026-02.parquet",
+    "bytes": 58683353,
+    "sha256": "5352ca800f29c40a221ed5b0c6392c451fde7fcd236a73651bd5aea74713a26c",
+    "downloaded_at": "2026-09-14T06:02:30.109100+00:00",
+    "etag": "\"41497120d17df99f437634b60f5b9d75-12\"",
+    "last_modified": "Wed, 25 Mar 2026 15:46:31 GMT",
+    "rows": 3399866
+  },
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-03.parquet",
+    "file": "data/raw/yellow_tripdata_2026-03.parquet",
+    "bytes": 67891249,
+    "sha256": "d7af794a7ac06cbbb5afb4d1df9e86d84f2e878584de708ff2ffca4bd7d234d9",
+    "downloaded_at": "2026-09-14T06:02:34.938507+00:00",
+    "etag": "\"7c9bd1bcac249e15858f8b1731c2039c-4\"",
+    "last_modified": "Tue, 28 Apr 2026 18:56:26 GMT",
+    "rows": 3952451
+  },
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-04.parquet",
+    "file": "data/raw/yellow_tripdata_2026-04.parquet",
+    "bytes": 64818115,
+    "sha256": "e03b82d5722a6b21d4fbce011afd8837495202c0b5db77ff0d8d15dd80834ba8",
+    "downloaded_at": "2026-09-14T06:02:39.459407+00:00",
+    "etag": "\"39887281adfc4e33d959ff78c7cab632-4\"",
+    "last_modified": "Fri, 05 Jun 2026 20:44:34 GMT",
+    "rows": 3831240
+  },
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-05.parquet",
+    "file": "data/raw/yellow_tripdata_2026-05.parquet",
+    "bytes": 69699174,
+    "sha256": "9aa5a1609e2bf07d9051b7d530de05b1019e12a560ecb2c59c137c8b3a8b6750",
+    "downloaded_at": "2026-09-14T06:02:44.311352+00:00",
+    "etag": "\"88babcd4eea8fabf135efb5b2b8cfc5c-5\"",
+    "last_modified": "Fri, 26 Jun 2026 21:07:20 GMT",
+    "rows": 4090836
+  },
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv",
+    "file": "data/external/taxi_zone_lookup.csv",
+    "bytes": 12331,
+    "sha256": "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed",
+    "downloaded_at": "2026-09-14T06:02:44.555685+00:00",
+    "etag": "W/\"c6064b7c144c716450641f769659d178\"",
+    "last_modified": "Thu, 22 Feb 2024 21:33:00 GMT"
+  },
+  {
+    "url": "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip",
+    "file": "data/external/taxi_zones.zip",
+    "bytes": 1022574,
+    "sha256": "f6d711917bb4340f8f644d5366c51665489eb2d426dd1a4a55677721ae5adf17",
+    "downloaded_at": "2026-09-14T06:02:44.669259+00:00",
+    "etag": "\"06c63faa34f0bf832c86e37fcde13594\"",
+    "last_modified": "Thu, 19 Feb 2026 17:12:14 GMT"
+  }
+]

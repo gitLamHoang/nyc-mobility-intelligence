@@ -1,0 +1,18 @@
+[data]
+start = "2025-12"
+end = "2026-05"
+timezone = "America/New_York"
+service = "yellow"
+
+[split]
+train_start = "2025-12-01"
+validation_start = "2026-04-01"
+test_start = "2026-05-01"
+test_end = "2026-06-01"
+
+[model]
+random_seed = 42
+boosting_iterations = 120
+learning_rate = 0.08
+max_leaf_nodes = 31
+l2_regularization = 1.0

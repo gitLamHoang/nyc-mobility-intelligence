@@ -16,9 +16,14 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - HTTP API smoke test with 168 real prior hours: zone 237, April 8 00:00 NYC target, prediction 26.63416 vs actual 31. API matched offline output exactly; short history returned HTTP 422.
 - Daily continuation active at 09:00 America/Los_Angeles, September 14–October 13 inclusive. Automation ID: `build-nyc-mobility-intelligence`; stop/pause instructions and an October 13 end limit are saved.
 
-## Publication checks
+## Publication and reproducibility checks
 
-- Final public commit/push and GitHub CI verification pending in this initial checkpoint.
+- Implementation published to `main` in commit `587f897d19141b6f0f65454450cf7d17e936c6f5`.
+- [GitHub CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/34812627304): locked Linux installation, Ruff lint/format and pytest.
+- All source-file, dependency-lock and processed-data hashes in the latest experiment match the local implementation and cached data. API evidence references the same experiment ID.
+- Repeated full model fitting reproduced all eight candidates' validation metrics exactly. This is a reproducibility check, not an independent statistical trial.
+- Download cache rechecked successfully for all eight official assets. Staged-file audit confirmed no raw data, processed Parquet, model binaries or virtual environment were published.
+- Local API processes were stopped after smoke verification. Restart with the README command when needed.
 
 ## Validation contract
 

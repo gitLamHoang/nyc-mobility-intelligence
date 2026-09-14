@@ -23,6 +23,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence Â· public Â
 
 - Implementation published to `main` in commit `587f897d19141b6f0f65454450cf7d17e936c6f5`.
 - [GitHub CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/34812627304): locked Linux installation, Ruff lint/format and pytest.
+- September 14 audit published in `bb5091b74bb2be1f8faad96f9a0d597232b0d072`; [its GitHub CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/34882238312) with the expanded test suite. The working tree was clean after push.
 - The initial model experiment describes the September 13 source snapshot; subsequent CLI/preparation/audit code changes are recorded separately by source hashes in [latest_quality_audit.json](reports/latest_quality_audit.json). Model features, fitted artifact, dependency lock and processed-data content remain unchanged. API evidence still references the original model experiment ID.
 - Repeated full model fitting reproduced all eight candidates' validation metrics exactly. This is a reproducibility check, not an independent statistical trial.
 - Download cache rechecked successfully for all eight official assets. Staged-file audit confirmed no raw data, processed Parquet, model binaries or virtual environment were published.

@@ -1,0 +1,16 @@
+[study]
+id = "temporal-loss-comparison-v1"
+train_start = "2025-12-01"
+validation_boundaries = ["2026-02-01", "2026-03-01", "2026-04-01", "2026-05-01"]
+sealed_test_start = "2026-05-01"
+feature_set = "temporal-v1"
+primary_metric = "pooled_mae"
+sparse_zone_mean_max = 1.0
+models = ["linear_regression", "ridge", "hist_gradient_boosting", "hist_gradient_boosting_poisson", "hist_gradient_boosting_absolute"]
+
+[model]
+random_seed = 42
+boosting_iterations = 120
+learning_rate = 0.08
+max_leaf_nodes = 31
+l2_regularization = 1.0

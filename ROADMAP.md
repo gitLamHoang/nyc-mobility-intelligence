@@ -31,6 +31,10 @@ See PROJECT_STATE.md for whether each component has actually been executed and v
 
 Completed a reproducible all-column exact-duplicate audit and alternate-target baseline evaluation over December–April: zero exact excess rows and unchanged baseline scores. Added source-hash preflight, reporting-volume investigation flags, and stronger densification integrity checks; 45 tests pass. The canonical dataset is reproduced byte-for-byte. [The data-quality review](reports/DATA_QUALITY_REVIEW.md) distinguishes February 23 weather-related context from an unresolved Vendor 7 anomaly on January 5–6. No flagged hours are removed. Next: development-only walk-forward validation and a fixed sparse-zone loss comparison protocol; provider follow-up remains open.
 
+## September 17 progress
+
+Completed the frozen expanding walk-forward study ahead of the target window: ten candidates, three development folds, fifteen fits and 559,370 forecasts per candidate. Squared-error boosting leads every fold and reduces pooled MAE 27.65% against the weekly baseline. Alternative losses improve sparse-zone MAE but worsen overall MAE and RMSE; no automatic promotion. All original April metrics reproduce exactly, May remains sealed, and 59 tests pass. See the [measured review](reports/WALK_FORWARD_REVIEW.md). XGBoost and bounded tuning remain unimplemented; establish paired uncertainty and observation-latency sensitivity before expanding the candidate budget. API artifact and canonical observations are unchanged.
+
 ## Working rules
 
 Read PROJECT_STATE.md and the latest experiment before selecting the next bounded task. Inspect local Git state; preserve user changes. Use the single public repository `gitLamHoang/nyc-mobility-intelligence` and primary branch `main`. Do not create a differently named repository or force-push. Run relevant tests, Ruff, and the changed pipeline stage before substantive commits. Commit and push completed verified work; inspect CI. Record failed hypotheses and negative results. Never invent data, metrics or completed work. Keep raw data/model binaries out of Git. Never optimize on May test results.

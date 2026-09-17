@@ -2,7 +2,7 @@
 
 Predict recorded yellow-taxi pickups for every NYC Taxi Zone in the next hourly interval, using official TLC trip records. A Python forecasting system with reproducible acquisition, an audited hourly panel, leakage-tested temporal features, real baseline comparisons, geographic error analysis, and a local prediction API.
 
-**Status:** active development, September 14–October 13, 2026. Initial working milestone prepared September 13. See [PROJECT_STATE.md](PROJECT_STATE.md) for verified results and [ROADMAP.md](ROADMAP.md) for remaining work. Weather, walk-forward tuning, interactive visualization, and operational monitoring are scheduled follow-on work.
+**Status:** active development, September 14–October 13, 2026. Initial working milestone prepared September 13. See [PROJECT_STATE.md](PROJECT_STATE.md) for verified results and [ROADMAP.md](ROADMAP.md) for remaining work. Expanding walk-forward comparison is implemented; bounded tuning, weather, interactive visualization, and operational monitoring remain open.
 
 ## Problem and scope
 
@@ -30,6 +30,16 @@ uv run ruff format --check .
 `uv run nyc-mobility all` executes the four pipeline stages. Downloads are cached and verified with SHA-256. Reserve about 2 GB disk for raw data, aggregates, predictions and model artifacts, plus environment space; training can use several GB of RAM. No raw trip files, processed Parquet, or model pickle files are committed. The exact dependency graph is in `uv.lock`.
 
 Run `uv run nyc-mobility audit-quality` after preparation for an optional development-only exact-duplicate and reporting-volume audit. It verifies source hashes and compares an alternate count policy without changing the canonical target or model. The [September 14 review](reports/DATA_QUALITY_REVIEW.md) found no exact duplicates in 19.18 million eligible December–April pickups; it documents reporting anomalies and why they are retained.
+
+Run the separate development backtest after preparation:
+
+```bash
+OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 uv run nyc-mobility backtest
+# Use the backtest ID printed by the preceding command:
+uv run python scripts/plot_backtest.py reports/backtests/<backtest-id>
+```
+
+The [frozen protocol](docs/WALK_FORWARD_PROTOCOL.md) compares ten candidates across February, March and April, refitting each pipeline on expanding historical training data. It saves immutable scores and daily errors under `reports/backtests/`, and ignored forecast tables under `artifacts/backtests/`. It leaves the existing API artifact and April experiment unchanged. The `all` command retains its original four stages; it does not launch the backtest.
 
 ## Data and evaluation contract
 
@@ -68,6 +78,10 @@ Initial measured April validation (188,640 zone-hours):
 
 Boosting reduces MAE by **19.2%** against the strongest baseline (previous week), but its SMAPE is substantially worse. Small positive predictions in zero/low-demand hours warrant targeted review. This single validation month does not establish statistical significance or performance in other seasons. Test results are not available yet.
 
+The [September 17 walk-forward review](reports/WALK_FORWARD_REVIEW.md) extends development evaluation to **559,370 February–April zone-hours**. Squared-error boosting leads in every month: pooled MAE **3.693** versus **5.104** for the weekly baseline, a **27.65% reduction**. Poisson and absolute-error losses improve sparse-zone MAE but worsen overall MAE and RMSE. Squared-error boosting remains worse than the weekly baseline on sparse-zone MAE in every fold. These dependent development comparisons do not establish statistical significance, and May remains sealed. Full evidence is in [latest_backtest.json](reports/latest_backtest.json).
+
+![Walk-forward loss comparison](reports/figures/walk_forward_losses.png)
+
 ![Temporal patterns](reports/figures/seasonality.png)
 
 ![Demand and error maps](reports/figures/demand_and_error_map.png)
@@ -82,7 +96,7 @@ uv run uvicorn nyc_mobility.api.app:app --host 127.0.0.1 --port 8000
 
 Open `http://127.0.0.1:8000/docs` for the request schema. `GET /health` reports loaded model metadata. `POST /predict` accepts one NYC `zone_id` and 168–744 hourly observations, each with an explicit UTC offset and a nonnegative integer `demand`. It returns the immediately following target interval and a nonnegative expected pickup count. Missing hours, duplicates, unknown zones, and targets inside the training period fail validation. A request-generation script and smoke test are in `scripts/smoke_api.py`.
 
-The current artifact serves the lowest-MAE classical model; the metadata also records the overall champion including baselines. This distinction matters if a baseline wins. Only trusted local model artifacts should be loaded. The API is a local prototype: public hosting, authentication, operational observation ingestion, and monitoring are not yet implemented.
+The current artifact serves the lowest-MAE classical model from the initial April comparison; the metadata also records the overall champion including baselines. This distinction matters if a baseline wins. Development backtests do not automatically replace the serving model. Only trusted local model artifacts should be loaded. The API is a local prototype: public hosting, authentication, operational observation ingestion, and monitoring are not yet implemented.
 
 ## Architecture
 

@@ -1,0 +1,71 @@
+{
+  "backtest_id": "20260917T165035Z-e037f0",
+  "april_exact_metric_reproduction": {
+    "previous_hour": true,
+    "previous_day_24h": true,
+    "previous_week_168h": true,
+    "zone_hour_average": true,
+    "rolling_mean_24h": true,
+    "linear_regression": true,
+    "ridge": true,
+    "hist_gradient_boosting": true
+  },
+  "preserved_files": {
+    "artifacts/model.joblib": {
+      "sha256_before": "b72f3ac7a6023470094a9de6f54b2d3d85faf5f9b9f60929b511d44fdc3788f4",
+      "sha256_after": "b72f3ac7a6023470094a9de6f54b2d3d85faf5f9b9f60929b511d44fdc3788f4",
+      "unchanged": true
+    },
+    "artifacts/model_metadata.json": {
+      "sha256_before": "ef3850e8e9a6b4b0a879f92f6d4d43fe0c78d0e1a60e86e0f7a20b5862ece9d5",
+      "sha256_after": "ef3850e8e9a6b4b0a879f92f6d4d43fe0c78d0e1a60e86e0f7a20b5862ece9d5",
+      "unchanged": true
+    },
+    "artifacts/validation_predictions.parquet": {
+      "sha256_before": "711516c6b6007e4e0367d51b9e7a1c42fb92d7bc55953b944525baa28259c925",
+      "sha256_after": "711516c6b6007e4e0367d51b9e7a1c42fb92d7bc55953b944525baa28259c925",
+      "unchanged": true
+    },
+    "reports/latest_experiment.json": {
+      "sha256_before": "c94a54df033cab852c1daf2d8031d1d4cab4ba7e21931d6ea197596bcee54a47",
+      "sha256_after": "c94a54df033cab852c1daf2d8031d1d4cab4ba7e21931d6ea197596bcee54a47",
+      "unchanged": true
+    },
+    "reports/api_smoke.json": {
+      "sha256_before": "bd3d4f17c0a6c56f0397a05fa9df0b17f8369d4491cec66ba649b36c83eba754",
+      "sha256_after": "bd3d4f17c0a6c56f0397a05fa9df0b17f8369d4491cec66ba649b36c83eba754",
+      "unchanged": true
+    },
+    "data/processed/hourly_demand.parquet": {
+      "sha256_before": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+      "sha256_after": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+      "unchanged": true
+    }
+  },
+  "source_hashes_match": {
+    "src/nyc_mobility/__init__.py": true,
+    "src/nyc_mobility/api/__init__.py": true,
+    "src/nyc_mobility/api/app.py": true,
+    "src/nyc_mobility/cli.py": true,
+    "src/nyc_mobility/config.py": true,
+    "src/nyc_mobility/data/__init__.py": true,
+    "src/nyc_mobility/data/download.py": true,
+    "src/nyc_mobility/data/prepare.py": true,
+    "src/nyc_mobility/data/quality_audit.py": true,
+    "src/nyc_mobility/evaluation/__init__.py": true,
+    "src/nyc_mobility/evaluation/backtest.py": true,
+    "src/nyc_mobility/evaluation/metrics.py": true,
+    "src/nyc_mobility/evaluation/splits.py": true,
+    "src/nyc_mobility/features/__init__.py": true,
+    "src/nyc_mobility/features/temporal.py": true,
+    "src/nyc_mobility/models/__init__.py": true,
+    "src/nyc_mobility/models/baselines.py": true,
+    "src/nyc_mobility/models/train.py": true,
+    "src/nyc_mobility/visualization/__init__.py": true,
+    "src/nyc_mobility/visualization/report.py": true
+  },
+  "protocol_hash_matches": true,
+  "lockfile_hash_matches": true,
+  "local_tests_passed": 59,
+  "may_evaluated": false
+}

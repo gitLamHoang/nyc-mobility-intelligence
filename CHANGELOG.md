@@ -1,5 +1,13 @@
 # Changelog
 
+## September 17, 2026 · expanding walk-forward loss comparison
+
+- Executed the protocol frozen September 16 in `15db976`: three expanding development folds, ten candidates and exactly fifteen model fits, with no May targets or hyperparameter search.
+- Added `nyc-mobility backtest`, complete zone/hour coverage checks, independent fold preprocessing/refits, train-defined sparse cohorts, pooled metrics, borough/calendar/zero-demand diagnostics and daily paired MAE summaries. Results are isolated from the serving model and original April experiment.
+- Evaluated 559,370 real February–April zone-hours per candidate. Squared-error boosting leads every fold: pooled MAE 3.69295 versus weekly baseline 5.10423 (27.65% lower). Poisson and absolute-error losses improve sparse-zone MAE but worsen overall MAE and RMSE. Published the tradeoff with immutable provenance, tables and a reproducible figure.
+- Corrected constant-target R² to null rather than a forced finite value. Existing immutable experiment reports retain their original results; all eight original April aggregate scores reproduce exactly.
+- Expanded to 59 passing tests covering folds/DST, equal coverage, fresh pipelines, training-only cohorts, pooled metrics, test exclusion and serving-state preservation. Ruff and the complete real backtest pass. Verified that six existing data/model/evidence files remain byte-identical.
+
 ## September 14, 2026 · data-quality hardening
 
 - Added `nyc-mobility audit-quality`: development-only exact all-column duplicate search, hash-verified source preflight, canonical count reconciliation, and a separate alternate-label baseline sensitivity evaluation.

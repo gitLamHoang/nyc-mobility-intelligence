@@ -20,6 +20,8 @@ def metrics(actual, predicted) -> dict[str, float | None]:
     return {
         "mae": float(mean_absolute_error(actual, predicted)),
         "rmse": float(np.sqrt(mean_squared_error(actual, predicted))),
-        "r2": float(r2_score(actual, predicted)) if actual.size > 1 else None,
+        "r2": float(r2_score(actual, predicted))
+        if actual.size > 1 and not np.equal(actual, actual[0]).all()
+        else None,
         "smape_pct": float(smape),
     }

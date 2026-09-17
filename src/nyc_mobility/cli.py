@@ -8,11 +8,19 @@ from nyc_mobility.config import load_config
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "command", choices=["download", "prepare", "train", "report", "audit-quality", "all"]
+        "command",
+        choices=["download", "prepare", "train", "report", "audit-quality", "backtest", "all"],
     )
     parser.add_argument("--config", default="configs/default.toml")
+    parser.add_argument("--protocol", default="configs/walk_forward.toml")
     args = parser.parse_args()
     config = load_config(args.config)
+    if args.command == "backtest":
+        from pathlib import Path
+
+        from nyc_mobility.evaluation.backtest import run_backtest
+
+        run_backtest(config, protocol_path=Path(args.protocol))
     if args.command == "audit-quality":
         from nyc_mobility.data.quality_audit import quality_audit
 

@@ -1,0 +1,18 @@
+[study]
+id = "observation-latency-v1"
+train_start = "2025-12-01"
+validation_boundaries = ["2026-02-01", "2026-03-01", "2026-04-01", "2026-05-01"]
+sealed_test_start = "2026-05-01"
+delay_hours = [0, 1, 3, 6]
+feature_set = "temporal-latency-v1"
+primary_metric = "pooled_mae"
+common_warmup_hours = 174
+common_training_embargo_hours = 6
+model = "hist_gradient_boosting"
+
+[model]
+random_seed = 42
+boosting_iterations = 120
+learning_rate = 0.08
+max_leaf_nodes = 31
+l2_regularization = 1.0

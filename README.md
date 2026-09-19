@@ -41,6 +41,15 @@ uv run python scripts/plot_backtest.py reports/backtests/<backtest-id>
 
 The [frozen protocol](docs/WALK_FORWARD_PROTOCOL.md) compares ten candidates across February, March and April, refitting each pipeline on expanding historical training data. It saves immutable scores and daily errors under `reports/backtests/`, and ignored forecast tables under `artifacts/backtests/`. It leaves the existing API artifact and April experiment unchanged. The `all` command retains its original four stages; it does not launch the backtest.
 
+Reproduce the paired uncertainty analysis from the published daily summaries without downloading data or fitting models:
+
+```bash
+uv run nyc-mobility uncertainty
+uv run python scripts/plot_uncertainty.py reports/uncertainty/<uncertainty-id>
+```
+
+The [uncertainty protocol](docs/UNCERTAINTY_PROTOCOL.md) pins the original input hashes and uses paired circular blocks of NYC days, with actual row weights for daylight-saving time. The command saves a separate immutable report and keeps replicate arrays outside Git.
+
 ## Data and evaluation contract
 
 Official TLC yellow-taxi files: **December 2025–May 2026**. This is the latest consecutive six-month period listed on the official TLC page when initialized. The source files, content hashes, download timestamps, and sizes are recorded in [data_manifest.json](reports/data_manifest.json). The dataset contains **23,304,288 raw records** and **23,263,775 accepted NYC pickups**, forming **1,144,154 zone-hours**.
@@ -79,6 +88,8 @@ Initial measured April validation (188,640 zone-hours):
 Boosting reduces MAE by **19.2%** against the strongest baseline (previous week), but its SMAPE is substantially worse. Small positive predictions in zero/low-demand hours warrant targeted review. This single validation month does not establish statistical significance or performance in other seasons. Test results are not available yet.
 
 The [September 17 walk-forward review](reports/WALK_FORWARD_REVIEW.md) extends development evaluation to **559,370 February–April zone-hours**. Squared-error boosting leads in every month: pooled MAE **3.693** versus **5.104** for the weekly baseline, a **27.65% reduction**. Poisson and absolute-error losses improve sparse-zone MAE but worsen overall MAE and RMSE. Squared-error boosting remains worse than the weekly baseline on sparse-zone MAE in every fold. These dependent development comparisons do not establish statistical significance, and May remains sealed. Full evidence is in [latest_backtest.json](reports/latest_backtest.json).
+
+The [September 19 uncertainty review](reports/UNCERTAINTY_REVIEW.md) gives a nominal 95% seven-day block-bootstrap interval of **22.63%–31.93%** for that observed MAE reduction. All three fixed comparisons retain their direction under one-, seven- and fourteen-day blocks. These marginal intervals condition on the existing fitted models and observed months; they do not cover model-selection uncertainty or guarantee future-month performance. The [next latency protocol](docs/LATENCY_PROTOCOL.md) is frozen but has not yet been executed.
 
 ![Walk-forward loss comparison](reports/figures/walk_forward_losses.png)
 

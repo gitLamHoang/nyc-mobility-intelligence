@@ -1,5 +1,13 @@
 # Changelog
 
+## September 19, 2026 · paired block uncertainty
+
+- Froze the uncertainty protocol in `4ee6c4b` before resampling. Added `nyc-mobility uncertainty` using immutable, hash-pinned daily errors; no model fitting or target-Parquet access is required.
+- Executed 10,000 paired circular-block replicates each at 1-, 7- and 14-day lengths. Preserved model pairing, monthly composition and each day's zone-hour weight, including March 8's 23 hours. Added coverage/integrity/reconciliation checks and isolated output provenance.
+- The observed 27.65% MAE reduction versus weekly has a primary nominal 95% interval of 22.63%–31.93%. All three planned comparison directions persist across block lengths. Published all nine intervals, a reproducible figure, and explicit limits on conditional inference; no model promotion or May evaluation.
+- Expanded to 84 passing tests covering block sampling, paired errors, deterministic seeds, percentile calculations, DST weighting, input failures and artifact preservation. Ruff and the actual uncertainty/plot stages pass. Seven existing data/model/evidence files remain byte-identical.
+- Froze the next observation-latency study: delays 0/1/3/6 hours, twelve fixed model fits, matched training coverage, preserved target-time calendars and seasonal lags, availability-safe recent history, and unchanged validation coverage. The latency study has not run yet.
+
 ## September 17, 2026 · expanding walk-forward loss comparison
 
 - Executed the protocol frozen September 16 in `15db976`: three expanding development folds, ten candidates and exactly fifteen model fits, with no May targets or hyperparameter search.

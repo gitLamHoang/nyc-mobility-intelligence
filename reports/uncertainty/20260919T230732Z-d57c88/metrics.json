@@ -1,0 +1,192 @@
+{
+  "uncertainty_id": "20260919T230732Z-d57c88",
+  "created_at": "2026-09-19T23:07:32.376801+00:00",
+  "protocol": {
+    "study": {
+      "id": "paired-daily-block-v1",
+      "backtest_id": "20260917T165035Z-e037f0",
+      "backtest_metrics_sha256": "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497",
+      "daily_mae_sha256": "243059cf49346540979c0e654187fc9bc0e119200ce923077518ce59babba3db",
+      "method": "fold-stratified-circular-day-blocks",
+      "primary_block_days": 7,
+      "sensitivity_block_days": [
+        1,
+        14
+      ],
+      "replicates": 10000,
+      "confidence_level": 0.95,
+      "random_seed": 42
+    },
+    "contrasts": [
+      {
+        "candidate": "hist_gradient_boosting",
+        "reference": "previous_week_168h"
+      },
+      {
+        "candidate": "hist_gradient_boosting_poisson",
+        "reference": "hist_gradient_boosting"
+      },
+      {
+        "candidate": "hist_gradient_boosting_absolute",
+        "reference": "hist_gradient_boosting"
+      }
+    ]
+  },
+  "protocol_sha256": "bd11e38f347f69d8941af4d484c39061ed069f17c8685e42cce79b241b3c66d0",
+  "input_sha256": {
+    "reports/backtests/20260917T165035Z-e037f0/metrics.json": "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497",
+    "reports/backtests/20260917T165035Z-e037f0/daily_mae.csv": "243059cf49346540979c0e654187fc9bc0e119200ce923077518ce59babba3db"
+  },
+  "source_hashes": {
+    "src/nyc_mobility/__init__.py": "972276259858cb18539f09afe82a8a5308adba6c3157ac480daea2c2505783ec",
+    "src/nyc_mobility/api/__init__.py": "e96493dbe22a9f5a4566d226cfec3bb1f25eee6b7447b311bfd8d9f46c19c5ed",
+    "src/nyc_mobility/api/app.py": "93b1210bb0c1368d2489d5426ff3d9117f752c823b4ee4e19f5688f359f338a0",
+    "src/nyc_mobility/cli.py": "5e58118335f56903a98f7604a47d0fc5b3ae9532397985b8ee147a18ef5dcdea",
+    "src/nyc_mobility/config.py": "db6549338c9fd727b1bbfe31ae9acc105ec899e49d81fd2341472245dd828008",
+    "src/nyc_mobility/data/__init__.py": "1df8af0faf37759551399b621d14f19125bce7101d0ed5f8a7b6c666d6a9a82a",
+    "src/nyc_mobility/data/download.py": "ffbd83be90af8c7e3d83110abcf243427038657c2555ae2310df0290a723ff37",
+    "src/nyc_mobility/data/prepare.py": "2d6a517b8fc7236646a9c5d1729decd57d997bea6a985cdfbade0d5d2de9b350",
+    "src/nyc_mobility/data/quality_audit.py": "adbb209fef176d00f8ff3f8952fa8a0db070660475d2e534290cf40e0b26aa53",
+    "src/nyc_mobility/evaluation/__init__.py": "c4612313390d2d028934de19e004658a69d043e1ad0c025678b30497ca9f4245",
+    "src/nyc_mobility/evaluation/backtest.py": "8cf336a756ba0a52100f0991b49ee0ee60f82dfcc68801b236fcf6cf5b65a9de",
+    "src/nyc_mobility/evaluation/metrics.py": "6a13640640897178c4b1ac2cf17e4c96c05266170883e2ccc655af11a72514f0",
+    "src/nyc_mobility/evaluation/splits.py": "9adc990692a00061cc5c7ef35f431aa195b49e1dd89b4ac1be4e63848c94d9b5",
+    "src/nyc_mobility/evaluation/uncertainty.py": "4574edd2fadf564a023f8baa461ec0aa2b0aee06fc34f83db8e845706755ab3d",
+    "src/nyc_mobility/features/__init__.py": "92f2d4ad0d188c1f5d6c9e95fb1746690d8ff3d09b7cdb2e747cf7030bc18de0",
+    "src/nyc_mobility/features/temporal.py": "02f50e6db416b0e1c0192939c8111da9b4f801c456cfdc567359628ca66ff240",
+    "src/nyc_mobility/models/__init__.py": "d61ac20fd997e369f05c453949a87dde5b0383570a60f0721f54f86359932682",
+    "src/nyc_mobility/models/baselines.py": "f8426e2062782ddb671ce928e076bf87ba131f86c036414531e573e7aa031210",
+    "src/nyc_mobility/models/train.py": "c69f753bf46736f6fbb92ead1a6505f84ab3defcecb7a0ed53f8dd11d1a7a42b",
+    "src/nyc_mobility/visualization/__init__.py": "f0c25192077f688b02ef2530d18fdff025c73dbf410b6216001f852124f591d6",
+    "src/nyc_mobility/visualization/report.py": "783d9dea31897ee4292b5433aab4f6af89de47d3089e53003bcf5fff51d1209b"
+  },
+  "lockfile_sha256": "aba990defaa41d82a00398a29e0d20c22883f58fe35f2454b66624efa3d83ff3",
+  "draws_sha256": "e7634aaaefe3f9bb9b5b20ed9d82bde9a8b818503eab591b92e0a1965b569347",
+  "git_revision": "4ee6c4b0103ea14894836350c468b41f5df4ab0b",
+  "git_worktree_dirty": true,
+  "validation_days": 89,
+  "validation_rows": 559370,
+  "comparisons": [
+    {
+      "block_days": 7,
+      "role": "primary",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting",
+      "reference": "previous_week_168h",
+      "delta_mae": -1.4112785562414798,
+      "delta_mae_low": -1.7231691122972852,
+      "delta_mae_high": -1.0871552258086459,
+      "relative_reduction_pct": 27.64920697758987,
+      "relative_reduction_pct_low": 22.631138902668702,
+      "relative_reduction_pct_high": 31.925776065566982
+    },
+    {
+      "block_days": 7,
+      "role": "primary",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting_poisson",
+      "reference": "hist_gradient_boosting",
+      "delta_mae": 0.05897772714657634,
+      "delta_mae_low": 0.032090036145374215,
+      "delta_mae_high": 0.07834933259485986,
+      "relative_reduction_pct": -1.5970358790950545,
+      "relative_reduction_pct_low": -2.107975326010185,
+      "relative_reduction_pct_high": -0.8718322271591887
+    },
+    {
+      "block_days": 7,
+      "role": "primary",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting_absolute",
+      "reference": "hist_gradient_boosting",
+      "delta_mae": 0.3213980226464992,
+      "delta_mae_low": 0.22708000171546727,
+      "delta_mae_high": 0.437074850106573,
+      "relative_reduction_pct": -8.703017197678786,
+      "relative_reduction_pct_low": -11.812797677057437,
+      "relative_reduction_pct_high": -6.167727795095651
+    },
+    {
+      "block_days": 1,
+      "role": "sensitivity",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting",
+      "reference": "previous_week_168h",
+      "delta_mae": -1.4112785562414798,
+      "delta_mae_low": -1.759175296492408,
+      "delta_mae_high": -1.1166215768112264,
+      "relative_reduction_pct": 27.64920697758987,
+      "relative_reduction_pct_low": 23.333639377976965,
+      "relative_reduction_pct_high": 32.11270552284836
+    },
+    {
+      "block_days": 1,
+      "role": "sensitivity",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting_poisson",
+      "reference": "hist_gradient_boosting",
+      "delta_mae": 0.05897772714657634,
+      "delta_mae_low": 0.03384565728270896,
+      "delta_mae_high": 0.07963789001423083,
+      "relative_reduction_pct": -1.5970358790950545,
+      "relative_reduction_pct_low": -2.1532121991375313,
+      "relative_reduction_pct_high": -0.9168944739686296
+    },
+    {
+      "block_days": 1,
+      "role": "sensitivity",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting_absolute",
+      "reference": "hist_gradient_boosting",
+      "delta_mae": 0.3213980226464992,
+      "delta_mae_low": 0.23540120023154748,
+      "delta_mae_high": 0.4330913593528085,
+      "relative_reduction_pct": -8.703017197678786,
+      "relative_reduction_pct_low": -11.606042184482048,
+      "relative_reduction_pct_high": -6.434476737620434
+    },
+    {
+      "block_days": 14,
+      "role": "sensitivity",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting",
+      "reference": "previous_week_168h",
+      "delta_mae": -1.4112785562414798,
+      "delta_mae_low": -1.704103221910859,
+      "delta_mae_high": -1.1308024556773255,
+      "relative_reduction_pct": 27.64920697758987,
+      "relative_reduction_pct_low": 23.343799217653945,
+      "relative_reduction_pct_high": 31.707881840439306
+    },
+    {
+      "block_days": 14,
+      "role": "sensitivity",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting_poisson",
+      "reference": "hist_gradient_boosting",
+      "delta_mae": 0.05897772714657634,
+      "delta_mae_low": 0.03974350975013439,
+      "delta_mae_high": 0.07813809670202995,
+      "relative_reduction_pct": -1.5970358790950545,
+      "relative_reduction_pct_low": -2.0936513909228864,
+      "relative_reduction_pct_high": -1.0879729494306507
+    },
+    {
+      "block_days": 14,
+      "role": "sensitivity",
+      "confidence_level": 0.95,
+      "candidate": "hist_gradient_boosting_absolute",
+      "reference": "hist_gradient_boosting",
+      "delta_mae": 0.3213980226464992,
+      "delta_mae_low": 0.23327746590090048,
+      "delta_mae_high": 0.41506683354179924,
+      "relative_reduction_pct": -8.703017197678786,
+      "relative_reduction_pct_low": -11.204228031055449,
+      "relative_reduction_pct_high": -6.3221176244582225
+    }
+  ],
+  "models_refitted": 0,
+  "serving_model_changed": false,
+  "test_metrics": null,
+  "interpretation": "Marginal percentile intervals conditional on fixed development models and monthly composition; not future-performance guarantees or prediction intervals."
+}

@@ -1,6 +1,6 @@
 # Project state
 
-Updated: September 17, 2026 (America/Los_Angeles), frozen development walk-forward comparison completed.
+Updated: September 19, 2026 (America/Los_Angeles), paired block uncertainty completed; next latency protocol frozen.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
@@ -9,7 +9,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Six official months downloaded, 2025-12 through 2026-05, plus lookup and boundaries.
 - 23,263,775 accepted NYC yellow-taxi pickups, 262 zones, 4,367 UTC hours, 1,144,154 panel rows.
 - Acquisition and aggregation executed against real data.
-- 59 behavioral tests passed; Ruff lint and formatting checks passed.
+- 84 behavioral tests passed; Ruff lint and formatting checks passed.
 - Five baselines and three classical models trained on 716,570 zone-hours and scored on 188,640 April validation zone-hours.
 - Best validation MAE: histogram gradient boosting 3.47999; weekly baseline 4.30547 (19.17% reduction). RMSE 9.69976, R² 0.97157. SMAPE 104.05% is materially worse than weekly baseline 57.40%.
 - Rendered and visually inspected real temporal EDA and demand/error maps using official geometries. Fixed loading of the official ZIP's nested shapefile directory.
@@ -21,6 +21,8 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - September 17 `backtest`: executed the September 16 frozen protocol across February, March and April, with fifteen model fits and five baselines per fold. All ten candidates cover the same 559,370 zone-hours. Each pipeline refits independently; March contains 743 validation hours.
 - Squared-error boosting leads every fold and pooled MAE: 3.69295 versus weekly baseline 5.10423 (27.65% reduction), pooled RMSE 10.26719, R² 0.96689 and SMAPE 102.58%. Poisson and absolute-error losses improve sparse-zone MAE in every month but worsen overall MAE/RMSE. Squared-error boosting loses to the weekly baseline on sparse-zone MAE in every fold. See [WALK_FORWARD_REVIEW.md](reports/WALK_FORWARD_REVIEW.md).
 - Saved immutable fold/slice metrics, 89 days of paired daily MAE, and exact provenance in backtest `20260917T165035Z-e037f0`. Forecast Parquet files remain ignored. No model promotion, tuning or test evaluation occurred. Rendered and visually inspected the comparison figure.
+- September 19 `uncertainty`: reused the 890 saved daily/model summaries, with 10,000 paired circular-block replicates each for 1-, 7- and 14-day blocks. No model refits or target-Parquet reads. The primary seven-day interval for squared-error boosting's 27.65% MAE reduction versus weekly is 22.63%–31.93% (nominal 95%). All three comparison directions persist across block lengths. These are conditional, marginal intervals rather than future-performance guarantees; see [UNCERTAINTY_REVIEW.md](reports/UNCERTAINTY_REVIEW.md).
+- Uncertainty run `20260919T230732Z-d57c88` records fixed inputs, parameters and hashes. Coverage checks enforce every date/model and the 23-hour DST day; paired draws retain actual row weights. Seven existing data/model/evidence files are unchanged. Rendered and visually inspected the interval figure.
 
 ## Publication and reproducibility checks
 
@@ -33,6 +35,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Local API processes were stopped after smoke verification. Restart with the README command when needed.
 - Walk-forward protocol was committed before execution in `15db9760a6fb0b74a0693d68f5e54ea55b4b4a0f`; [that commit's CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/35134528450). The new run records this parent revision plus exact hashes of the implemented runner's twenty source files. Its worktree-dirty flag is intentional and documented.
 - [Backtest verification](reports/backtests/20260917T165035Z-e037f0/verification.json) confirms exact reproduction of all eight original April candidates' metrics, matching source/protocol/lock hashes, and unchanged canonical data, serving artifact/metadata, original predictions, original experiment pointer and API smoke evidence. Prepublication local checks: 59 tests, Ruff, full real-data backtest and figure generation passed. Published implementation commit `04e6f1d80d426a7bc8d2ac2f97917a73b2461e2e`; [GitHub CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/35249870571), including locked Linux installation and all 59 tests.
+- Uncertainty protocol was frozen in `4ee6c4b0103ea14894836350c468b41f5df4ab0b` before intervals were computed; [its CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/35474976873). The implemented runner's source hashes identify the executed worktree. [Verification evidence](reports/uncertainty/20260919T230732Z-d57c88/verification.json) confirms matching source/input/protocol/lock hashes and unchanged existing artifacts. Prepublication checks: all 84 tests, Ruff, actual uncertainty stage and plotting passed.
 
 ## Validation contract
 
@@ -42,7 +45,9 @@ Original serving experiment: train Dec–Mar (168-hour feature warm-up), validat
 
 Exact-duplicate sensitivity is completed with a negative result; retain recorded counts. Follow up on Vendor 7's January 5–6 anomaly without inventing or removing trips. Keep February 23 low-volume hours: the independently documented weather/travel event makes automatic outage labeling inappropriate.
 
-Walk-forward comparison and the fixed alternative-loss study are complete. The next bounded task is to freeze and execute paired daily-block uncertainty analysis, then specify an observation-latency ablation that adjusts every demand-derived feature. Use the existing daily summaries and ignored forecasts; do not refit unchanged models just to recompute intervals. Account for temporal dependence and the 23-hour March day. Do not equate conditional resampling intervals with performance across unobserved seasons.
+Walk-forward comparison, the fixed alternative-loss study and paired daily-block uncertainty are complete. Implement and execute the [frozen observation-latency protocol](docs/LATENCY_PROTOCOL.md) using [configs/latency.toml](configs/latency.toml): delays 0/1/3/6 hours, twelve fixed squared-error boosting fits across three folds, five baselines per setting, common 174-hour warm-up and six-hour training-label embargo. Retain all 559,370 validation rows. Recent lags and rolling windows end at the latest available count; target-anchored day/week lags and target-time calendars remain correctly aligned. Do not shift a completed feature row. No latency results exist yet.
+
+The matched zero-delay control intentionally has slightly fewer training targets than the original experiment. Compare delays against that control and test zero-delay feature parity on the shared grid. Test perturbations of all unavailable observations, not only the forecast target. Save daily paired errors and geographic/sparse diagnostics. Preserve the original API model and keep May sealed. Freeze a separate protocol before any expanded tuning or additional model family.
 
 Keep the serving artifact unchanged until a subsequent promotion decision is justified. In April, absolute-error loss cuts sparse-zone MAE from 0.47240 to 0.31002, but raises citywide MAE from 3.47999 to 3.73363; simple loss replacement is not an aggregate improvement. Freeze a budget before new tuning, XGBoost or spatial/weather comparisons. The initial API is local and retrospective; weather, spatial predictors, interactive display, drift monitoring, final test and deployment packaging remain open.
 

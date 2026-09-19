@@ -9,10 +9,19 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "command",
-        choices=["download", "prepare", "train", "report", "audit-quality", "backtest", "all"],
+        choices=[
+            "download",
+            "prepare",
+            "train",
+            "report",
+            "audit-quality",
+            "backtest",
+            "uncertainty",
+            "all",
+        ],
     )
     parser.add_argument("--config", default="configs/default.toml")
-    parser.add_argument("--protocol", default="configs/walk_forward.toml")
+    parser.add_argument("--protocol", help="Optional backtest or uncertainty protocol TOML")
     args = parser.parse_args()
     config = load_config(args.config)
     if args.command == "backtest":
@@ -20,7 +29,13 @@ def main() -> None:
 
         from nyc_mobility.evaluation.backtest import run_backtest
 
-        run_backtest(config, protocol_path=Path(args.protocol))
+        run_backtest(config, protocol_path=Path(args.protocol or "configs/walk_forward.toml"))
+    if args.command == "uncertainty":
+        from pathlib import Path
+
+        from nyc_mobility.evaluation.uncertainty import run_uncertainty
+
+        run_uncertainty(config, protocol_path=Path(args.protocol or "configs/uncertainty.toml"))
     if args.command == "audit-quality":
         from nyc_mobility.data.quality_audit import quality_audit
 

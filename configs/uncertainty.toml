@@ -1,0 +1,23 @@
+[study]
+id = "paired-daily-block-v1"
+backtest_id = "20260917T165035Z-e037f0"
+backtest_metrics_sha256 = "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497"
+daily_mae_sha256 = "243059cf49346540979c0e654187fc9bc0e119200ce923077518ce59babba3db"
+method = "fold-stratified-circular-day-blocks"
+primary_block_days = 7
+sensitivity_block_days = [1, 14]
+replicates = 10000
+confidence_level = 0.95
+random_seed = 42
+
+[[contrasts]]
+candidate = "hist_gradient_boosting"
+reference = "previous_week_168h"
+
+[[contrasts]]
+candidate = "hist_gradient_boosting_poisson"
+reference = "hist_gradient_boosting"
+
+[[contrasts]]
+candidate = "hist_gradient_boosting_absolute"
+reference = "hist_gradient_boosting"

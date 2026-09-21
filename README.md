@@ -50,6 +50,15 @@ uv run python scripts/plot_uncertainty.py reports/uncertainty/<uncertainty-id>
 
 The [uncertainty protocol](docs/UNCERTAINTY_PROTOCOL.md) pins the original input hashes and uses paired circular blocks of NYC days, with actual row weights for daylight-saving time. The command saves a separate immutable report and keeps replicate arrays outside Git.
 
+After data preparation, run the separate observation-latency sensitivity study:
+
+```bash
+OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 uv run nyc-mobility latency
+uv run python scripts/plot_latency.py reports/latency/<latency-id>
+```
+
+The [frozen latency protocol](docs/LATENCY_PROTOCOL.md) compares 0/1/3/6-hour delays with the same training targets and validation hours. Recent lags and trailing windows use the latest available counts; target-time calendars and already-available day/week lags retain their alignment. This stage saves separate evidence and does not replace the serving artifact.
+
 ## Data and evaluation contract
 
 Official TLC yellow-taxi files: **December 2025–May 2026**. This is the latest consecutive six-month period listed on the official TLC page when initialized. The source files, content hashes, download timestamps, and sizes are recorded in [data_manifest.json](reports/data_manifest.json). The dataset contains **23,304,288 raw records** and **23,263,775 accepted NYC pickups**, forming **1,144,154 zone-hours**.
@@ -89,7 +98,9 @@ Boosting reduces MAE by **19.2%** against the strongest baseline (previous week)
 
 The [September 17 walk-forward review](reports/WALK_FORWARD_REVIEW.md) extends development evaluation to **559,370 February–April zone-hours**. Squared-error boosting leads in every month: pooled MAE **3.693** versus **5.104** for the weekly baseline, a **27.65% reduction**. Poisson and absolute-error losses improve sparse-zone MAE but worsen overall MAE and RMSE. Squared-error boosting remains worse than the weekly baseline on sparse-zone MAE in every fold. These dependent development comparisons do not establish statistical significance, and May remains sealed. Full evidence is in [latest_backtest.json](reports/latest_backtest.json).
 
-The [September 19 uncertainty review](reports/UNCERTAINTY_REVIEW.md) gives a nominal 95% seven-day block-bootstrap interval of **22.63%–31.93%** for that observed MAE reduction. All three fixed comparisons retain their direction under one-, seven- and fourteen-day blocks. These marginal intervals condition on the existing fitted models and observed months; they do not cover model-selection uncertainty or guarantee future-month performance. The [next latency protocol](docs/LATENCY_PROTOCOL.md) is frozen but has not yet been executed.
+The [September 19 uncertainty review](reports/UNCERTAINTY_REVIEW.md) gives a nominal 95% seven-day block-bootstrap interval of **22.63%–31.93%** for that observed MAE reduction. All three fixed comparisons retain their direction under one-, seven- and fourteen-day blocks. These marginal intervals condition on the existing fitted models and observed months; they do not cover model-selection uncertainty or guarantee future-month performance.
+
+The [September 20 latency review](reports/LATENCY_REVIEW.md) measures the observation-availability assumption directly. With matched training targets, one-, three- and six-hour delays raise pooled MAE by **12.78%, 20.13% and 22.94%**. The six-hour model retains a **10.99%** MAE advantage over the weekly baseline, down from **27.59%** for the matched zero-delay control. These separately fitted retrospective models do not establish a live feed or change the original API artifact. All original April forecasts still reproduce exactly under the default feature path; May remains sealed.
 
 ![Walk-forward loss comparison](reports/figures/walk_forward_losses.png)
 

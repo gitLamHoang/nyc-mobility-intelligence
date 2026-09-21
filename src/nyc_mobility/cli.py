@@ -17,11 +17,12 @@ def main() -> None:
             "audit-quality",
             "backtest",
             "uncertainty",
+            "latency",
             "all",
         ],
     )
     parser.add_argument("--config", default="configs/default.toml")
-    parser.add_argument("--protocol", help="Optional backtest or uncertainty protocol TOML")
+    parser.add_argument("--protocol", help="Optional study protocol TOML")
     args = parser.parse_args()
     config = load_config(args.config)
     if args.command == "backtest":
@@ -36,6 +37,12 @@ def main() -> None:
         from nyc_mobility.evaluation.uncertainty import run_uncertainty
 
         run_uncertainty(config, protocol_path=Path(args.protocol or "configs/uncertainty.toml"))
+    if args.command == "latency":
+        from pathlib import Path
+
+        from nyc_mobility.evaluation.latency import run_latency
+
+        run_latency(config, protocol_path=Path(args.protocol or "configs/latency.toml"))
     if args.command == "audit-quality":
         from nyc_mobility.data.quality_audit import quality_audit
 

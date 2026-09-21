@@ -1,5 +1,13 @@
 # Changelog
 
+## September 20, 2026 · observation-latency sensitivity
+
+- Implemented `nyc-mobility latency` and executed the previously frozen protocol: exactly twelve model fits for 0/1/3/6-hour delays with common 174-hour warm-up, six-hour training-label embargo and all 559,370 validation zone-hours per setting.
+- Added availability-aware recent lags, trailing windows and trend while preserving target-anchored seasonal lags and calendars. The default zero-delay API path remains identical. Shared fold fitting now records training-target hashes and supports explicit warm-up/embargo without changing the original backtest defaults.
+- Measured pooled MAEs of 3.69575, 4.16821, 4.43988 and 4.54341. Delays increase MAE 12.78%, 20.13% and 22.94%; boosting's advantage over the weekly baseline falls from 27.59% to 10.99%. Published all candidate/fold/slice results, paired daily errors and a figure. No new tuning, model promotion or May evaluation.
+- Expanded to 105 passing tests, including unavailable-tail perturbations, delayed rolling boundaries, seasonal/calendar alignment, matched training labels, fresh fits and held-out exclusion. Ruff and the real twelve-fit/plot stages pass.
+- Verified identical zero-delay features on 903,638 development rows, exact reproduction of 188,640 original April forecasts, eight unchanged data/model/evidence files, shared targets and daily metric reconciliation. The next milestone is a frozen, bounded XGBoost comparison.
+
 ## September 19, 2026 · paired block uncertainty
 
 - Froze the uncertainty protocol in `4ee6c4b` before resampling. Added `nyc-mobility uncertainty` using immutable, hash-pinned daily errors; no model fitting or target-Parquet access is required.

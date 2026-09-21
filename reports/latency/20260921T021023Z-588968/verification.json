@@ -1,0 +1,62 @@
+{
+  "latency_id": "20260921T021023Z-588968",
+  "preserved_files": {
+    "data/processed/hourly_demand.parquet": {
+      "sha256_before": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+      "sha256_after": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+      "unchanged": true
+    },
+    "artifacts/model.joblib": {
+      "sha256_before": "b72f3ac7a6023470094a9de6f54b2d3d85faf5f9b9f60929b511d44fdc3788f4",
+      "sha256_after": "b72f3ac7a6023470094a9de6f54b2d3d85faf5f9b9f60929b511d44fdc3788f4",
+      "unchanged": true
+    },
+    "artifacts/model_metadata.json": {
+      "sha256_before": "ef3850e8e9a6b4b0a879f92f6d4d43fe0c78d0e1a60e86e0f7a20b5862ece9d5",
+      "sha256_after": "ef3850e8e9a6b4b0a879f92f6d4d43fe0c78d0e1a60e86e0f7a20b5862ece9d5",
+      "unchanged": true
+    },
+    "artifacts/validation_predictions.parquet": {
+      "sha256_before": "711516c6b6007e4e0367d51b9e7a1c42fb92d7bc55953b944525baa28259c925",
+      "sha256_after": "711516c6b6007e4e0367d51b9e7a1c42fb92d7bc55953b944525baa28259c925",
+      "unchanged": true
+    },
+    "reports/latest_experiment.json": {
+      "sha256_before": "c94a54df033cab852c1daf2d8031d1d4cab4ba7e21931d6ea197596bcee54a47",
+      "sha256_after": "c94a54df033cab852c1daf2d8031d1d4cab4ba7e21931d6ea197596bcee54a47",
+      "unchanged": true
+    },
+    "reports/latest_backtest.json": {
+      "sha256_before": "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497",
+      "sha256_after": "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497",
+      "unchanged": true
+    },
+    "reports/latest_uncertainty.json": {
+      "sha256_before": "1ecadab5f337dacbfe67e848bf6266577a5c1e0af2dfc670a671157cfa4e0c69",
+      "sha256_after": "1ecadab5f337dacbfe67e848bf6266577a5c1e0af2dfc670a671157cfa4e0c69",
+      "unchanged": true
+    },
+    "reports/api_smoke.json": {
+      "sha256_before": "bd3d4f17c0a6c56f0397a05fa9df0b17f8369d4491cec66ba649b36c83eba754",
+      "sha256_after": "bd3d4f17c0a6c56f0397a05fa9df0b17f8369d4491cec66ba649b36c83eba754",
+      "unchanged": true
+    }
+  },
+  "source_protocol_lock_hashes_match": true,
+  "models_fitted": 12,
+  "training_targets_match_across_delays": true,
+  "validation_rows_per_setting": 559370,
+  "invariant_baselines_match": true,
+  "daily_mae_rows": 2136,
+  "daily_weighted_metrics_match": true,
+  "march_8_rows_per_model_setting": 6026,
+  "zero_delay_parity": {
+    "feature_rows": 903638,
+    "feature_hash": "d3b00787f0d649325bef2532bede2588e9746aacd35c6d9be1765fefdb12885f",
+    "matches_original_builder": true,
+    "original_april_predictions": 188640,
+    "predictions_exactly_equal": true
+  },
+  "local_tests_passed": 105,
+  "may_evaluated": false
+}

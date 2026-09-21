@@ -14,9 +14,9 @@ The primary setting uses seven-day blocks and 10,000 replicates; the fixed one- 
 
 | Candidate vs reference | MAE difference | Nominal 95% interval | Relative reduction | Nominal 95% interval |
 |---|---:|---:|---:|---:|
-| Squared error vs weekly baseline | −1.41128 | [−1.72317, −1.08715] | 27.65% | [22.63%, 31.93%] |
+| Squared error vs weekly baseline | −1.41128 | [−1.72317, −1.08716] | 27.65% | [22.63%, 31.93%] |
 | Poisson vs squared error | +0.05898 | [+0.03209, +0.07835] | −1.60% | [−2.11%, −0.87%] |
-| Absolute error vs squared error | +0.32140 | [+0.22708, +0.43708] | −8.70% | [−11.81%, −6.17%] |
+| Absolute error vs squared error | +0.32140 | [+0.22708, +0.43707] | −8.70% | [−11.81%, −6.17%] |
 
 ## Block-length sensitivity
 
@@ -24,8 +24,8 @@ All intervals below are for the MAE difference, in pickups per zone-hour. The ob
 
 | Block length | Squared error vs weekly | Poisson vs squared error | Absolute error vs squared error |
 |---|---:|---:|---:|
-| 1 day | [−1.75917, −1.11662] | [+0.03385, +0.07964] | [+0.23540, +0.43309] |
-| **7 days · primary** | **[−1.72317, −1.08715]** | **[+0.03209, +0.07835]** | **[+0.22708, +0.43708]** |
+| 1 day | [−1.75918, −1.11662] | [+0.03385, +0.07964] | [+0.23540, +0.43309] |
+| **7 days · primary** | **[−1.72317, −1.08716]** | **[+0.03209, +0.07835]** | **[+0.22708, +0.43707]** |
 | 14 days | [−1.70410, −1.13080] | [+0.03974, +0.07814] | [+0.23328, +0.41507] |
 
 ![Paired MAE intervals across block lengths](figures/uncertainty.png)

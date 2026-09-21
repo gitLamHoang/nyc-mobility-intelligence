@@ -56,17 +56,28 @@ def validate_panel(frame: pd.DataFrame, allow_future_target: bool = False) -> pd
     return result
 
 
-def make_features(frame: pd.DataFrame, allow_future_target: bool = False) -> pd.DataFrame:
+def effective_lags(observation_delay_hours: int) -> dict[str, int]:
+    """Recent history moves with availability; known day/week lags stay target-anchored."""
+    if type(observation_delay_hours) is not int or observation_delay_hours not in (0, 1, 3, 6):
+        raise ValueError("Supported observation delays are 0, 1, 3 and 6 elapsed hours")
+    return {f"lag_{lag}": lag + observation_delay_hours if lag <= 3 else lag for lag in LAGS}
+
+
+def make_features(
+    frame: pd.DataFrame, allow_future_target: bool = False, *, observation_delay_hours: int = 0
+) -> pd.DataFrame:
+    lags = effective_lags(observation_delay_hours)
     result = validate_panel(frame, allow_future_target)
     groups = result.groupby("zone_id", sort=False)["demand"]
-    for lag in LAGS:
-        result[f"lag_{lag}"] = groups.shift(lag)
+    for name, offset in lags.items():
+        result[name] = groups.shift(offset)
+    shift = 1 + observation_delay_hours
     for window in (3, 24, 168):
         result[f"rolling_mean_{window}"] = groups.transform(
-            lambda series, w=window: series.shift(1).rolling(w, min_periods=w).mean()
+            lambda series, w=window: series.shift(shift).rolling(w, min_periods=w).mean()
         )
     result["rolling_std_24"] = groups.transform(
-        lambda series: series.shift(1).rolling(24, min_periods=24).std(ddof=0)
+        lambda series: series.shift(shift).rolling(24, min_periods=24).std(ddof=0)
     )
     result["trend_1"] = result.lag_1 - result.lag_2
     local = result.hour.dt.tz_convert(TIMEZONE)

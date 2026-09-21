@@ -1,5 +1,6 @@
 """Fixed-protocol development backtesting, isolated from the serving model."""
 
+import hashlib
 import subprocess
 import time
 import tomllib
@@ -48,16 +49,24 @@ def study_estimators(model_config: dict, names: list[str]) -> dict:
 
 
 def fit_fold(
-    features: pd.DataFrame, fold: ForecastFold, zones: list[int], study: dict, model_config: dict
+    features: pd.DataFrame,
+    fold: ForecastFold,
+    zones: list[int],
+    study: dict,
+    model_config: dict,
+    *,
+    warmup_hours: int = WARMUP_HOURS,
+    training_embargo_hours: int = 0,
 ) -> tuple[pd.DataFrame, dict, dict]:
-    effective_start = fold.train_start + pd.Timedelta(hours=WARMUP_HOURS)
+    effective_start = fold.train_start + pd.Timedelta(hours=warmup_hours)
+    effective_end = fold.validation_start - pd.Timedelta(hours=training_embargo_hours)
     train = features.loc[
-        (features.hour >= effective_start) & (features.hour < fold.validation_start)
+        (features.hour >= effective_start) & (features.hour < effective_end)
     ].copy()
     valid = features.loc[
         (features.hour >= fold.validation_start) & (features.hour < fold.validation_end)
     ].copy()
-    require_complete_window(train, zones, effective_start, fold.validation_start)
+    require_complete_window(train, zones, effective_start, effective_end)
     require_complete_window(valid, zones, fold.validation_start, fold.validation_end)
     sparse_ids = (
         train.groupby("zone_id")
@@ -73,6 +82,7 @@ def fit_fold(
     result["target_cohort"] = np.where(result.demand.eq(0), "zero", "positive")
     predictions = baseline_predictions(train, valid)
     scores = {name: metrics(valid.demand, prediction) for name, prediction in predictions.items()}
+    best_baseline = min(scores, key=lambda name: scores[name]["mae"])
     timings, parameters = {}, {}
     for name, model in study_estimators(model_config, study["models"]).items():
         print(f"{fold.name} · {name} · {len(train):,} training rows", flush=True)
@@ -88,16 +98,20 @@ def fit_fold(
     details = {
         **asdict(fold),
         "effective_train_start": effective_start,
+        "effective_train_end_exclusive": effective_end,
         "training_max_target": train.hour.max(),
         "validation_max_target": valid.hour.max(),
         "train_rows": len(train),
+        "training_targets_sha256": hashlib.sha256(
+            pd.util.hash_pandas_object(train[["zone_id", "hour", "demand"]], index=False)
+            .to_numpy()
+            .tobytes()
+        ).hexdigest(),
         "validation_rows": len(valid),
         "sparse_zone_ids": sparse_ids,
         "metrics": scores,
         "fit_and_predict_seconds": timings,
-        "best_baseline": min(
-            baseline_predictions(train, valid), key=lambda name: scores[name]["mae"]
-        ),
+        "best_baseline": best_baseline,
     }
     return result, details, parameters
 

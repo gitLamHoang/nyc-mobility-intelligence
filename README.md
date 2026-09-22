@@ -70,6 +70,15 @@ uv run python scripts/plot_xgboost.py reports/xgboost/<xgboost-id>
 
 This stage requires the three original ignored latency-control prediction files in addition to prepared data; see the review's fresh-checkout prerequisite. Missing or changed controls fail before fitting. Its [frozen protocol](docs/XGBOOST_PROTOCOL.md) allows exactly six fits and leaves serving unchanged. The plot alone reproduces from tracked metric tables.
 
+The [paired XGBoost uncertainty analysis](reports/XGBOOST_UNCERTAINTY_REVIEW.md) runs entirely from tracked daily summaries, without the ignored prediction files or data downloads:
+
+```bash
+uv run nyc-mobility xgboost-uncertainty
+uv run python scripts/plot_xgboost_uncertainty.py reports/xgboost_uncertainty/<uncertainty-id>
+```
+
+It preserves the original uncertainty report and uses a separate [precommitted protocol](docs/XGBOOST_UNCERTAINTY_PROTOCOL.md) covering both depth settings, with nominal family correction for their absolute MAE differences.
+
 ## Data and evaluation contract
 
 Official TLC yellow-taxi files: **December 2025–May 2026**. This is the latest consecutive six-month period listed on the official TLC page when initialized. The source files, content hashes, download timestamps, and sizes are recorded in [data_manifest.json](reports/data_manifest.json). The dataset contains **23,304,288 raw records** and **23,263,775 accepted NYC pickups**, forming **1,144,154 zone-hours**.
@@ -113,7 +122,9 @@ The [September 19 uncertainty review](reports/UNCERTAINTY_REVIEW.md) gives a nom
 
 The [September 20 latency review](reports/LATENCY_REVIEW.md) measures the observation-availability assumption directly. With matched training targets, one-, three- and six-hour delays raise pooled MAE by **12.78%, 20.13% and 22.94%**. The six-hour model retains a **10.99%** MAE advantage over the weekly baseline, down from **27.59%** for the matched zero-delay control. These separately fitted retrospective models do not establish a live feed or change the original API artifact. All original April forecasts still reproduce exactly under the default feature path; May remains sealed.
 
-The [September 21 XGBoost review](reports/XGBOOST_REVIEW.md) compares two fixed depths against the matched zero-delay control. Depth 6 reduces pooled MAE **0.76%** (3.69575 → 3.66751), while RMSE worsens slightly (10.27849 → 10.33462). Depth 4 worsens both. The sparse-zone weakness persists and the small gain has no paired uncertainty estimate yet; the serving model is unchanged.
+The [September 21 XGBoost review](reports/XGBOOST_REVIEW.md) compares two fixed depths against the matched zero-delay control. Depth 6 reduces pooled MAE **0.76%** (3.69575 → 3.66751), while RMSE worsens slightly (10.27849 → 10.33462). Depth 4 worsens both. The sparse-zone weakness persists; the serving model is unchanged.
+
+The [September 22 paired XGBoost analysis](reports/XGBOOST_UNCERTAINTY_REVIEW.md) finds a primary adjusted interval of **[−0.042128, −0.014221]** for depth 6's MAE difference versus that control, accounting for the two candidate contrasts at nominal 95% family confidence. Both model-comparison directions persist under 1/7/14-day blocks. These approximate conditional intervals do not cover prior model selection or guarantee future performance; the RMSE tradeoff remains.
 
 ![Walk-forward loss comparison](reports/figures/walk_forward_losses.png)
 

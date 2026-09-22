@@ -141,3 +141,11 @@ these folds have been reused. No new fits are needed. Then progress to precommit
 spatial ablations rather than expanding this search based on a small gain.
 Observation availability is still hypothetical for a live application; this study
 adds neither a timely feed nor an XGBoost latency experiment. May stays sealed.
+
+### September 22 follow-up
+
+The [paired uncertainty analysis](XGBOOST_UNCERTAINTY_REVIEW.md) is now complete.
+Depth 6's primary adjusted absolute-MAE interval is [−0.042128, −0.014221]; the
+small observed gain remains directional under all declared block lengths, with
+explicit limits on conditional coverage and repeated model selection. The RMSE
+tradeoff remains and the serving model is unchanged.

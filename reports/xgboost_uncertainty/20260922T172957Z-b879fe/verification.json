@@ -1,0 +1,57 @@
+{
+  "uncertainty_id": "20260922T172957Z-b879fe",
+  "protocol_freeze_commit": "fccf7b4",
+  "preserved_sha256": {
+    "data/processed/hourly_demand.parquet": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+    "artifacts/model.joblib": "b72f3ac7a6023470094a9de6f54b2d3d85faf5f9b9f60929b511d44fdc3788f4",
+    "artifacts/model_metadata.json": "ef3850e8e9a6b4b0a879f92f6d4d43fe0c78d0e1a60e86e0f7a20b5862ece9d5",
+    "artifacts/validation_predictions.parquet": "711516c6b6007e4e0367d51b9e7a1c42fb92d7bc55953b944525baa28259c925",
+    "reports/latest_experiment.json": "c94a54df033cab852c1daf2d8031d1d4cab4ba7e21931d6ea197596bcee54a47",
+    "reports/latest_backtest.json": "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497",
+    "reports/latest_uncertainty.json": "1ecadab5f337dacbfe67e848bf6266577a5c1e0af2dfc670a671157cfa4e0c69",
+    "reports/latest_latency.json": "10bb8e69e891844f7c285f01ad7bf5ee4d30179ad27318d5fe08b003f03fb35c",
+    "reports/latest_xgboost.json": "e40107294c722c931f17417bef6e42c67f2655ef55064a274f420aeec90420b5",
+    "reports/api_smoke.json": "bd3d4f17c0a6c56f0397a05fa9df0b17f8369d4491cec66ba649b36c83eba754",
+    "uv.lock": "43706b6125993ee2fc36c50724af48e9cb22fa19de9a52e1ac34b9b2c40cf575"
+  },
+  "source_input_protocol_lock_hashes_match": true,
+  "saved_draws_hash_matches": true,
+  "draw_shape_per_block": [
+    10000,
+    8
+  ],
+  "block_lengths": [
+    7,
+    1,
+    14
+  ],
+  "comparisons_reconciled": 6,
+  "family_size": 2,
+  "family_quantiles": [
+    0.0125,
+    0.9875
+  ],
+  "family_endpoint_max_absolute_discrepancy": 6.938893903907228e-18,
+  "audit_note": "Literal quantiles and alpha-derived quantiles differ only at floating-point precision; reconciliation uses 1e-14 absolute tolerance.",
+  "validation_days": 89,
+  "validation_rows": 559370,
+  "models_refitted": 0,
+  "test_metrics": null,
+  "checks": "137 pytest tests, Ruff, real summary-only analysis, figure generation",
+  "figure_visually_inspected": true,
+  "isolated_summary_reproduction": {
+    "inputs": [
+      "reports/xgboost/20260922T032057Z-3ecc9d/metrics.json",
+      "reports/xgboost/20260922T032057Z-3ecc9d/daily_mae.csv",
+      "configs/xgboost_uncertainty.toml",
+      "uv.lock"
+    ],
+    "source_tree_copied": true,
+    "data_directory_absent": true,
+    "preexisting_artifacts_absent": true,
+    "same_locked_python_environment": true,
+    "all_comparison_rows_equal": true,
+    "all_draw_arrays_equal": true,
+    "fresh_environment_install_tested": false
+  }
+}

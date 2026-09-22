@@ -1,5 +1,12 @@
 # Changelog
 
+## September 22, 2026 · paired XGBoost uncertainty
+
+- Froze both candidate contrasts and Bonferroni error allocation in `fccf7b4` before resampling. Added `nyc-mobility xgboost-uncertainty`, reusing the unchanged tested circular-day/bootstrap alignment functions and publishing separate reports.
+- Executed 10,000 paired replicates per 7/1/14-day block setting from the tracked 712 daily errors. The primary depth-6 MAE difference −0.028244 has adjusted interval [−0.042128, −0.014221]; depth 4's +0.159922 has [0.142768, 0.176634]. Both directions persist across settings. Marginal relative intervals are explicitly distinct from the two-contrast-adjusted absolute intervals.
+- Published six comparison rows, exact provenance, ignored draw arrays and a visually verified figure. Reproduced every result and all draw arrays in an isolated directory without data or pre-existing artifacts, using the same locked environment. Eleven prior data/model/evidence/lock files are unchanged.
+- Expanded to 137 passing tests covering family membership, percentile arithmetic, no-fit/no-model/no-Parquet behavior, invalid/held-out inputs and protocol mutation. Ruff and the real analysis/plot stages pass. The small MAE gain does not resolve worse RMSE or sparse-demand weaknesses; no promotion or May evaluation. Next: official geometry audit and a frozen spatial-feature ablation.
+
 ## September 21, 2026 · bounded XGBoost comparison
 
 - Froze the six-fit protocol in `9a9d282` before installation or fitting. Added `nyc-mobility xgboost`, XGBoost 3.4.1 platform-aware CPU dependencies, dense zone encoding with real zeros, and prefit control/data/feature/coverage integrity checks. Existing locked versions and the serving model are unchanged. macOS requires libomp.

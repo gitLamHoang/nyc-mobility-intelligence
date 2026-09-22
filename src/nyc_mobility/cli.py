@@ -19,6 +19,7 @@ def main() -> None:
             "uncertainty",
             "latency",
             "xgboost",
+            "xgboost-uncertainty",
             "all",
         ],
     )
@@ -50,6 +51,14 @@ def main() -> None:
         from nyc_mobility.evaluation.xgboost import run_xgboost
 
         run_xgboost(config, protocol_path=Path(args.protocol or "configs/xgboost.toml"))
+    if args.command == "xgboost-uncertainty":
+        from pathlib import Path
+
+        from nyc_mobility.evaluation.xgboost_uncertainty import run_xgboost_uncertainty
+
+        run_xgboost_uncertainty(
+            config, protocol_path=Path(args.protocol or "configs/xgboost_uncertainty.toml")
+        )
     if args.command == "audit-quality":
         from nyc_mobility.data.quality_audit import quality_audit
 

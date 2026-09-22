@@ -1,6 +1,6 @@
 # Project state
 
-Updated: September 21, 2026 (America/Los_Angeles), frozen XGBoost comparison completed.
+Updated: September 22, 2026 (America/Los_Angeles), paired XGBoost uncertainty completed.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
@@ -9,7 +9,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Six official months downloaded, 2025-12 through 2026-05, plus lookup and boundaries.
 - 23,263,775 accepted NYC yellow-taxi pickups, 262 zones, 4,367 UTC hours, 1,144,154 panel rows.
 - Acquisition and aggregation executed against real data.
-- 118 behavioral tests passed; Ruff lint and formatting checks passed.
+- 137 behavioral tests passed; Ruff lint and formatting checks passed.
 - Five baselines and three classical models trained on 716,570 zone-hours and scored on 188,640 April validation zone-hours.
 - Best validation MAE: histogram gradient boosting 3.47999; weekly baseline 4.30547 (19.17% reduction). RMSE 9.69976, R² 0.97157. SMAPE 104.05% is materially worse than weekly baseline 57.40%.
 - Rendered and visually inspected real temporal EDA and demand/error maps using official geometries. Fixed loading of the official ZIP's nested shapefile directory.
@@ -31,6 +31,10 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Depth 6 improves aggregate and sparse MAE against histogram boosting in every fold, but loses to weekly on sparse MAE in February/April and on zero-target MAE in every fold. Repeated development comparisons and selection among two settings require new paired uncertainty; prior intervals do not apply. See [XGBOOST_REVIEW.md](reports/XGBOOST_REVIEW.md).
 - Run `20260922T032057Z-3ecc9d` (September 21 Pacific) records eight pooled scores, 24 fold scores, 888 slices and 712 daily errors, with source/lock/input hashes and six fit/predict timings totaling 18.522615 seconds. Controls exactly reproduce, nine existing data/model/evidence files remain unchanged, and May metrics are null.
 
+- September 22 `xgboost-uncertainty`: resampled 712 published daily/model errors with 10,000 paired circular-day replicates each for seven-day primary and one-/fourteen-day sensitivities. Both XGBoost-versus-histogram contrasts are retained; Bonferroni correction uses 97.5% per-contrast intervals for a nominal 95% family of two absolute-MAE differences. Relative intervals remain marginal.
+- Depth 6's primary MAE difference −0.028244 has adjusted interval [−0.042128, −0.014221]; depth 4's +0.159922 has interval [0.142768, 0.176634]. Both directions persist at all block lengths. The observed 0.764217% depth-6 MAE reduction has a marginal 95% relative interval [0.430015%, 1.102886%]. These approximate conditional intervals do not account for the full history of development model selection or guarantee future performance. RMSE and sparse-demand tradeoffs remain; no promotion. See [XGBOOST_UNCERTAINTY_REVIEW.md](reports/XGBOOST_UNCERTAINTY_REVIEW.md).
+- Run `20260922T172957Z-b879fe` records all six comparisons, nominal levels, exact source/input/protocol/lock hashes and ignored paired draw arrays. No fitting or target-Parquet reads. Isolated-directory reproduction using only tracked inputs/source/config/lock matches every result and all draw arrays in the same Python environment. Eleven existing data/model/evidence/lock files remain unchanged; May metrics are null.
+
 ## Publication and reproducibility checks
 
 - Implementation published to `main` in commit `587f897d19141b6f0f65454450cf7d17e936c6f5`.
@@ -51,6 +55,8 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 
 - XGBoost implementation and measured evidence were published in `2ee2657c0f871b04dd1144d001ae52cc8f24e24b`; [GitHub CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/35683151078), including the locked CPU-only Linux install, Ruff and all 118 tests. The publication audit covered 20 files (718,667 bytes), with no raw data, prediction tables or model binaries. The working tree matched `origin/main` after publication.
 
+- XGBoost uncertainty protocol was committed and pushed in `fccf7b4` before resampling. [Verification](reports/xgboost_uncertainty/20260922T172957Z-b879fe/verification.json) records eleven unchanged files, exact provenance, independent percentile reconciliation (maximum floating-point discrepancy 6.94e-18), isolated-summary reproduction, 137 passing tests, Ruff, actual stage execution and visually checked plotting. No new dependencies or raw/model files are required for this analysis.
+
 ## Validation contract
 
 Original serving experiment: train Dec–Mar (168-hour feature warm-up), validation April, test May. Development backtest: expanding training from Dec 1, validating February, March and April in separate nonoverlapping windows. The latency experiment uses common 174-hour warm-up and a six-hour training-label embargo, with matched zero-delay and delayed controls. The XGBoost study uses exactly that zero-delay control training/validation contract. All boundaries are local NYC midnight; stored timestamps are UTC. May labels are excluded by Parquet filters before feature construction. Test metrics remain null. The original API still assumes complete prior-hour counts; the latency study measures fixed delayed-history alternatives without promoting them. Development months were previously inspected or used for training; do not call them independent untouched tests. Constant-target R² is now null; older immutable reports preserve their original values.
@@ -59,7 +65,9 @@ Original serving experiment: train Dec–Mar (168-hour feature warm-up), validat
 
 Exact-duplicate sensitivity is completed with a negative result; retain recorded counts. Follow up on Vendor 7's January 5–6 anomaly without inventing or removing trips. Keep February 23 low-volume hours: the independently documented weather/travel event makes automatic outage labeling inappropriate.
 
-Walk-forward losses, original paired uncertainty, latency sensitivity and the six-fit XGBoost comparison are complete. Next freeze a paired day-block uncertainty protocol for both XGBoost-versus-histogram contrasts, using the saved 712 daily errors without refitting. Use a seven-day primary block and one-/fourteen-day sensitivity, account explicitly for the two candidate comparisons, and retain the repeated-development-use limitation. Depth 6's 0.76422% MAE gain coexists with worse RMSE and is not yet an established improvement. After that, move to justified spatial feature ablations rather than expanding tuning based on this small gain.
+Walk-forward losses, original paired uncertainty, latency sensitivity, the six-fit XGBoost comparison and its two-contrast uncertainty analysis are complete. Depth 6's small MAE gain remains directional under every declared block setting after the nominal family correction, but RMSE worsens and sparse/zero-demand limitations remain. Do not expand tuning or automatically promote it on that basis.
+
+Next audit the cached official Taxi Zone geometry, then freeze a bounded spatial-feature ablation before fitting. Define static geographic context and strictly past-only neighbor/borough demand as separate feature bundles; document isolated-zone handling, geometry provenance, matching training windows/targets and the control choice. Explicitly test that contemporaneous/future counts cannot influence features. Use only official geometry and recorded observations. Keep the full XGBoost/native-config metadata and portable-control reconstruction gaps visible as later reproducibility hardening work.
 
 Do not repeat the twelve latency fits merely to summarize existing results. The published daily errors and ignored forecast tables support further analysis if justified by a new protocol. The original API remains unchanged; its 168-hour request contract supports the original zero-delay model only. Delayed models were not saved or promoted. May stays sealed, and spatial/weather ablations, interpretation, interactive display and deployment/monitoring work remain open.
 

@@ -1,0 +1,37 @@
+{
+  "xgboost_id": "20260922T032057Z-3ecc9d",
+  "protocol_freeze_commit": "9a9d282",
+  "source_protocol_lock_hashes_match": true,
+  "preserved_sha256": {
+    "data/processed/hourly_demand.parquet": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+    "artifacts/model.joblib": "b72f3ac7a6023470094a9de6f54b2d3d85faf5f9b9f60929b511d44fdc3788f4",
+    "artifacts/model_metadata.json": "ef3850e8e9a6b4b0a879f92f6d4d43fe0c78d0e1a60e86e0f7a20b5862ece9d5",
+    "artifacts/validation_predictions.parquet": "711516c6b6007e4e0367d51b9e7a1c42fb92d7bc55953b944525baa28259c925",
+    "reports/latest_experiment.json": "c94a54df033cab852c1daf2d8031d1d4cab4ba7e21931d6ea197596bcee54a47",
+    "reports/latest_backtest.json": "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497",
+    "reports/latest_uncertainty.json": "1ecadab5f337dacbfe67e848bf6266577a5c1e0af2dfc670a671157cfa4e0c69",
+    "reports/latest_latency.json": "10bb8e69e891844f7c285f01ad7bf5ee4d30179ad27318d5fe08b003f03fb35c",
+    "reports/api_smoke.json": "bd3d4f17c0a6c56f0397a05fa9df0b17f8369d4491cec66ba649b36c83eba754"
+  },
+  "existing_locked_package_versions_unchanged": true,
+  "new_distributions": {
+    "xgboost": "3.4.1",
+    "xgboost-cpu": "3.4.1"
+  },
+  "all_control_predictions_identical": true,
+  "training_targets_match_control": true,
+  "shared_validation_rows": 559370,
+  "pooled_metrics_recomputed_exactly": true,
+  "daily_model_rows": 712,
+  "nyc_days": 89,
+  "dst_day_rows_per_model": 6026,
+  "daily_weighted_mae_reconciles": true,
+  "fold_metric_rows": 24,
+  "slice_metric_rows": 888,
+  "model_fits": 6,
+  "control_refits": 0,
+  "fit_and_predict_seconds": 18.522615330999997,
+  "test_metrics": null,
+  "figure_visually_inspected": true,
+  "checks": "118 pytest tests; Ruff lint/format; actual xgboost stage; saved-metric plot"
+}

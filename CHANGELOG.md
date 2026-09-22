@@ -1,5 +1,12 @@
 # Changelog
 
+## September 21, 2026 · bounded XGBoost comparison
+
+- Froze the six-fit protocol in `9a9d282` before installation or fitting. Added `nyc-mobility xgboost`, XGBoost 3.4.1 platform-aware CPU dependencies, dense zone encoding with real zeros, and prefit control/data/feature/coverage integrity checks. Existing locked versions and the serving model are unchanged. macOS requires libomp.
+- Executed depths 4 and 6 over three expanding folds with the matched zero-delay latency contract. Depth 6 lowers pooled MAE 0.76422% (3.695750 → 3.667507) but worsens RMSE (10.278490 → 10.334616); depth 4 increases MAE 4.32719%. Sparse and zero-target limitations remain. No additional search, promotion or May evaluation.
+- Saved eight pooled scores, 24 fold scores, 888 slices, 712 daily paired errors and exact provenance in `20260922T032057Z-3ecc9d`. Reused all controls without refitting, reconciled metrics and DST day weights, and verified nine unchanged artifacts. Six new fit/predict operations took 18.522615 seconds locally.
+- Expanded to 118 passing tests covering dense-zero semantics, unknown zones, frozen budgets, independent fits, test exclusion, control tampering/absence and artifact preservation. Ruff, the real comparison stage and visually checked plotting pass. Documented the ignored-control prerequisite and small-gain uncertainty limitation. Next: precommitted paired uncertainty for both new contrasts, then spatial features.
+
 ## September 20, 2026 · observation-latency sensitivity
 
 - Implemented `nyc-mobility latency` and executed the previously frozen protocol: exactly twelve model fits for 0/1/3/6-hour delays with common 174-hour warm-up, six-hour training-label embargo and all 559,370 validation zone-hours per setting.

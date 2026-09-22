@@ -8,10 +8,19 @@ version = "0.1.0"
 description = "Reproducible one-hour-ahead NYC yellow taxi pickup demand forecasting"
 requires-python = ">=3.12"
 dependencies = [
-  "duckdb>=1.2,<2", "pandas>=2.2,<3", "pyarrow>=19,<24",
-  "numpy>=2,<3", "scikit-learn>=1.6,<2", "matplotlib>=3.9,<4",
-  "geopandas>=1,<2", "joblib>=1.4,<2", "fastapi>=0.115,<1",
-  "uvicorn>=0.34,<1", "httpx>=0.28,<1",
+  "duckdb>=1.2,<2",
+  "pandas>=2.2,<3",
+  "pyarrow>=19,<24",
+  "numpy>=2,<3",
+  "scikit-learn>=1.6,<2",
+  "matplotlib>=3.9,<4",
+  "geopandas>=1,<2",
+  "joblib>=1.4,<2",
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.34,<1",
+  "httpx>=0.28,<1",
+  "xgboost==3.4.1 ; sys_platform == 'darwin'",
+  "xgboost-cpu==3.4.1 ; sys_platform != 'darwin'",
 ]
 
 [dependency-groups]

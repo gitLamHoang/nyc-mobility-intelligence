@@ -1,6 +1,6 @@
 # Project state
 
-Updated: September 20, 2026 (America/Los_Angeles), frozen observation-latency study completed.
+Updated: September 21, 2026 (America/Los_Angeles), frozen XGBoost comparison completed.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
@@ -9,7 +9,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Six official months downloaded, 2025-12 through 2026-05, plus lookup and boundaries.
 - 23,263,775 accepted NYC yellow-taxi pickups, 262 zones, 4,367 UTC hours, 1,144,154 panel rows.
 - Acquisition and aggregation executed against real data.
-- 105 behavioral tests passed; Ruff lint and formatting checks passed.
+- 118 behavioral tests passed; Ruff lint and formatting checks passed.
 - Five baselines and three classical models trained on 716,570 zone-hours and scored on 188,640 April validation zone-hours.
 - Best validation MAE: histogram gradient boosting 3.47999; weekly baseline 4.30547 (19.17% reduction). RMSE 9.69976, R² 0.97157. SMAPE 104.05% is materially worse than weekly baseline 57.40%.
 - Rendered and visually inspected real temporal EDA and demand/error maps using official geometries. Fixed loading of the official ZIP's nested shapefile directory.
@@ -27,6 +27,10 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Pooled MAE rises from 3.69575 at zero delay to 4.16821, 4.43988 and 4.54341 at 1/3/6 hours: increases of 12.78%, 20.13% and 22.94%. The weekly baseline stays at 5.10423; boosting's MAE advantage shrinks from 27.59% to 10.99%. Every validation month degrades, and sparse-zone weakness persists. See [LATENCY_REVIEW.md](reports/LATENCY_REVIEW.md).
 - Latency run `20260921T021023Z-588968` uses a UTC identifier but was executed September 20 Pacific. Saved all 24 pooled candidate/setting scores, 72 fold scores, 2,136 daily errors, cohort diagnostics and exact provenance. The plotted real results were visually inspected. No model promotion or May evaluation occurred.
 
+- September 21 `xgboost`: executed the precommitted six-fit comparison (depths 4/6 × three folds), reusing hash-pinned zero-delay latency controls with identical 174-hour warm-up, six-hour embargo and 559,370 validation targets. Depth-6 pooled MAE is 3.667507 vs histogram control 3.695750 (0.76422% lower), but RMSE worsens from 10.278490 to 10.334616. Depth 4 has MAE 3.855672 (4.32719% worse). No search expansion or promotion.
+- Depth 6 improves aggregate and sparse MAE against histogram boosting in every fold, but loses to weekly on sparse MAE in February/April and on zero-target MAE in every fold. Repeated development comparisons and selection among two settings require new paired uncertainty; prior intervals do not apply. See [XGBOOST_REVIEW.md](reports/XGBOOST_REVIEW.md).
+- Run `20260922T032057Z-3ecc9d` (September 21 Pacific) records eight pooled scores, 24 fold scores, 888 slices and 712 daily errors, with source/lock/input hashes and six fit/predict timings totaling 18.522615 seconds. Controls exactly reproduce, nine existing data/model/evidence files remain unchanged, and May metrics are null.
+
 ## Publication and reproducibility checks
 
 - Implementation published to `main` in commit `587f897d19141b6f0f65454450cf7d17e936c6f5`.
@@ -43,19 +47,21 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - [Latency verification](reports/latency/20260921T021023Z-588968/verification.json) confirms matching source/protocol/lock hashes and eight unchanged data/model/evidence files. Original zero-delay features match exactly on 903,638 development rows; the existing artifact reproduces all 188,640 original April predictions. Training hashes and validation targets match across delays; invariant baselines and daily weighted MAEs reconcile. All 105 tests, Ruff, the actual twelve-fit stage and plotting passed locally.
 - Latency implementation and measured reports were published in `06be73879f00dd4d023449e6e4e341ea16f9bd4d`; [GitHub CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/35553886431), including locked Linux installation, Ruff and the 105-test suite. Large predictions, raw data and model binaries remained ignored. The working tree matched `origin/main` after publication.
 
+- XGBoost protocol was committed and pushed in `9a9d282` before installation/fitting. Added XGBoost 3.4.1 using platform-specific regular macOS / CPU-only Linux/Windows wheels; all existing locked versions are unchanged. Local import required installing libomp 23.1.0. [Verification](reports/xgboost/20260922T032057Z-3ecc9d/verification.json) confirms input/source/lock hashes, exact saved controls, shared coverage, daily reconciliation and unchanged artifacts. All 118 tests, Ruff, the real six-fit stage and visually inspected plotting passed locally. Fresh-checkout execution needs the ignored pinned control predictions; portable reconstruction remains a hardening item. Parameter provenance contains constructor values, not the fitted native booster configuration/base score; record this metadata shortfall and capture native configuration in future fits without repeating the six-fit study.
+
 ## Validation contract
 
-Original serving experiment: train Dec–Mar (168-hour feature warm-up), validation April, test May. Development backtest: expanding training from Dec 1, validating February, March and April in separate nonoverlapping windows. The separate latency experiment uses common 174-hour warm-up and a six-hour training-label embargo, with matched zero-delay and delayed controls. All boundaries are local NYC midnight; stored timestamps are UTC. May labels are excluded by Parquet filters before feature construction. Test metrics remain null. The original API still assumes complete prior-hour counts; the latency study measures fixed delayed-history alternatives without promoting them. Development months were previously inspected or used for training; do not call them independent untouched tests. Constant-target R² is now null; older immutable reports preserve their original values.
+Original serving experiment: train Dec–Mar (168-hour feature warm-up), validation April, test May. Development backtest: expanding training from Dec 1, validating February, March and April in separate nonoverlapping windows. The latency experiment uses common 174-hour warm-up and a six-hour training-label embargo, with matched zero-delay and delayed controls. The XGBoost study uses exactly that zero-delay control training/validation contract. All boundaries are local NYC midnight; stored timestamps are UTC. May labels are excluded by Parquet filters before feature construction. Test metrics remain null. The original API still assumes complete prior-hour counts; the latency study measures fixed delayed-history alternatives without promoting them. Development months were previously inspected or used for training; do not call them independent untouched tests. Constant-target R² is now null; older immutable reports preserve their original values.
 
 ## Next development priority
 
 Exact-duplicate sensitivity is completed with a negative result; retain recorded counts. Follow up on Vendor 7's January 5–6 anomaly without inventing or removing trips. Keep February 23 low-volume hours: the independently documented weather/travel event makes automatic outage labeling inappropriate.
 
-Walk-forward losses, paired uncertainty and the frozen latency experiment are complete. Next freeze a small, justified XGBoost comparison budget before installing/configuring its new estimator and fitting it. Use the established February–April folds, shared target coverage and explicit input availability; compare against both the current boosting control and weekly baseline. Keep delay sensitivity as a reference and do not imply that model improvements supply a live observation feed. State which training contract is used so scores are not mixed between the original backtest and the matched latency control.
+Walk-forward losses, original paired uncertainty, latency sensitivity and the six-fit XGBoost comparison are complete. Next freeze a paired day-block uncertainty protocol for both XGBoost-versus-histogram contrasts, using the saved 712 daily errors without refitting. Use a seven-day primary block and one-/fourteen-day sensitivity, account explicitly for the two candidate comparisons, and retain the repeated-development-use limitation. Depth 6's 0.76422% MAE gain coexists with worse RMSE and is not yet an established improvement. After that, move to justified spatial feature ablations rather than expanding tuning based on this small gain.
 
 Do not repeat the twelve latency fits merely to summarize existing results. The published daily errors and ignored forecast tables support further analysis if justified by a new protocol. The original API remains unchanged; its 168-hour request contract supports the original zero-delay model only. Delayed models were not saved or promoted. May stays sealed, and spatial/weather ablations, interpretation, interactive display and deployment/monitoring work remain open.
 
-Keep the serving artifact unchanged until a subsequent promotion decision is justified. In April, absolute-error loss cuts sparse-zone MAE from 0.47240 to 0.31002, but raises citywide MAE from 3.47999 to 3.73363; simple loss replacement is not an aggregate improvement. Freeze a budget before new tuning, XGBoost or spatial/weather comparisons. The initial API is local and retrospective; weather, spatial predictors, interactive display, drift monitoring, final test and deployment packaging remain open.
+Keep the serving artifact unchanged until a subsequent promotion decision is justified. In April, absolute-error loss cuts sparse-zone MAE from 0.47240 to 0.31002, but raises citywide MAE from 3.47999 to 3.73363; simple loss replacement is not an aggregate improvement. Freeze a new budget before further tuning or spatial/weather comparisons. The initial API is local and retrospective; weather, spatial predictors, interactive display, drift monitoring, final test and deployment packaging remain open.
 
 Locked packages produce upstream pandas/NumPy and Starlette/httpx deprecation warnings; tests pass. Review compatible dependency upgrades during hardening rather than suppressing warnings.
 

@@ -18,6 +18,7 @@ def main() -> None:
             "backtest",
             "uncertainty",
             "latency",
+            "xgboost",
             "all",
         ],
     )
@@ -43,6 +44,12 @@ def main() -> None:
         from nyc_mobility.evaluation.latency import run_latency
 
         run_latency(config, protocol_path=Path(args.protocol or "configs/latency.toml"))
+    if args.command == "xgboost":
+        from pathlib import Path
+
+        from nyc_mobility.evaluation.xgboost import run_xgboost
+
+        run_xgboost(config, protocol_path=Path(args.protocol or "configs/xgboost.toml"))
     if args.command == "audit-quality":
         from nyc_mobility.data.quality_audit import quality_audit
 

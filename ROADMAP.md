@@ -17,6 +17,10 @@ Dates are working targets, not claims of completed work. Deliver vertical improv
 | Oct 12 | Final held-out test | One recorded May evaluation with slices and intervals; no test-driven retuning |
 | Oct 13 | Portfolio release | Honest model card, final README, limitations, screenshots, release and final state |
 
+## September 24 portfolio priority
+
+The account-link application deadline is October 3. Interactive presentation was brought forward: a working static geographic explorer now exposes April validation evidence with model, zone, borough and time controls. It adds TypeScript and SQL for real product responsibilities, while the Python forecasting stack and sealed May test remain unchanged. Static delivery is designed for independent readers; traffic capacity has not been load-tested. The next research action remains the frozen borough uncertainty analysis, followed by authoritative weather preparation. No additional fit was introduced for the demo.
+
 ## Already implemented in the initial milestone
 
 - Official cached acquisition, hashes, schema audit and dense hourly panel.

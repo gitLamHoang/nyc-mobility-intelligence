@@ -1,8 +1,23 @@
 # NYC Mobility Intelligence
 
-Predict recorded yellow-taxi pickups for every NYC Taxi Zone in the next hourly interval, using official TLC trip records. A Python forecasting system with reproducible acquisition, an audited hourly panel, leakage-tested temporal features, real baseline comparisons, geographic error analysis, and a local prediction API.
+**Where does taxi demand concentrate—and where do forecasts miss?** An inspectable forecasting prototype for mobility analysts, built from official NYC trip records.
 
-**Status:** active development, September 14–October 13, 2026. Initial working milestone prepared September 13. See [PROJECT_STATE.md](PROJECT_STATE.md) for verified results and [ROADMAP.md](ROADMAP.md) for remaining work. Walk-forward, latency sensitivity, bounded XGBoost and borough-feature comparisons are implemented; polygon/weather ablations, interactive visualization, and operational monitoring remain open.
+[**Explore the interactive demo →**](https://gitlamhoang.github.io/nyc-mobility-intelligence/) · [Measured experiments](reports/WALK_FORWARD_REVIEW.md) · [Architecture & product decisions](docs/EXPLORER.md) · [Current state](PROJECT_STATE.md)
+
+Python handles the forecasting pipeline; TypeScript, SQL and CSS turn its evidence into a geographic product. The browser demo lets you explore **262 zones over 48 historical hours**, switch between forecasts and a weekly baseline, and inspect neighborhood errors. It requires no login or data download.
+
+| Evidence | What it supports |
+|---|---|
+| 23,263,775 accepted pickups ingested from six official months | A real acquisition, quality-control and aggregation pipeline; May remains excluded from model evaluation |
+| 559,370 February–April validation zone-hours | Expanding chronological evaluation; original squared-error boosting MAE 3.69295 versus weekly baseline 5.10423 |
+| Small gains and failed hypotheses published | Borough context improves pooled MAE by 0.416% but worsens sparse-zone errors; no automatic promotion |
+| Local API, browser demo and automated checks | Working paths from data to prediction and inspection; no claim of customer deployment |
+
+**Try the product locally:** install Node.js 24.12+, then run `cd web && npm ci && npm run dev`. See the [one-minute walkthrough](docs/EXPLORER.md). The demo displays April 7–8 validation observations, not live forecasts. Operational user value has not yet been validated.
+
+**Research status:** active through October 13, 2026. Data quality, walk-forward validation, latency sensitivity, bounded XGBoost/borough comparisons, a local API and interactive visualization are implemented. Weather ablation, further interpretation and operational monitoring remain open. The May test stays sealed until the documented final freeze. See [ROADMAP.md](ROADMAP.md).
+
+[![Historical April demand explorer with an interactive map and neighborhood trace](docs/images/explorer.png)](https://gitlamhoang.github.io/nyc-mobility-intelligence/)
 
 ## Problem and scope
 

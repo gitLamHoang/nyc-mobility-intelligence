@@ -1,0 +1,18 @@
+{
+  "study_id": "20260924T162406Z-c35816",
+  "hours": 48,
+  "zones": 262,
+  "rows": 12576,
+  "start_utc": "2026-04-07T04:00:00+00:00",
+  "stop_exclusive_utc": "2026-04-09T04:00:00+00:00",
+  "output_sha256": "0010767f15fdbff600f954618e10eec2127d1fc44520b5f9752027a6117c5bb5",
+  "output_bytes": 495546,
+  "provenance": {
+    "studySha256": "fe631973f2b0f91acf51b30ccf52afb6a99b43ea4e4d80c5869bfc0dc04b72cc",
+    "predictionsSha256": "7230544d8fb486c4e862ff695eb802e1c4f78d378d527344c8d8a5c4baa6048b",
+    "geometrySha256": "f6d711917bb4340f8f644d5366c51665489eb2d426dd1a4a55677721ae5adf17",
+    "sqlSha256": "73be30d2fef03d2fab636b0de6f40caa3ba7c477f2a036c03157781f9ba2e6b8"
+  },
+  "models_fitted": 0,
+  "test_metrics": null
+}

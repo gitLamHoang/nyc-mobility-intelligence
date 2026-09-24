@@ -1,5 +1,11 @@
 # Changelog
 
+## September 24, 2026 · interactive evidence explorer
+
+- Added a responsive TypeScript/CSS/SVG browser explorer, per-hour and borough filters, three model comparisons, neighborhood traces and geographic error shading. Added a GitHub Pages build/deploy workflow and approachable product/reproduction documentation.
+- Exported 12,576 real April validation zone-hours into a 495,546-byte snapshot with pinned source hashes and DuckDB SQL summaries. No raw trips, model binaries, new fits or May evaluation.
+- Four TypeScript tests, strict type check, production build, actual desktop/mobile controls, 191 Python tests and Ruff pass. Export checks reconcile dimensions, timestamps, hashes and SQL summaries. Static delivery is implemented; operational adoption and traffic capacity are unmeasured.
+
 ## September 24, 2026 · measured borough feature ablation
 
 - Added `nyc-mobility borough` and executed exactly six fits under the protocol frozen in `b92b982`. Reused shared control integrity/coverage checks, unchanged temporal features and independent per-fold preprocessing; recorded actual transformed dtypes, column order and resolved parameters.

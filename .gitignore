@@ -16,3 +16,5 @@ work/
 *.zip
 *.log
 .ipynb_checkpoints/
+web/node_modules/
+web/dist/

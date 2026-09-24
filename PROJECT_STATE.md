@@ -1,15 +1,18 @@
 # Project state
 
-Updated: September 24, 2026 (America/Los_Angeles), frozen six-fit borough ablation completed.
+Updated: September 24, 2026 (America/Los_Angeles), interactive portfolio explorer added after the frozen borough ablation.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Verified
 
+- September 24 portfolio delivery: added a TypeScript/CSS/SVG explorer with borough/model/zone/hour controls, a 48-hour trace and error shading. Exported 12,576 real April 7–8 zone-hours (262 zones, 495,546 bytes) from hash-verified study predictions, with SQL borough summaries and source provenance. No models fitted or May targets read. The existing API/model and ML continuation plan are unchanged.
+- Explorer verification: four TypeScript tests, strict type checking, production build and actual desktop/mobile browser interactions pass; Python tests verify the committed export's hashes, exact April coverage and SQL reconciliation. Static Pages publication is tracked by the Explorer workflow. See [EXPLORER.md](docs/EXPLORER.md).
+
 - Six official months downloaded, 2025-12 through 2026-05, plus lookup and boundaries.
 - 23,263,775 accepted NYC yellow-taxi pickups, 262 zones, 4,367 UTC hours, 1,144,154 panel rows.
 - Acquisition and aggregation executed against real data.
-- 189 behavioral tests passed; Ruff lint and formatting checks passed.
+- 191 behavioral tests passed; Ruff lint and formatting checks passed.
 - Five baselines and three classical models trained on 716,570 zone-hours and scored on 188,640 April validation zone-hours.
 - Best validation MAE: histogram gradient boosting 3.47999; weekly baseline 4.30547 (19.17% reduction). RMSE 9.69976, R² 0.97157. SMAPE 104.05% is materially worse than weekly baseline 57.40%.
 - Rendered and visually inspected real temporal EDA and demand/error maps using official geometries. Fixed loading of the official ZIP's nested shapefile directory.

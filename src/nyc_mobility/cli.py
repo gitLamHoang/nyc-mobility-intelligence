@@ -21,6 +21,7 @@ def main() -> None:
             "xgboost",
             "xgboost-uncertainty",
             "spatial-prepare",
+            "borough",
             "all",
         ],
     )
@@ -66,6 +67,12 @@ def main() -> None:
         from nyc_mobility.data.spatial import prepare_spatial
 
         prepare_spatial(config, spec_path=Path(args.protocol or "configs/spatial_inputs.toml"))
+    if args.command == "borough":
+        from pathlib import Path
+
+        from nyc_mobility.evaluation.borough import run_borough
+
+        run_borough(config, protocol_path=Path(args.protocol or "configs/borough_spatial.toml"))
     if args.command == "audit-quality":
         from nyc_mobility.data.quality_audit import quality_audit
 

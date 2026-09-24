@@ -1,5 +1,12 @@
 # Changelog
 
+## September 24, 2026 · measured borough feature ablation
+
+- Added `nyc-mobility borough` and executed exactly six fits under the protocol frozen in `b92b982`. Reused shared control integrity/coverage checks, unchanged temporal features and independent per-fold preprocessing; recorded actual transformed dtypes, column order and resolved parameters.
+- Indicators lower pooled MAE 0.079024%; indicators plus past-only peer demand lower MAE 0.415762% (3.695750 → 3.680385) and RMSE 10.278490 → 10.240313. Sparse-zone and zero-target MAE worsen against temporal in every fold for the peer bundle. Reported every candidate and slice without promotion or May evaluation.
+- Published eight pooled scores, 24 fold scores, 12 contrasts, 888 slices, 712 daily errors and a visually verified figure. Added a no-fit verifier that reconciles all pooled/fold MAE/RMSE and daily rows against saved forecasts. Preserved 14 existing data/model/evidence/lock files; full forecast tables remain ignored.
+- Expanded to 189 passing tests covering frozen budgets, append-only representations, fresh preprocessing, invalid controls/source mutation and held-out exclusion. Ruff and the actual study/verifier/plot pass. No dependencies added. Froze three-contrast paired uncertainty before resampling; execution is next, followed by authoritative weather preparation.
+
 ## September 23, 2026 · spatial source audit and borough features
 
 - Added `nyc-mobility spatial-prepare` with pinned official sources, full development-window and peer coverage checks, geometry identity/topology audits and isolated output provenance. Current geometry yields 604 boundary edges and five isolates, but historical availability is unverified. The older June 2025 release duplicates IDs 56/103 and omits 57/104/105; no guessed remapping or polygon modeling.

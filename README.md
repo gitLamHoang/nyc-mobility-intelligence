@@ -2,7 +2,7 @@
 
 Predict recorded yellow-taxi pickups for every NYC Taxi Zone in the next hourly interval, using official TLC trip records. A Python forecasting system with reproducible acquisition, an audited hourly panel, leakage-tested temporal features, real baseline comparisons, geographic error analysis, and a local prediction API.
 
-**Status:** active development, September 14–October 13, 2026. Initial working milestone prepared September 13. See [PROJECT_STATE.md](PROJECT_STATE.md) for verified results and [ROADMAP.md](ROADMAP.md) for remaining work. Walk-forward, latency sensitivity, a bounded XGBoost comparison and spatial source/feature preparation are implemented; spatial/weather model ablations, interactive visualization, and operational monitoring remain open.
+**Status:** active development, September 14–October 13, 2026. Initial working milestone prepared September 13. See [PROJECT_STATE.md](PROJECT_STATE.md) for verified results and [ROADMAP.md](ROADMAP.md) for remaining work. Walk-forward, latency sensitivity, bounded XGBoost and borough-feature comparisons are implemented; polygon/weather ablations, interactive visualization, and operational monitoring remain open.
 
 ## Problem and scope
 
@@ -86,7 +86,17 @@ uv run nyc-mobility spatial-prepare
 uv run python scripts/plot_spatial_audit.py reports/spatial_preparation/<run-id>
 ```
 
-The [spatial review](reports/SPATIAL_PREPARATION_REVIEW.md) documents why polygon features are currently ineligible for the full historical study: the current geometry has February 2026 timestamps, and an older official version has duplicate/missing IDs. Borough features use the older lookup and lagged other-zone observations. The [six-fit borough protocol](docs/BOROUGH_SPATIAL_PROTOCOL.md) is frozen, but its comparison runner and model results remain pending. Raw sources and the prepared full table stay outside Git; exact source hashes are required.
+The [spatial review](reports/SPATIAL_PREPARATION_REVIEW.md) documents why polygon features are currently ineligible for the full historical study: the current geometry has February 2026 timestamps, and an older official version has duplicate/missing IDs. Borough features use the older lookup and lagged other-zone observations. Raw sources and the prepared full table stay outside Git; exact source hashes are required.
+
+The separate [six-fit borough ablation](reports/BOROUGH_REVIEW.md) uses the same pinned ignored latency-control forecasts as the XGBoost stage:
+
+```bash
+OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 uv run nyc-mobility borough
+uv run python scripts/verify_borough.py reports/borough/<run-id>
+uv run python scripts/plot_borough.py reports/borough/<run-id>
+```
+
+Its [frozen protocol](docs/BOROUGH_SPATIAL_PROTOCOL.md) compares static indicators and lagged peer demand while retaining identical training/validation targets. Peer context lowers pooled MAE 0.415762% (3.695750 → 3.680385) and RMSE (10.278490 → 10.240313), but worsens sparse-zone and zero-target MAE in every fold. No promotion or test access. The [three-contrast uncertainty plan](docs/BOROUGH_UNCERTAINTY_PROTOCOL.md) is frozen and remains unexecuted. The verifier needs ignored saved predictions; the plot reproduces from tracked reports alone.
 
 ## Data and evaluation contract
 

@@ -20,6 +20,7 @@ def main() -> None:
             "latency",
             "xgboost",
             "xgboost-uncertainty",
+            "spatial-prepare",
             "all",
         ],
     )
@@ -59,6 +60,12 @@ def main() -> None:
         run_xgboost_uncertainty(
             config, protocol_path=Path(args.protocol or "configs/xgboost_uncertainty.toml")
         )
+    if args.command == "spatial-prepare":
+        from pathlib import Path
+
+        from nyc_mobility.data.spatial import prepare_spatial
+
+        prepare_spatial(config, spec_path=Path(args.protocol or "configs/spatial_inputs.toml"))
     if args.command == "audit-quality":
         from nyc_mobility.data.quality_audit import quality_audit
 

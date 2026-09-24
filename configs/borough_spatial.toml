@@ -1,0 +1,42 @@
+[study]
+id = "borough-spatial-v1"
+train_start = "2025-12-01"
+validation_boundaries = ["2026-02-01", "2026-03-01", "2026-04-01", "2026-05-01"]
+sealed_test_start = "2026-05-01"
+feature_set = "temporal-borough-v1"
+observation_delay_hours = 0
+primary_metric = "pooled_mae"
+common_warmup_hours = 174
+common_training_embargo_hours = 6
+sparse_zone_mean_max = 1.0
+bundles = ["borough_static", "borough_context"]
+fit_budget = 6
+model = "hist_gradient_boosting"
+
+[features]
+lookup_available_at = "2024-02-22T21:33:00Z"
+lookup_sha256 = "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed"
+temporal_source_sha256 = "e2698040f3d221109d0e06c2a99d1842f6d09bb6451394fe75dbc673a3f8b23f"
+borough_source_sha256 = "a1097e170731464a0c55b215202f80e8f9d2db97f23651c6c78783b126182d85"
+static = ["borough_bronx", "borough_brooklyn", "borough_manhattan", "borough_queens", "borough_staten_island"]
+context = ["borough_other_mean_lag_1", "borough_other_mean_lag_24"]
+polygon_features_eligible = false
+
+[control]
+latency_id = "20260921T021023Z-588968"
+metrics_sha256 = "10bb8e69e891844f7c285f01ad7bf5ee4d30179ad27318d5fe08b003f03fb35c"
+data_sha256 = "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80"
+[control.prediction_sha256]
+fold_1 = "8417f7cc42495866709da98ba0aec0738d360cb00de4936b683c7d2812f9aad2"
+fold_2 = "26f81620b607ad644c98f3588f5290ffc51f9be8ee6d7e073668b66c733082b5"
+fold_3 = "f66a8b71873b834983cb8143021bd97b5785a75f5d9922d18668ce0c9ec4df2b"
+
+[model]
+random_seed = 42
+boosting_iterations = 120
+learning_rate = 0.08
+max_leaf_nodes = 31
+l2_regularization = 1.0
+loss = "squared_error"
+early_stopping = false
+max_bins = 255

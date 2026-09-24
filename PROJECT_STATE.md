@@ -1,6 +1,6 @@
 # Project state
 
-Updated: September 22, 2026 (America/Los_Angeles), paired XGBoost uncertainty completed.
+Updated: September 23, 2026 (America/Los_Angeles), spatial source audit and borough features completed.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
@@ -9,7 +9,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Six official months downloaded, 2025-12 through 2026-05, plus lookup and boundaries.
 - 23,263,775 accepted NYC yellow-taxi pickups, 262 zones, 4,367 UTC hours, 1,144,154 panel rows.
 - Acquisition and aggregation executed against real data.
-- 137 behavioral tests passed; Ruff lint and formatting checks passed.
+- 166 behavioral tests passed; Ruff lint and formatting checks passed.
 - Five baselines and three classical models trained on 716,570 zone-hours and scored on 188,640 April validation zone-hours.
 - Best validation MAE: histogram gradient boosting 3.47999; weekly baseline 4.30547 (19.17% reduction). RMSE 9.69976, R² 0.97157. SMAPE 104.05% is materially worse than weekly baseline 57.40%.
 - Rendered and visually inspected real temporal EDA and demand/error maps using official geometries. Fixed loading of the official ZIP's nested shapefile directory.
@@ -35,6 +35,10 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Depth 6's primary MAE difference −0.028244 has adjusted interval [−0.042128, −0.014221]; depth 4's +0.159922 has interval [0.142768, 0.176634]. Both directions persist at all block lengths. The observed 0.764217% depth-6 MAE reduction has a marginal 95% relative interval [0.430015%, 1.102886%]. These approximate conditional intervals do not account for the full history of development model selection or guarantee future performance. RMSE and sparse-demand tradeoffs remain; no promotion. See [XGBOOST_UNCERTAINTY_REVIEW.md](reports/XGBOOST_UNCERTAINTY_REVIEW.md).
 - Run `20260922T172957Z-b879fe` records all six comparisons, nominal levels, exact source/input/protocol/lock hashes and ignored paired draw arrays. No fitting or target-Parquet reads. Isolated-directory reproduction using only tracked inputs/source/config/lock matches every result and all draw arrays in the same Python environment. Eleven existing data/model/evidence/lock files remain unchanged; May metrics are null.
 
+- September 23 `spatial-prepare`: audited both official geometry versions. The current February 2026 ZIP covers all 262 NYC IDs, with 604 boundary edges, five isolates and maximum pair overlap 0.06823328217081989 m². Its availability before the December training origin is unverified. The older June 2025 Open Data release has duplicate IDs 56/103 and missing IDs 57/104/105; the hypothesis of a direct historical polygon join failed. Geometry-derived predictors remain ineligible pending verified historical ID mapping. See [SPATIAL_PREPARATION_REVIEW.md](reports/SPATIAL_PREPARATION_REVIEW.md).
+- Built five borough indicators and two strictly past-only other-zone borough means from the lookup whose recorded Last-Modified is February 22, 2024. Real preparation covers 949,226 December–April rows, with 905,210 complete rows after the original 168-hour temporal warm-up. Every existing temporal column matches exactly; missing peer coverage and inconsistent metadata fail. All new columns are finite after warm-up.
+- Run `20260924T030007Z-cd7fcf` (September 23 Pacific) records exact sources, identity/topology tables, feature summaries and an ignored full feature table. Repeated preparation reproduces that table byte-for-byte; 1,048 independent real per-hour peer-mean checks match exactly. A no-fit preflight matches all three control training signatures, sparse cohorts and 559,370 validation keys/labels/scores. Zero fits, no serving change and null May metrics. The next [six-fit borough ablation](docs/BOROUGH_SPATIAL_PROTOCOL.md) is frozen before fitting; its comparison runner is not yet implemented.
+
 ## Publication and reproducibility checks
 
 - Implementation published to `main` in commit `587f897d19141b6f0f65454450cf7d17e936c6f5`.
@@ -59,6 +63,8 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 
 - Paired XGBoost uncertainty implementation and measured reports were published in `0878a1886c18961830eddece5ad257daf02664be`; [GitHub CI passed](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/35761742654), including locked Linux installation, Ruff and all 137 tests. The publication audit covered 15 files (224,412 bytes), with no data tables, model binaries or draw arrays. The working tree matched `origin/main` after publication.
 
+- [Spatial verification](reports/spatial_preparation/20260924T030007Z-cd7fcf/verification.json) records 13 unchanged existing data/model/evidence/lock files, source/input/lock integrity, full matched-control coverage and exact real peer-mean checks. All 166 tests, Ruff, the actual preparation stage and visually inspected plot pass. New raw geometry/metadata and the full feature table remain ignored. Exact future re-download of mutable Open Data responses may require the cached pinned bytes; a changed source fails rather than being silently substituted.
+
 ## Validation contract
 
 Original serving experiment: train Dec–Mar (168-hour feature warm-up), validation April, test May. Development backtest: expanding training from Dec 1, validating February, March and April in separate nonoverlapping windows. The latency experiment uses common 174-hour warm-up and a six-hour training-label embargo, with matched zero-delay and delayed controls. The XGBoost study uses exactly that zero-delay control training/validation contract. All boundaries are local NYC midnight; stored timestamps are UTC. May labels are excluded by Parquet filters before feature construction. Test metrics remain null. The original API still assumes complete prior-hour counts; the latency study measures fixed delayed-history alternatives without promoting them. Development months were previously inspected or used for training; do not call them independent untouched tests. Constant-target R² is now null; older immutable reports preserve their original values.
@@ -69,7 +75,7 @@ Exact-duplicate sensitivity is completed with a negative result; retain recorded
 
 Walk-forward losses, original paired uncertainty, latency sensitivity, the six-fit XGBoost comparison and its two-contrast uncertainty analysis are complete. Depth 6's small MAE gain remains directional under every declared block setting after the nominal family correction, but RMSE worsens and sparse/zero-demand limitations remain. Do not expand tuning or automatically promote it on that basis.
 
-Next audit the cached official Taxi Zone geometry, then freeze a bounded spatial-feature ablation before fitting. Define static geographic context and strictly past-only neighbor/borough demand as separate feature bundles; document isolated-zone handling, geometry provenance, matching training windows/targets and the control choice. Explicitly test that contemporaneous/future counts cannot influence features. Use only official geometry and recorded observations. Keep the full XGBoost/native-config metadata and portable-control reconstruction gaps visible as later reproducibility hardening work.
+Next implement and execute the frozen [borough spatial protocol](docs/BOROUGH_SPATIAL_PROTOCOL.md): five static borough indicators, then those indicators plus two lagged other-zone borough means, each with the same fixed histogram model over three folds (six fits total). Reuse the pinned zero-delay latency controls, 174-hour warm-up, six-hour embargo and all 559,370 validation targets. The source/feature hashes and budget are in `configs/borough_spatial.toml`; no scores for these bundles exist yet. Current and older geometry identity/provenance audits are complete, but polygon adjacency/area/centroid features stay out of this study until historical ID mapping is verified. Do not guess a correspondence from row order, names or proximity. Keep the XGBoost/native-config metadata and portable-control reconstruction gaps visible as later reproducibility hardening work.
 
 Do not repeat the twelve latency fits merely to summarize existing results. The published daily errors and ignored forecast tables support further analysis if justified by a new protocol. The original API remains unchanged; its 168-hour request contract supports the original zero-delay model only. Delayed models were not saved or promoted. May stays sealed, and spatial/weather ablations, interpretation, interactive display and deployment/monitoring work remain open.
 

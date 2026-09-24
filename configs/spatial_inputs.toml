@@ -1,0 +1,24 @@
+[policy]
+shared_boundary_min_m = 1.0
+maximum_pair_overlap_m2 = 1.0
+lookup_available_at = "2024-02-22T21:33:00Z"
+
+[[assets]]
+file = "data/external/taxi_zone_lookup.csv"
+url = "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv"
+sha256 = "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed"
+
+[[assets]]
+file = "data/external/taxi_zones.zip"
+url = "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip"
+sha256 = "f6d711917bb4340f8f644d5366c51665489eb2d426dd1a4a55677721ae5adf17"
+
+[[assets]]
+file = "data/external/taxi_zones_opendata_metadata.json"
+url = "https://data.cityofnewyork.us/api/views/8meu-9t5y.json"
+sha256 = "22c73a8aeadae5ede6303b9df7464caf0aad3e005168a49dc38c72db2c6a2218"
+
+[[assets]]
+file = "data/external/taxi_zones_opendata.geojson"
+url = "https://data.cityofnewyork.us/resource/8meu-9t5y.geojson?$limit=1000"
+sha256 = "8e7c20c6abc39723aa6d69fc6ece21d446edb5c5886a11e67263fb50bd970ad1"

@@ -1,0 +1,209 @@
+{
+  "spatial_preparation_id": "20260924T030007Z-cd7fcf",
+  "created_at": "2026-09-24T03:00:07.500827+00:00",
+  "input_sha256": {
+    "configs/spatial_inputs.toml": "7618d2b2f4155e5dfd750b78b35d05b4ded400f55cec11b1187e16d86cdb3e04",
+    "data/external/taxi_zone_lookup.csv": "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed",
+    "data/external/taxi_zones.zip": "f6d711917bb4340f8f644d5366c51665489eb2d426dd1a4a55677721ae5adf17",
+    "data/external/taxi_zones_opendata_metadata.json": "22c73a8aeadae5ede6303b9df7464caf0aad3e005168a49dc38c72db2c6a2218",
+    "data/external/taxi_zones_opendata.geojson": "8e7c20c6abc39723aa6d69fc6ece21d446edb5c5886a11e67263fb50bd970ad1",
+    "data/processed/hourly_demand.parquet": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80"
+  },
+  "source_spec": {
+    "policy": {
+      "shared_boundary_min_m": 1.0,
+      "maximum_pair_overlap_m2": 1.0,
+      "lookup_available_at": "2024-02-22T21:33:00Z"
+    },
+    "assets": [
+      {
+        "file": "data/external/taxi_zone_lookup.csv",
+        "url": "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv",
+        "sha256": "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed"
+      },
+      {
+        "file": "data/external/taxi_zones.zip",
+        "url": "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip",
+        "sha256": "f6d711917bb4340f8f644d5366c51665489eb2d426dd1a4a55677721ae5adf17"
+      },
+      {
+        "file": "data/external/taxi_zones_opendata_metadata.json",
+        "url": "https://data.cityofnewyork.us/api/views/8meu-9t5y.json",
+        "sha256": "22c73a8aeadae5ede6303b9df7464caf0aad3e005168a49dc38c72db2c6a2218"
+      },
+      {
+        "file": "data/external/taxi_zones_opendata.geojson",
+        "url": "https://data.cityofnewyork.us/resource/8meu-9t5y.geojson?$limit=1000",
+        "sha256": "8e7c20c6abc39723aa6d69fc6ece21d446edb5c5886a11e67263fb50bd970ad1"
+      }
+    ]
+  },
+  "development_window": {
+    "start": "2025-12-01 05:00:00+00:00",
+    "stop_exclusive": "2026-05-01 04:00:00+00:00",
+    "boundary_timezone": "America/New_York"
+  },
+  "current_geometry": {
+    "rows": 263,
+    "unique_zone_ids": 263,
+    "duplicate_zone_ids": {},
+    "missing_nyc_zone_ids": [],
+    "outside_nyc_zone_ids": [
+      1
+    ],
+    "invalid_geometries": 0,
+    "empty_geometries": 0,
+    "missing_geometries": 0,
+    "one_to_one_nyc_mapping": true,
+    "crs": "EPSG:2263",
+    "coordinate_unit_to_m": 0.30480060960121924,
+    "zip_member_timestamps": {
+      "taxi_zones/taxi_zones.cpg": [
+        2026,
+        2,
+        18,
+        16,
+        52,
+        34
+      ],
+      "taxi_zones/taxi_zones.dbf": [
+        2026,
+        2,
+        18,
+        16,
+        52,
+        34
+      ],
+      "taxi_zones/taxi_zones.prj": [
+        2026,
+        2,
+        18,
+        16,
+        52,
+        34
+      ],
+      "taxi_zones/taxi_zones.shp": [
+        2026,
+        2,
+        18,
+        16,
+        52,
+        34
+      ],
+      "taxi_zones/taxi_zones.shx": [
+        2026,
+        2,
+        18,
+        16,
+        52,
+        34
+      ]
+    },
+    "historical_eligibility": "Unverified before February 2026; audit only"
+  },
+  "older_geometry": {
+    "rows": 263,
+    "unique_zone_ids": 260,
+    "duplicate_zone_ids": {
+      "103": 3,
+      "56": 2
+    },
+    "missing_nyc_zone_ids": [
+      57,
+      104,
+      105
+    ],
+    "outside_nyc_zone_ids": [
+      1
+    ],
+    "invalid_geometries": 0,
+    "empty_geometries": 0,
+    "missing_geometries": 0,
+    "one_to_one_nyc_mapping": false,
+    "dataset_id": "8meu-9t5y",
+    "publication_date": "2025-06-09 17:12:33+00:00",
+    "rows_updated_at": "2025-06-09 17:12:22+00:00",
+    "historical_eligibility": "Duplicate/missing IDs; no inferred remapping"
+  },
+  "graph": {
+    "undirected_edges": 604,
+    "intersecting_pairs": 648,
+    "isolated_zone_ids": [
+      46,
+      103,
+      104,
+      105,
+      202
+    ],
+    "max_degree": 12,
+    "maximum_overlap_m2": 0.06823328217081989,
+    "eligible_for_full_development_ablation": false
+  },
+  "borough_features": {
+    "static": [
+      "borough_bronx",
+      "borough_brooklyn",
+      "borough_manhattan",
+      "borough_queens",
+      "borough_staten_island"
+    ],
+    "context": [
+      "borough_other_mean_lag_1",
+      "borough_other_mean_lag_24"
+    ],
+    "rows": 949226,
+    "complete_feature_rows": 905210,
+    "min_target": "2025-12-08 05:00:00+00:00",
+    "max_target": "2026-05-01 03:00:00+00:00",
+    "borough_zone_counts": {
+      "Bronx": 43,
+      "Brooklyn": 61,
+      "Manhattan": 69,
+      "Queens": 69,
+      "Staten Island": 20
+    },
+    "temporal_columns_identical": true,
+    "table_sha256": "b0f2dc51762118ae642f54be77c93559d161924a4f211b619232a78cd1551d23",
+    "feature_values_sha256": "0ea2b7fa62c581e49103541cb1776cf9b5b9b1c69f64e0c1c8b898f2d02ccb5b"
+  },
+  "versions": {
+    "geopandas": "1.1.4",
+    "shapely": "2.1.2",
+    "geos": "3.13.1"
+  },
+  "source_hashes": {
+    "src/nyc_mobility/__init__.py": "972276259858cb18539f09afe82a8a5308adba6c3157ac480daea2c2505783ec",
+    "src/nyc_mobility/api/__init__.py": "e96493dbe22a9f5a4566d226cfec3bb1f25eee6b7447b311bfd8d9f46c19c5ed",
+    "src/nyc_mobility/api/app.py": "93b1210bb0c1368d2489d5426ff3d9117f752c823b4ee4e19f5688f359f338a0",
+    "src/nyc_mobility/cli.py": "f44fd45144cf847d5df6f007fa76b61814932514dc00b57f72e5985d8e77dde0",
+    "src/nyc_mobility/config.py": "db6549338c9fd727b1bbfe31ae9acc105ec899e49d81fd2341472245dd828008",
+    "src/nyc_mobility/data/__init__.py": "1df8af0faf37759551399b621d14f19125bce7101d0ed5f8a7b6c666d6a9a82a",
+    "src/nyc_mobility/data/download.py": "ffbd83be90af8c7e3d83110abcf243427038657c2555ae2310df0290a723ff37",
+    "src/nyc_mobility/data/prepare.py": "2d6a517b8fc7236646a9c5d1729decd57d997bea6a985cdfbade0d5d2de9b350",
+    "src/nyc_mobility/data/quality_audit.py": "adbb209fef176d00f8ff3f8952fa8a0db070660475d2e534290cf40e0b26aa53",
+    "src/nyc_mobility/data/spatial.py": "bb53321b03702549e43101a3a2980420b04b0d0fb06ceaec4c66702fb25f367f",
+    "src/nyc_mobility/evaluation/__init__.py": "c4612313390d2d028934de19e004658a69d043e1ad0c025678b30497ca9f4245",
+    "src/nyc_mobility/evaluation/backtest.py": "6e0578bd9cb8105822807761e53d35af721b503efd4e3049adfba60b12c67fa9",
+    "src/nyc_mobility/evaluation/latency.py": "440ff2eeab6c8e89cf248188336f3583bda66be519fae9da0115f4410de4b307",
+    "src/nyc_mobility/evaluation/metrics.py": "6a13640640897178c4b1ac2cf17e4c96c05266170883e2ccc655af11a72514f0",
+    "src/nyc_mobility/evaluation/splits.py": "9adc990692a00061cc5c7ef35f431aa195b49e1dd89b4ac1be4e63848c94d9b5",
+    "src/nyc_mobility/evaluation/uncertainty.py": "4574edd2fadf564a023f8baa461ec0aa2b0aee06fc34f83db8e845706755ab3d",
+    "src/nyc_mobility/evaluation/xgboost.py": "fa283dc2e38a3a9ffe854f4e4f51138875e1ccd779dca52ae51e8acf9a34290e",
+    "src/nyc_mobility/evaluation/xgboost_uncertainty.py": "e03eb5db1a098841e10e568413a277301e18f5a8459fbf95370c17b9507411da",
+    "src/nyc_mobility/features/__init__.py": "92f2d4ad0d188c1f5d6c9e95fb1746690d8ff3d09b7cdb2e747cf7030bc18de0",
+    "src/nyc_mobility/features/borough.py": "a1097e170731464a0c55b215202f80e8f9d2db97f23651c6c78783b126182d85",
+    "src/nyc_mobility/features/temporal.py": "e2698040f3d221109d0e06c2a99d1842f6d09bb6451394fe75dbc673a3f8b23f",
+    "src/nyc_mobility/models/__init__.py": "d61ac20fd997e369f05c453949a87dde5b0383570a60f0721f54f86359932682",
+    "src/nyc_mobility/models/baselines.py": "f8426e2062782ddb671ce928e076bf87ba131f86c036414531e573e7aa031210",
+    "src/nyc_mobility/models/train.py": "c69f753bf46736f6fbb92ead1a6505f84ab3defcecb7a0ed53f8dd11d1a7a42b",
+    "src/nyc_mobility/models/xgboost.py": "d10176c87e218b9570cb24c071fa24ae368bfa6923e457c1c82a946737d883fd",
+    "src/nyc_mobility/visualization/__init__.py": "f0c25192077f688b02ef2530d18fdff025c73dbf410b6216001f852124f591d6",
+    "src/nyc_mobility/visualization/report.py": "783d9dea31897ee4292b5433aab4f6af89de47d3089e53003bcf5fff51d1209b"
+  },
+  "lockfile_sha256": "43706b6125993ee2fc36c50724af48e9cb22fa19de9a52e1ac34b9b2c40cf575",
+  "git_revision": "9fe5950c0fd0ef407f70f89362d189c417cb06e0",
+  "git_worktree_dirty": true,
+  "models_fitted": 0,
+  "serving_model_changed": false,
+  "test_metrics": null
+}

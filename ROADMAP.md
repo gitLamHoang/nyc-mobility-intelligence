@@ -8,7 +8,7 @@ Dates are working targets, not claims of completed work. Deliver vertical improv
 | Sep 17–19 | Baseline and EDA review | Measured five-baseline scores; zero-demand, zone, hour, borough and rush-hour errors; useful geographic plots |
 | Sep 20–22 | Walk-forward model comparison | Expanding chronological folds inside Dec–Apr; compare linear/Ridge/boosting and XGBoost; no test access |
 | Sep 23–25 | Bounded tuning and uncertainty | Recorded parameter search budget; paired daily block bootstrap of improvements; demand-latency ablation |
-| Sep 26–28 | Spatial modeling | Geometry-derived adjacency and area; strictly lagged neighbor/borough demand; spatial feature ablations |
+| Sep 26–28 | Spatial modeling | Audit geometry provenance/identity; lagged borough ablations; polygon features only after historical mapping is verified |
 | Sep 29–Oct 1 | NOAA weather | Real observations, UTC joins, explicit availability lag and quality flags; measured weather ablation |
 | Oct 2–4 | Interpretation and statistical review | Temporal permutation importance or justified alternative; hard-zone cases; forecast-vs-actual examples |
 | Oct 5–7 | Prediction and interactive display | API consumes shared transformations; real forecast map with time/zone controls; deployment packaging |
@@ -50,6 +50,10 @@ Completed the XGBoost budget frozen in `9a9d282`: exactly six fits, two depths, 
 ## September 22 progress
 
 Completed the precommitted paired XGBoost uncertainty analysis without fitting: 10,000 replicates each for 7/1/14-day blocks, with the same sampled dates for every model and actual DST row weights. The two-contrast-adjusted primary interval for depth 6's MAE difference is [−0.042128, −0.014221]; depth 4 remains worse at [0.142768, 0.176634]. All directions persist across sensitivities, with explicit conditional-coverage and repeated-selection limits. No serving promotion, dependency changes or May access. Published all six comparisons, draw hashes, a verified figure and isolated-directory reproduction; 137 tests and Ruff pass. See [XGBOOST_UNCERTAINTY_REVIEW.md](reports/XGBOOST_UNCERTAINTY_REVIEW.md). Next: official geometry audit and precommitted spatial ablation, with separate static/past-only demand bundles and matched controls.
+
+## September 23 progress
+
+Completed the official spatial-source audit and real borough-feature preparation. Current geometry has 604 qualifying boundary edges and five isolates, but February 2026 timestamps do not establish availability at the December training origin. The older June 2025 source duplicates IDs 56/103 and omits 57/104/105; a direct historical polygon join is ineligible. Prepared 905,210 complete rows using the older lookup, five borough indicators and two strictly lagged other-zone means. Existing temporal features and all 559,370 matched-control validation targets remain identical. Repeated feature tables and 1,048 independent peer checks match exactly; 13 existing artifacts are unchanged, 166 tests/Ruff pass, and no models were fitted. See [SPATIAL_PREPARATION_REVIEW.md](reports/SPATIAL_PREPARATION_REVIEW.md). Next: implement and execute the frozen [six-fit borough ablation](docs/BOROUGH_SPATIAL_PROTOCOL.md). Polygon predictors wait for verified historical ID mapping; May remains sealed.
 
 ## Working rules
 

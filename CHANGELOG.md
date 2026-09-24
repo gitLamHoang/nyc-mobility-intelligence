@@ -1,5 +1,12 @@
 # Changelog
 
+## September 23, 2026 · spatial source audit and borough features
+
+- Added `nyc-mobility spatial-prepare` with pinned official sources, full development-window and peer coverage checks, geometry identity/topology audits and isolated output provenance. Current geometry yields 604 boundary edges and five isolates, but historical availability is unverified. The older June 2025 release duplicates IDs 56/103 and omits 57/104/105; no guessed remapping or polygon modeling.
+- Prepared five borough indicators and two past-only other-zone means over 949,226 real December–April rows (905,210 complete after temporal warm-up), using the older lookup. Existing temporal columns match exactly, repeated feature tables are byte-identical and 1,048 real peer checks have zero discrepancy.
+- Verified all matched-control training signatures, cohorts and 559,370 validation targets without fitting; preserved 13 existing data/model/evidence/lock files. Published compact numeric audits, feature summaries, provenance and a visually checked map; raw sources and the full table remain ignored.
+- Expanded to 166 passing tests, including unavailable-tail perturbations at all four delays, focal-zone exclusion, truncated peer coverage, invalid/overlapping geometry, source integrity and held-out exclusion. Ruff and the real stage/plot pass. Froze the next six-fit static/context borough ablation before fitting; comparison execution remains the next milestone. No serving change or May evaluation.
+
 ## September 22, 2026 · paired XGBoost uncertainty
 
 - Froze both candidate contrasts and Bonferroni error allocation in `fccf7b4` before resampling. Added `nyc-mobility xgboost-uncertainty`, reusing the unchanged tested circular-day/bootstrap alignment functions and publishing separate reports.

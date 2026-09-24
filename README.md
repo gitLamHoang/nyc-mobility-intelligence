@@ -2,7 +2,7 @@
 
 Predict recorded yellow-taxi pickups for every NYC Taxi Zone in the next hourly interval, using official TLC trip records. A Python forecasting system with reproducible acquisition, an audited hourly panel, leakage-tested temporal features, real baseline comparisons, geographic error analysis, and a local prediction API.
 
-**Status:** active development, September 14–October 13, 2026. Initial working milestone prepared September 13. See [PROJECT_STATE.md](PROJECT_STATE.md) for verified results and [ROADMAP.md](ROADMAP.md) for remaining work. Walk-forward, latency sensitivity and a bounded XGBoost comparison are implemented; spatial/weather ablations, interactive visualization, and operational monitoring remain open.
+**Status:** active development, September 14–October 13, 2026. Initial working milestone prepared September 13. See [PROJECT_STATE.md](PROJECT_STATE.md) for verified results and [ROADMAP.md](ROADMAP.md) for remaining work. Walk-forward, latency sensitivity, a bounded XGBoost comparison and spatial source/feature preparation are implemented; spatial/weather model ablations, interactive visualization, and operational monitoring remain open.
 
 ## Problem and scope
 
@@ -78,6 +78,15 @@ uv run python scripts/plot_xgboost_uncertainty.py reports/xgboost_uncertainty/<u
 ```
 
 It preserves the original uncertainty report and uses a separate [precommitted protocol](docs/XGBOOST_UNCERTAINTY_PROTOCOL.md) covering both depth settings, with nominal family correction for their absolute MAE differences.
+
+Audit official spatial sources and prepare past-only borough features without fitting:
+
+```bash
+uv run nyc-mobility spatial-prepare
+uv run python scripts/plot_spatial_audit.py reports/spatial_preparation/<run-id>
+```
+
+The [spatial review](reports/SPATIAL_PREPARATION_REVIEW.md) documents why polygon features are currently ineligible for the full historical study: the current geometry has February 2026 timestamps, and an older official version has duplicate/missing IDs. Borough features use the older lookup and lagged other-zone observations. The [six-fit borough protocol](docs/BOROUGH_SPATIAL_PROTOCOL.md) is frozen, but its comparison runner and model results remain pending. Raw sources and the prepared full table stay outside Git; exact source hashes are required.
 
 ## Data and evaluation contract
 

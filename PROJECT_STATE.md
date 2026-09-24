@@ -7,7 +7,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 ## Verified
 
 - September 24 portfolio delivery: added a TypeScript/CSS/SVG explorer with borough/model/zone/hour controls, a 48-hour trace and error shading. Exported 12,576 real April 7–8 zone-hours (262 zones, 495,546 bytes) from hash-verified study predictions, with SQL borough summaries and source provenance. No models fitted or May targets read. The existing API/model and ML continuation plan are unchanged.
-- Explorer verification: four TypeScript tests, strict type checking, production build and actual desktop/mobile browser interactions pass; Python tests verify the committed export's hashes, exact April coverage and SQL reconciliation. Static Pages publication is tracked by the Explorer workflow. See [EXPLORER.md](docs/EXPLORER.md).
+- Explorer verification: four TypeScript tests, strict type checking, production build and actual desktop/mobile browser interactions pass; Python tests verify the committed export's hashes, exact April coverage and SQL reconciliation. Published in `05ceea0`; [Python CI](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/36031856683) and [Explorer build/deployment](https://github.com/gitLamHoang/nyc-mobility-intelligence/actions/runs/36031856534) passed. The [live site](https://gitlamhoang.github.io/nyc-mobility-intelligence/) returned HTTP 200, its JSON exactly matched the recorded export SHA, and deployed borough/model/error/timeline interactions were verified. See [EXPLORER.md](docs/EXPLORER.md).
 
 - Six official months downloaded, 2025-12 through 2026-05, plus lookup and boundaries.
 - 23,263,775 accepted NYC yellow-taxi pickups, 262 zones, 4,367 UTC hours, 1,144,154 panel rows.

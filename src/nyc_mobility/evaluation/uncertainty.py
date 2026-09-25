@@ -151,6 +151,38 @@ def compare_draws(draws: np.ndarray, point: np.ndarray, names: list[str], protoc
     return records
 
 
+def family_comparisons(draws: np.ndarray, point: np.ndarray, names: list[str], protocol: dict):
+    """Add a Bonferroni MAE-difference family; relative intervals remain marginal."""
+    contrasts = protocol["contrasts"]
+    pairs = [(c["candidate"], c["reference"]) for c in contrasts]
+    size = len(pairs)
+    if (
+        not pairs
+        or size != len(set(pairs))
+        or size != protocol["study"]["family_size"]
+        or any(c == r or c not in names or r not in names for c, r in pairs)
+    ):
+        raise ValueError("Family size must match unique recorded candidate/reference pairs")
+    confidence = protocol["study"]["family_confidence_level"]
+    if not 0 < confidence < 1:
+        raise ValueError("Invalid family confidence level")
+    tail = (1 - confidence) / (2 * size)
+    results = compare_draws(draws, point, names, protocol)
+    for row in results:
+        delta = draws[:, names.index(row["candidate"])] - draws[:, names.index(row["reference"])]
+        low, high = np.quantile(delta, [tail, 1 - tail], method="linear")
+        row.update(
+            delta_mae_family_low=float(low),
+            delta_mae_family_high=float(high),
+            family_method="bonferroni",
+            family_metric="delta_mae",
+            family_size=size,
+            family_confidence_level=confidence,
+            per_contrast_confidence_level=1 - 2 * tail,
+        )
+    return results
+
+
 def run_uncertainty(
     config: dict, root: Path = Path("."), protocol_path: Path = Path("configs/uncertainty.toml")
 ) -> dict:

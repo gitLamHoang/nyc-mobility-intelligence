@@ -111,7 +111,18 @@ uv run python scripts/verify_borough.py reports/borough/<run-id>
 uv run python scripts/plot_borough.py reports/borough/<run-id>
 ```
 
-Its [frozen protocol](docs/BOROUGH_SPATIAL_PROTOCOL.md) compares static indicators and lagged peer demand while retaining identical training/validation targets. Peer context lowers pooled MAE 0.415762% (3.695750 → 3.680385) and RMSE (10.278490 → 10.240313), but worsens sparse-zone and zero-target MAE in every fold. No promotion or test access. The [three-contrast uncertainty plan](docs/BOROUGH_UNCERTAINTY_PROTOCOL.md) is frozen and remains unexecuted. The verifier needs ignored saved predictions; the plot reproduces from tracked reports alone.
+Its [frozen protocol](docs/BOROUGH_SPATIAL_PROTOCOL.md) compares static indicators and lagged peer demand while retaining identical training/validation targets. Peer context lowers pooled MAE 0.415762% (3.695750 → 3.680385) and RMSE (10.278490 → 10.240313), but worsens sparse-zone and zero-target MAE in every fold. No promotion or test access. The [three-contrast uncertainty plan](docs/BOROUGH_UNCERTAINTY_PROTOCOL.md) was frozen before the completed follow-up below. The verifier needs ignored saved predictions; the plot reproduces from tracked reports alone.
+
+
+The [borough uncertainty analysis](reports/BOROUGH_UNCERTAINTY_REVIEW.md) reproduces entirely from tracked summaries:
+
+```bash
+uv run nyc-mobility borough-uncertainty
+uv run python scripts/verify_borough_uncertainty.py reports/borough_uncertainty/<run-id>
+uv run python scripts/plot_borough_uncertainty.py reports/borough_uncertainty/<run-id>
+```
+
+The primary three-contrast-adjusted interval includes zero for static indicators and excludes zero for both context contrasts. All sensitivities are published; sparse-zone harms remain and no model is promoted. The [frozen protocol](docs/BOROUGH_UNCERTAINTY_PROTOCOL.md) preserves the May seal.
 
 ## Data and evaluation contract
 

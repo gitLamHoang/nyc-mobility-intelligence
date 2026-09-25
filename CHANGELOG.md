@@ -1,5 +1,12 @@
 # Changelog
 
+## September 25, 2026 · paired borough uncertainty
+
+- Executed the protocol frozen in `20ff2b8`: three predeclared contrasts, 10,000 paired circular-day replicates per 7/1/14-day setting, actual row weights including DST, and Bonferroni allocation across three absolute differences. The shared family helper retains unchanged XGBoost behavior; no new dependencies or fits.
+- Static indicators' primary adjusted MAE interval [−0.007356, +0.001293] includes zero; context versus temporal [−0.026430, −0.006036] and context versus static [−0.023611, −0.002951] remain negative. The static result is block-sensitive; context's sparse/zero-target harms remain. No promotion, broad significance claim or May evaluation.
+- Published all nine comparisons, full provenance, independent percentile verification and a visually inspected figure. Isolated summary-only reproduction matches every comparison and draw array, plus exact CSV bytes. Nineteen prior files are preserved; draw arrays remain ignored.
+- Expanded to 213 passing tests for family arithmetic, distinct references, pairing, reproducibility, coverage errors and mid-run provenance mutation. Ruff, actual analysis, verifier and plotting pass. Next: authoritative weather coverage/quality/availability audit before a measured weather ablation.
+
 ## September 24, 2026 · interactive evidence explorer
 
 - Added a responsive TypeScript/CSS/SVG browser explorer, per-hour and borough filters, three model comparisons, neighborhood traces and geographic error shading. Added a GitHub Pages build/deploy workflow and approachable product/reproduction documentation.

@@ -1,5 +1,11 @@
 # Changelog
 
+## September 26, 2026 · authoritative weather audit
+
+- Added `weather-audit`, pinned NOAA GHCNh sources/documentation, source-specific quality checks and strictly past UTC snapshots at four declared delay scenarios. Audited 84,763 real development source rows; prepared 14,655 core observations and 43,476 station/target/delay rows. No taxi targets, model fits or new dependencies.
+- Found a source transition that defeats the legacy good-code policy: zero accepted April snapshots for all three stations. Published every flag/month/delay, distinguished policy exclusions from bad data, and deferred precipitation and weather fitting until source semantics are resolved. Assumed lags do not establish historical publication availability.
+- All 342 tests and Ruff pass. Independently checked all snapshot rows and reproduced all five data outputs byte-for-byte in a weather-only directory. Twenty prior artifacts remain unchanged; raw/full tables are ignored, serving behavior is unchanged and May remains sealed.
+
 ## September 25, 2026 · paired borough uncertainty
 
 - Executed the protocol frozen in `20ff2b8`: three predeclared contrasts, 10,000 paired circular-day replicates per 7/1/14-day setting, actual row weights including DST, and Bonferroni allocation across three absolute differences. The shared family helper retains unchanged XGBoost behavior; no new dependencies or fits.

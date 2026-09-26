@@ -1,0 +1,32 @@
+{
+  "weather_id": "20260926T181034Z-9464c0",
+  "input_source_lock_output_hashes_match": true,
+  "independent_searchsorted_snapshot_rows_checked": 43476,
+  "isolated_weather_only_reproduction": true,
+  "all_three_csv_and_two_parquet_outputs_byte_identical": true,
+  "unchanged_files_sha256": {
+    "artifacts/model.joblib": "b72f3ac7a6023470094a9de6f54b2d3d85faf5f9b9f60929b511d44fdc3788f4",
+    "artifacts/model_metadata.json": "ef3850e8e9a6b4b0a879f92f6d4d43fe0c78d0e1a60e86e0f7a20b5862ece9d5",
+    "artifacts/validation_predictions.parquet": "711516c6b6007e4e0367d51b9e7a1c42fb92d7bc55953b944525baa28259c925",
+    "reports/latest_experiment.json": "c94a54df033cab852c1daf2d8031d1d4cab4ba7e21931d6ea197596bcee54a47",
+    "reports/latest_backtest.json": "53efb3b571ef13547d745e5cba5d68b41df102865d37ccbf0d083e7ffc727497",
+    "reports/latest_uncertainty.json": "1ecadab5f337dacbfe67e848bf6266577a5c1e0af2dfc670a671157cfa4e0c69",
+    "reports/latest_latency.json": "10bb8e69e891844f7c285f01ad7bf5ee4d30179ad27318d5fe08b003f03fb35c",
+    "reports/latest_xgboost.json": "e40107294c722c931f17417bef6e42c67f2655ef55064a274f420aeec90420b5",
+    "reports/latest_xgboost_uncertainty.json": "f7cc5638fed733f687090f973ffbe9463789fd88261ae5fc57046400f27a4781",
+    "reports/latest_spatial_preparation.json": "fdbba45233e1cc64b75a09fa46c88dcaa6e9cf3b876c4c9a061323d2d9897088",
+    "reports/api_smoke.json": "bd3d4f17c0a6c56f0397a05fa9df0b17f8369d4491cec66ba649b36c83eba754",
+    "reports/data_manifest.json": "e5d6da18988f9126d55d7f705e448085dd1ac8db0c29cddb6a4ce076a563cdab",
+    "data/processed/hourly_demand.parquet": "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80",
+    "uv.lock": "43706b6125993ee2fc36c50724af48e9cb22fa19de9a52e1ac34b9b2c40cf575",
+    "reports/latest_borough.json": "fe631973f2b0f91acf51b30ccf52afb6a99b43ea4e4d80c5869bfc0dc04b72cc",
+    "web/public/data/demo.json": "0010767f15fdbff600f954618e10eec2127d1fc44520b5f9752027a6117c5bb5",
+    "reports/demo_export.json": "1a283dbad4e4abb6b3eb73d55317ec6a4b43d45622490b3c0da59e2ebd0570c1",
+    "configs/borough_uncertainty.toml": "f632143036bcbd6c5f57a5f5d00212ab0cf98791bb481baed43df48b62ae4884",
+    "docs/BOROUGH_UNCERTAINTY_PROTOCOL.md": "2f6e8a89fe72df8153a26e5913efca6a5324f017c48ec435fff48cb6a40d2e10",
+    "reports/latest_borough_uncertainty.json": "08c215ae80f6c2426a73ccc092f28647dc0822f294c5b019976740757af97c32"
+  },
+  "models_fitted": 0,
+  "test_metrics": null,
+  "verification_script_sha256": "1b22e6595d6d7e25f2b068c47eb15818c8f41f431c3c0ee8ec6c60af8447fd62"
+}

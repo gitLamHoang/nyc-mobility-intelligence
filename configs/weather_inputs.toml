@@ -1,0 +1,91 @@
+# Pinned NOAA snapshots: a changed remote archive requires an explicit new audit.
+[window]
+start = "2025-12-01T05:00:00Z"
+end = "2026-05-01T04:00:00Z"
+
+[policy]
+quality = "source-223-good-only"
+delays_hours = [0, 1, 3, 6]
+max_age_hours = 12
+availability = "assumed delay after observation; archive publication time unverified"
+precipitation = "audit only; excluded from prepared values"
+imputation = "none; preserve missing or excluded fields on latest core observation"
+
+[[stations]]
+id = "USW00014732"
+name = "LaGuardia Airport"
+latitude = 40.7794
+longitude = -73.8803
+
+[[stations]]
+id = "USW00094789"
+name = "JFK International Airport"
+latitude = 40.6392
+longitude = -73.7639
+
+[[stations]]
+id = "USW00094728"
+name = "Central Park"
+latitude = 40.7789
+longitude = -73.9692
+
+[[assets]]
+file = "data/external/weather/GHCNh_USW00014732_2025.parquet"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2025/parquet/GHCNh_USW00014732_2025.parquet"
+sha256 = "d5f71ade16fd77ec9afc0d8d96d8ecd6565827f88f8aef313dae3769d9d1d05d"
+station_id = "USW00014732"
+
+[[assets]]
+file = "data/external/weather/GHCNh_USW00014732_2026.parquet"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2026/parquet/GHCNh_USW00014732_2026.parquet"
+sha256 = "bd06d7136b0e836815444c31a520366236801c015d2f064f4e5681aa5eaa7cab"
+station_id = "USW00014732"
+
+[[assets]]
+file = "data/external/weather/GHCNh_USW00094728_2025.parquet"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2025/parquet/GHCNh_USW00094728_2025.parquet"
+sha256 = "847e8a2b82711c7da5c0e74266334aa850752d41d55a3d6b76c6218665d6009d"
+station_id = "USW00094728"
+
+[[assets]]
+file = "data/external/weather/GHCNh_USW00094728_2026.parquet"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2026/parquet/GHCNh_USW00094728_2026.parquet"
+sha256 = "c924a6700583acb0c7323aeac0dae6254ba97fc5d606df5c4cce4fa7a98496ac"
+station_id = "USW00094728"
+
+[[assets]]
+file = "data/external/weather/GHCNh_USW00094789_2025.parquet"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2025/parquet/GHCNh_USW00094789_2025.parquet"
+sha256 = "163c67dd5b0350fa988f11dc726b20e1a0931f59416c240f696c75641070c8a4"
+station_id = "USW00094789"
+
+[[assets]]
+file = "data/external/weather/GHCNh_USW00094789_2026.parquet"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2026/parquet/GHCNh_USW00094789_2026.parquet"
+sha256 = "5905fd88e5628bd052d6733d641e1c4ca123797780bb86e3ddd624a7501ce63d"
+station_id = "USW00094789"
+
+[[assets]]
+file = "data/external/weather/ghcnh-columns.pdf"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-columns.pdf"
+sha256 = "2eb051a2919be41a57c5c49ae6aa0f077194fe1983417a2e8ba4fbbaf16ea7b5"
+
+[[assets]]
+file = "data/external/weather/ghcnh-source-list.pdf"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-source-list.pdf"
+sha256 = "4f6a18c0b18825f28e72af04cc3a2ac8a26bd7015910798d1a0cee2a114f689d"
+
+[[assets]]
+file = "data/external/weather/ghcnh-station-list.txt"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-station-list.txt"
+sha256 = "ff451fafc8f251560029e9ed31ebf0f4d12a2ddd492516c0b166c3744cad182a"
+
+[[assets]]
+file = "data/external/weather/ghcnh-version-updates.pdf"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-version-updates.pdf"
+sha256 = "dbbc3475685764b0f42351cb1c853f823127a1191573a59c24f14c0493136532"
+
+[[assets]]
+file = "data/external/weather/ghcnh_DOCUMENTATION.pdf"
+url = "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh_DOCUMENTATION.pdf"
+sha256 = "df5694efdc2d498f006a343165bae65701d14809174b9bed660149bd4fe591b7"

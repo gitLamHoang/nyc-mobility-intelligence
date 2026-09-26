@@ -124,6 +124,15 @@ uv run python scripts/plot_borough_uncertainty.py reports/borough_uncertainty/<r
 
 The primary three-contrast-adjusted interval includes zero for static indicators and excludes zero for both context contrasts. All sensitivities are published; sparse-zone harms remain and no model is promoted. The [frozen protocol](docs/BOROUGH_UNCERTAINTY_PROTOCOL.md) preserves the May seal.
 
+The [NOAA weather audit](reports/WEATHER_PREPARATION_REVIEW.md) prepares strictly past observations without fitting:
+
+```bash
+uv run nyc-mobility weather-audit
+uv run python scripts/verify_weather.py
+```
+
+Three official stations supply 14,655 development observations. A documented source/quality transition prevents the conservative rule from accepting April features, so weather modeling remains pending. All four assumed reporting-delay scenarios are published; historical archive availability is unverified. Exact reproduction requires the pinned ignored weather snapshots because NOAA's annual URLs can change.
+
 ## Data and evaluation contract
 
 Official TLC yellow-taxi files: **December 2025–May 2026**. This is the latest consecutive six-month period listed on the official TLC page when initialized. The source files, content hashes, download timestamps, and sizes are recorded in [data_manifest.json](reports/data_manifest.json). The dataset contains **23,304,288 raw records** and **23,263,775 accepted NYC pickups**, forming **1,144,154 zone-hours**.

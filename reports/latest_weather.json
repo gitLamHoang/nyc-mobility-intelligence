@@ -1,0 +1,236 @@
+{
+  "weather_id": "20260926T181034Z-9464c0",
+  "created_at": "2026-09-26T18:10:34.241189+00:00",
+  "window_start_utc": "2025-12-01 05:00:00+00:00",
+  "window_end_utc_exclusive": "2026-05-01 04:00:00+00:00",
+  "expected_hours_per_station": 3623,
+  "stations": [
+    {
+      "id": "USW00014732",
+      "name": "LaGuardia Airport",
+      "latitude": 40.7794,
+      "longitude": -73.8803
+    },
+    {
+      "id": "USW00094789",
+      "name": "JFK International Airport",
+      "latitude": 40.6392,
+      "longitude": -73.7639
+    },
+    {
+      "id": "USW00094728",
+      "name": "Central Park",
+      "latitude": 40.7789,
+      "longitude": -73.9692
+    }
+  ],
+  "core_observation_rows": 14655,
+  "policy": {
+    "quality": "source-223-good-only",
+    "delays_hours": [
+      0,
+      1,
+      3,
+      6
+    ],
+    "max_age_hours": 12,
+    "availability": "assumed delay after observation; archive publication time unverified",
+    "precipitation": "audit only; excluded from prepared values",
+    "imputation": "none; preserve missing or excluded fields on latest core observation"
+  },
+  "sources": [
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2025/parquet/GHCNh_USW00014732_2025.parquet",
+      "file": "data/external/weather/GHCNh_USW00014732_2025.parquet",
+      "bytes": 1113470,
+      "sha256": "d5f71ade16fd77ec9afc0d8d96d8ecd6565827f88f8aef313dae3769d9d1d05d",
+      "downloaded_at": "2026-09-26T18:04:22.162358+00:00",
+      "etag": "\"18682fb9250a3fd52ea9744b04168fa7\"",
+      "last_modified": "Sat, 11 Jul 2026 13:59:42 GMT",
+      "rows": 12861
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2026/parquet/GHCNh_USW00014732_2026.parquet",
+      "file": "data/external/weather/GHCNh_USW00014732_2026.parquet",
+      "bytes": 1406471,
+      "sha256": "bd06d7136b0e836815444c31a520366236801c015d2f064f4e5681aa5eaa7cab",
+      "downloaded_at": "2026-09-26T18:04:24.604416+00:00",
+      "etag": "\"e004d485bff9131bfa1886836bfa6944\"",
+      "last_modified": "Sat, 26 Sep 2026 07:10:07 GMT",
+      "rows": 60829
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2025/parquet/GHCNh_USW00094728_2025.parquet",
+      "file": "data/external/weather/GHCNh_USW00094728_2025.parquet",
+      "bytes": 844540,
+      "sha256": "847e8a2b82711c7da5c0e74266334aa850752d41d55a3d6b76c6218665d6009d",
+      "downloaded_at": "2026-09-26T18:04:23.737993+00:00",
+      "etag": "\"3bfa6ac7f9dd1bbb06b4e1eb12cb6720\"",
+      "last_modified": "Sat, 11 Jul 2026 14:17:10 GMT",
+      "rows": 11040
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2026/parquet/GHCNh_USW00094728_2026.parquet",
+      "file": "data/external/weather/GHCNh_USW00094728_2026.parquet",
+      "bytes": 1256171,
+      "sha256": "c924a6700583acb0c7323aeac0dae6254ba97fc5d606df5c4cce4fa7a98496ac",
+      "downloaded_at": "2026-09-26T18:04:26.354681+00:00",
+      "etag": "\"f833b986945816ba36c727b7c7e768bc\"",
+      "last_modified": "Sat, 26 Sep 2026 07:26:06 GMT",
+      "rows": 75851
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2025/parquet/GHCNh_USW00094789_2025.parquet",
+      "file": "data/external/weather/GHCNh_USW00094789_2025.parquet",
+      "bytes": 1097873,
+      "sha256": "163c67dd5b0350fa988f11dc726b20e1a0931f59416c240f696c75641070c8a4",
+      "downloaded_at": "2026-09-26T18:04:22.970432+00:00",
+      "etag": "\"503d23fd055437b389faad19114ea8e9\"",
+      "last_modified": "Sat, 11 Jul 2026 14:17:13 GMT",
+      "rows": 12631
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/2026/parquet/GHCNh_USW00094789_2026.parquet",
+      "file": "data/external/weather/GHCNh_USW00094789_2026.parquet",
+      "bytes": 1215025,
+      "sha256": "5905fd88e5628bd052d6733d641e1c4ca123797780bb86e3ddd624a7501ce63d",
+      "downloaded_at": "2026-09-26T18:04:25.436485+00:00",
+      "etag": "\"4b8723efce6f6e60df4eb3c9486d38e8\"",
+      "last_modified": "Sat, 26 Sep 2026 07:26:42 GMT",
+      "rows": 52120
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-columns.pdf",
+      "file": "data/external/weather/ghcnh-columns.pdf",
+      "bytes": 94658,
+      "sha256": "2eb051a2919be41a57c5c49ae6aa0f077194fe1983417a2e8ba4fbbaf16ea7b5",
+      "downloaded_at": "2026-09-26T18:05:55.128469+00:00",
+      "etag": "\"a500d9a00b98e3a6967a5bfc041a4698\"",
+      "last_modified": "Wed, 16 Sep 2026 08:44:27 GMT"
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-source-list.pdf",
+      "file": "data/external/weather/ghcnh-source-list.pdf",
+      "bytes": 865574,
+      "sha256": "4f6a18c0b18825f28e72af04cc3a2ac8a26bd7015910798d1a0cee2a114f689d",
+      "downloaded_at": "2026-09-26T18:05:54.531610+00:00",
+      "etag": "\"396542249791a2209e5e2f6e784167d1\"",
+      "last_modified": "Wed, 16 Sep 2026 08:44:28 GMT"
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-station-list.txt",
+      "file": "data/external/weather/ghcnh-station-list.txt",
+      "bytes": 3459429,
+      "sha256": "ff451fafc8f251560029e9ed31ebf0f4d12a2ddd492516c0b166c3744cad182a",
+      "downloaded_at": "2026-09-26T18:03:29.417703+00:00",
+      "etag": "\"91d2ad780d97721aedee591367c00a05\"",
+      "last_modified": "Wed, 16 Sep 2026 08:44:28 GMT"
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-version-updates.pdf",
+      "file": "data/external/weather/ghcnh-version-updates.pdf",
+      "bytes": 65505,
+      "sha256": "dbbc3475685764b0f42351cb1c853f823127a1191573a59c24f14c0493136532",
+      "downloaded_at": "2026-09-26T18:05:53.737770+00:00",
+      "etag": "\"a0f2dd9e6e25f82146774ac26be21cd8\"",
+      "last_modified": "Wed, 16 Sep 2026 08:44:28 GMT"
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh_DOCUMENTATION.pdf",
+      "file": "data/external/weather/ghcnh_DOCUMENTATION.pdf",
+      "bytes": 423879,
+      "sha256": "df5694efdc2d498f006a343165bae65701d14809174b9bed660149bd4fe591b7",
+      "downloaded_at": "2026-09-26T18:05:53.277902+00:00",
+      "etag": "\"030148bbfbb31c63fd0dc4c89f8539f3\"",
+      "last_modified": "Wed, 16 Sep 2026 08:44:27 GMT"
+    }
+  ],
+  "input_source_lock_hashes": {
+    "src/nyc_mobility/__init__.py": "972276259858cb18539f09afe82a8a5308adba6c3157ac480daea2c2505783ec",
+    "src/nyc_mobility/api/__init__.py": "e96493dbe22a9f5a4566d226cfec3bb1f25eee6b7447b311bfd8d9f46c19c5ed",
+    "src/nyc_mobility/api/app.py": "93b1210bb0c1368d2489d5426ff3d9117f752c823b4ee4e19f5688f359f338a0",
+    "src/nyc_mobility/cli.py": "d1c97705753890faeea7b87e071207b9486d697b2c8630bf0c14a698b0c91888",
+    "src/nyc_mobility/config.py": "db6549338c9fd727b1bbfe31ae9acc105ec899e49d81fd2341472245dd828008",
+    "src/nyc_mobility/data/__init__.py": "1df8af0faf37759551399b621d14f19125bce7101d0ed5f8a7b6c666d6a9a82a",
+    "src/nyc_mobility/data/download.py": "ffbd83be90af8c7e3d83110abcf243427038657c2555ae2310df0290a723ff37",
+    "src/nyc_mobility/data/prepare.py": "2d6a517b8fc7236646a9c5d1729decd57d997bea6a985cdfbade0d5d2de9b350",
+    "src/nyc_mobility/data/quality_audit.py": "adbb209fef176d00f8ff3f8952fa8a0db070660475d2e534290cf40e0b26aa53",
+    "src/nyc_mobility/data/spatial.py": "bb53321b03702549e43101a3a2980420b04b0d0fb06ceaec4c66702fb25f367f",
+    "src/nyc_mobility/data/weather.py": "b54bc9b2c0c556d7bd2df409e85b7e39ff7c1008a8a2ec4d49adc4dc90dee91f",
+    "src/nyc_mobility/evaluation/__init__.py": "c4612313390d2d028934de19e004658a69d043e1ad0c025678b30497ca9f4245",
+    "src/nyc_mobility/evaluation/backtest.py": "6e0578bd9cb8105822807761e53d35af721b503efd4e3049adfba60b12c67fa9",
+    "src/nyc_mobility/evaluation/borough.py": "ee33b1b76f7a1f636ec6a39b9daf2b0926db897b794add81cf65d7e6b994ce91",
+    "src/nyc_mobility/evaluation/borough_uncertainty.py": "9d4feb793923786461db29abeb9c518b8e71975315d23f09c4bc3d260debd3d3",
+    "src/nyc_mobility/evaluation/controls.py": "3ec86951136c6780eba5aa6fdc2571601e2fe48716a96a0c78373514f6c3eb5b",
+    "src/nyc_mobility/evaluation/latency.py": "440ff2eeab6c8e89cf248188336f3583bda66be519fae9da0115f4410de4b307",
+    "src/nyc_mobility/evaluation/metrics.py": "6a13640640897178c4b1ac2cf17e4c96c05266170883e2ccc655af11a72514f0",
+    "src/nyc_mobility/evaluation/splits.py": "9adc990692a00061cc5c7ef35f431aa195b49e1dd89b4ac1be4e63848c94d9b5",
+    "src/nyc_mobility/evaluation/uncertainty.py": "4e252e6956fd16b4af345c06f44a869c884bdad63d5c683b8b8b71287055ca0c",
+    "src/nyc_mobility/evaluation/xgboost.py": "ddbd0f69a280e7777c6c2013552212808f34ebf2d374a3af0b997805c3649711",
+    "src/nyc_mobility/evaluation/xgboost_uncertainty.py": "088876f1f5166992d19060a2b65cf520f6998e85a5351dcfbc554d67c9d06e16",
+    "src/nyc_mobility/features/__init__.py": "92f2d4ad0d188c1f5d6c9e95fb1746690d8ff3d09b7cdb2e747cf7030bc18de0",
+    "src/nyc_mobility/features/borough.py": "a1097e170731464a0c55b215202f80e8f9d2db97f23651c6c78783b126182d85",
+    "src/nyc_mobility/features/temporal.py": "e2698040f3d221109d0e06c2a99d1842f6d09bb6451394fe75dbc673a3f8b23f",
+    "src/nyc_mobility/features/weather.py": "166252ee579cfa31c78dbcb3e4a8aee51a75b183b7a9e83a78f80f49efd47072",
+    "src/nyc_mobility/models/__init__.py": "d61ac20fd997e369f05c453949a87dde5b0383570a60f0721f54f86359932682",
+    "src/nyc_mobility/models/baselines.py": "f8426e2062782ddb671ce928e076bf87ba131f86c036414531e573e7aa031210",
+    "src/nyc_mobility/models/borough.py": "96783a7eb3671c45f36ee89428108dbfb1f8fec1ec379c402754192ad3acde63",
+    "src/nyc_mobility/models/train.py": "c69f753bf46736f6fbb92ead1a6505f84ab3defcecb7a0ed53f8dd11d1a7a42b",
+    "src/nyc_mobility/models/xgboost.py": "d10176c87e218b9570cb24c071fa24ae368bfa6923e457c1c82a946737d883fd",
+    "src/nyc_mobility/visualization/__init__.py": "f0c25192077f688b02ef2530d18fdff025c73dbf410b6216001f852124f591d6",
+    "src/nyc_mobility/visualization/report.py": "783d9dea31897ee4292b5433aab4f6af89de47d3089e53003bcf5fff51d1209b",
+    "configs/weather_inputs.toml": "fa87042e7f7eff9080de9fe2d54d0e7a769cdcec2e0224b7c971558b38cc5d92",
+    "uv.lock": "43706b6125993ee2fc36c50724af48e9cb22fa19de9a52e1ac34b9b2c40cf575",
+    "data/external/weather/GHCNh_USW00014732_2025.parquet": "d5f71ade16fd77ec9afc0d8d96d8ecd6565827f88f8aef313dae3769d9d1d05d",
+    "data/external/weather/GHCNh_USW00014732_2026.parquet": "bd06d7136b0e836815444c31a520366236801c015d2f064f4e5681aa5eaa7cab",
+    "data/external/weather/GHCNh_USW00094728_2025.parquet": "847e8a2b82711c7da5c0e74266334aa850752d41d55a3d6b76c6218665d6009d",
+    "data/external/weather/GHCNh_USW00094728_2026.parquet": "c924a6700583acb0c7323aeac0dae6254ba97fc5d606df5c4cce4fa7a98496ac",
+    "data/external/weather/GHCNh_USW00094789_2025.parquet": "163c67dd5b0350fa988f11dc726b20e1a0931f59416c240f696c75641070c8a4",
+    "data/external/weather/GHCNh_USW00094789_2026.parquet": "5905fd88e5628bd052d6733d641e1c4ca123797780bb86e3ddd624a7501ce63d",
+    "data/external/weather/ghcnh-columns.pdf": "2eb051a2919be41a57c5c49ae6aa0f077194fe1983417a2e8ba4fbbaf16ea7b5",
+    "data/external/weather/ghcnh-source-list.pdf": "4f6a18c0b18825f28e72af04cc3a2ac8a26bd7015910798d1a0cee2a114f689d",
+    "data/external/weather/ghcnh-station-list.txt": "ff451fafc8f251560029e9ed31ebf0f4d12a2ddd492516c0b166c3744cad182a",
+    "data/external/weather/ghcnh-version-updates.pdf": "dbbc3475685764b0f42351cb1c853f823127a1191573a59c24f14c0493136532",
+    "data/external/weather/ghcnh_DOCUMENTATION.pdf": "df5694efdc2d498f006a343165bae65701d14809174b9bed660149bd4fe591b7"
+  },
+  "config": {
+    "data": {
+      "start": "2025-12",
+      "end": "2026-05",
+      "timezone": "America/New_York",
+      "service": "yellow"
+    },
+    "split": {
+      "train_start": "2025-12-01",
+      "validation_start": "2026-04-01",
+      "test_start": "2026-05-01",
+      "test_end": "2026-06-01"
+    },
+    "model": {
+      "random_seed": 42,
+      "boosting_iterations": 120,
+      "learning_rate": 0.08,
+      "max_leaf_nodes": 31,
+      "l2_regularization": 1.0
+    }
+  },
+  "outputs_sha256": {
+    "artifacts/weather/20260926T181034Z-9464c0/observations.parquet": "8bac4f79a4aa7f301525392c34dcd5b7c58c4cf91f12584ad2e21161b6ae5622",
+    "artifacts/weather/20260926T181034Z-9464c0/snapshots.parquet": "6df935ff54394e7d395661eb42c056d481fce51b694cc3c4f98915203e9e91e2",
+    "reports/weather/20260926T181034Z-9464c0/availability_coverage.csv": "1772384433a7f6a9e9e599034868efb82a60abae5c5a79edb9ef429bf3ae9ac5",
+    "reports/weather/20260926T181034Z-9464c0/native_coverage.csv": "623de3615773680f0cba950892f953d6ff819e915addf654d4904778b97070c5",
+    "reports/weather/20260926T181034Z-9464c0/quality_flags.csv": "63d26ca176882bf515bfcb0f77f8c906d2782d3fbc25a164a17675c6ceacd77e"
+  },
+  "versions": {
+    "pandas": "2.3.3",
+    "numpy": "2.5.3"
+  },
+  "git_revision": "00127a737eaf7b24f6df0174057c2e2c54e2a132",
+  "git_worktree_dirty": true,
+  "historical_publication_times_verified": false,
+  "eligible_for_point_in_time_model_claim": false,
+  "weather_model_protocol_frozen": false,
+  "models_fitted": 0,
+  "serving_model_changed": false,
+  "test_metrics": null
+}

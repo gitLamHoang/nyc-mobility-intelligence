@@ -21,6 +21,7 @@ def main() -> None:
             "xgboost",
             "xgboost-uncertainty",
             "spatial-prepare",
+            "weather-audit",
             "borough",
             "borough-uncertainty",
             "all",
@@ -62,6 +63,12 @@ def main() -> None:
         run_xgboost_uncertainty(
             config, protocol_path=Path(args.protocol or "configs/xgboost_uncertainty.toml")
         )
+    if args.command == "weather-audit":
+        from pathlib import Path
+
+        from nyc_mobility.data.weather import audit_weather
+
+        audit_weather(config, spec_path=Path(args.protocol or "configs/weather_inputs.toml"))
     if args.command == "spatial-prepare":
         from pathlib import Path
 

@@ -1,0 +1,49 @@
+# Frozen before fitting. Weather archive quality/publication is conditionally assumed.
+[study]
+id = "weather-citywide-v1"
+train_start = "2025-12-01"
+validation_boundaries = ["2026-02-01", "2026-03-01", "2026-04-01", "2026-05-01"]
+sealed_test_start = "2026-05-01"
+feature_set = "temporal-citywide-weather-v1"
+observation_delay_hours = 0
+weather_delays_hours = [3, 6]
+primary_weather_delay_hours = 3
+primary_metric = "pooled_mae"
+common_warmup_hours = 174
+common_training_embargo_hours = 6
+sparse_zone_mean_max = 1.0
+fit_budget = 6
+model = "hist_gradient_boosting"
+missing_weather = "retain NaN; no row exclusions or imputation"
+scope = "conditional retrospective archive sensitivity; no verified publication availability"
+
+[weather]
+weather_id = "20260927T200152Z-dbeed1"
+metrics_file = "reports/weather_policy/20260927T200152Z-dbeed1/metrics.json"
+metrics_sha256 = "6dc6d997e7273993534811e83493a9681ac6d57fe4068c2b4d01cba09048bc90"
+snapshots_file = "artifacts/weather_policy/20260927T200152Z-dbeed1/snapshots.parquet"
+snapshots_sha256 = "637059361c9cc96ecc85f2578125071e22648a95a4106c263442a229d4710f38"
+lookup_sha256 = "1a99e105092230f8620f301edcca7f80d3080642ff404d28ed957d3fa222c8ed"
+legacy_spec_sha256 = "fa87042e7f7eff9080de9fe2d54d0e7a769cdcec2e0224b7c971558b38cc5d92"
+legacy_policy_sha256 = "f0f8b53e2bc71e85281a5202d9a70ba87772dd6a1ca0bb66ab73e284fd1101d2"
+bundle_source_sha256 = "6b9435d906f6b366d3f201ae4a7c17f887e3b160bdb0a4f2c59da927169ac2c0"
+features = ["weather_lga_temperature_c", "weather_lga_dew_point_c", "weather_lga_wind_speed_m_s", "weather_lga_temperature_c_missing", "weather_lga_dew_point_c_missing", "weather_lga_wind_speed_m_s_missing", "weather_lga_temperature_c_unverified", "weather_lga_dew_point_c_unverified", "weather_lga_wind_speed_m_s_unverified", "weather_lga_age_hours", "weather_jfk_temperature_c", "weather_jfk_dew_point_c", "weather_jfk_wind_speed_m_s", "weather_jfk_temperature_c_missing", "weather_jfk_dew_point_c_missing", "weather_jfk_wind_speed_m_s_missing", "weather_jfk_temperature_c_unverified", "weather_jfk_dew_point_c_unverified", "weather_jfk_wind_speed_m_s_unverified", "weather_jfk_age_hours", "weather_cp_temperature_c", "weather_cp_dew_point_c", "weather_cp_wind_speed_m_s", "weather_cp_temperature_c_missing", "weather_cp_dew_point_c_missing", "weather_cp_wind_speed_m_s_missing", "weather_cp_temperature_c_unverified", "weather_cp_dew_point_c_unverified", "weather_cp_wind_speed_m_s_unverified", "weather_cp_age_hours"]
+
+[control]
+latency_id = "20260921T021023Z-588968"
+metrics_sha256 = "10bb8e69e891844f7c285f01ad7bf5ee4d30179ad27318d5fe08b003f03fb35c"
+data_sha256 = "4b05fc7b7ec8bac8967361ce0086979f08275d02623181380a92108b1e43fb80"
+[control.prediction_sha256]
+fold_1 = "8417f7cc42495866709da98ba0aec0738d360cb00de4936b683c7d2812f9aad2"
+fold_2 = "26f81620b607ad644c98f3588f5290ffc51f9be8ee6d7e073668b66c733082b5"
+fold_3 = "f66a8b71873b834983cb8143021bd97b5785a75f5d9922d18668ce0c9ec4df2b"
+
+[model]
+random_seed = 42
+boosting_iterations = 120
+learning_rate = 0.08
+max_leaf_nodes = 31
+l2_regularization = 1.0
+loss = "squared_error"
+early_stopping = false
+max_bins = 255

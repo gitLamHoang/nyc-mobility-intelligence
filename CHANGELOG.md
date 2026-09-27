@@ -1,5 +1,11 @@
 # Changelog
 
+## September 27, 2026 · versioned weather quality and feature preparation
+
+- Preserved the strict NOAA audit and added a separate documented-source policy retaining 8,886 additional core values as explicitly unverified. No new official passed-check semantics were found. Three-hour April complete coverage becomes 717/717/642 of 720 hours for LaGuardia/JFK/Central Park; all rely on unverified readings. Precipitation and suspect/calculated values remain excluded.
+- Added 30 fixed citywide predictors with missing/unverified indicators and observation ages at three-/six-hour delays. Real preparation preserves all training signatures/cohorts and 559,370 control validation targets without fitting or weather-driven exclusions. Froze the six-fit conditional weather comparison before candidate training.
+- All 487 tests, Ruff, actual policy/preparation stages and independent verification pass. Checked 43,476 snapshots and 217,380 bundle values; both policies reproduce their data outputs byte-for-byte in isolation. Twenty-eight prior files remain unchanged; raw/full tables stay ignored, no dependencies added, and May stays sealed.
+
 ## September 26, 2026 · authoritative weather audit
 
 - Added `weather-audit`, pinned NOAA GHCNh sources/documentation, source-specific quality checks and strictly past UTC snapshots at four declared delay scenarios. Audited 84,763 real development source rows; prepared 14,655 core observations and 43,476 station/target/delay rows. No taxi targets, model fits or new dependencies.

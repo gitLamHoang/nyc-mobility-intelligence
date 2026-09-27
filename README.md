@@ -131,7 +131,13 @@ uv run nyc-mobility weather-audit
 uv run python scripts/verify_weather.py
 ```
 
-Three official stations supply 14,655 development observations. A documented source/quality transition prevents the conservative rule from accepting April features, so weather modeling remains pending. All four assumed reporting-delay scenarios are published; historical archive availability is unverified. Exact reproduction requires the pinned ignored weather snapshots because NOAA's annual URLs can change.
+Three official stations supply 14,655 development observations. The strict rule accepts no April features. A separate [quality sensitivity](reports/WEATHER_POLICY_REVIEW.md) explicitly labels newer readings unverified and prepares 30 predictors without losing validation targets. Its [six-fit comparison protocol](docs/WEATHER_ABLATION_PROTOCOL.md) is frozen; weather models have not yet been fitted. Historical archive availability remains unverified. Exact reproduction requires pinned ignored snapshots because NOAA's annual URLs can change.
+
+```bash
+uv run nyc-mobility weather-audit --protocol configs/weather_inputs_v2.toml
+uv run nyc-mobility weather-prepare
+uv run python scripts/verify_weather_policy.py
+```
 
 ## Data and evaluation contract
 

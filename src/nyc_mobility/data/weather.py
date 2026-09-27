@@ -23,16 +23,31 @@ SUFFIXES = ["", "_Source_Code", "_Quality_Code", "_Measurement_Code", "_Report_T
 COLUMNS = ["STATION", "DATE", "LATITUDE", "LONGITUDE"] + [
     field + suffix for field in AUDIT_FIELDS for suffix in SUFFIXES
 ]
+LEGACY_QUALITY_POLICY = "source-223-good-only"
+UNVERIFIED_QUALITY_POLICY = "documented-sources-with-unverified-v1"
+QUALITY_POLICIES = {LEGACY_QUALITY_POLICY, UNVERIFIED_QUALITY_POLICY}
 
 
 def parse_observations(
-    raw: pd.DataFrame, station: dict, start: pd.Timestamp, end: pd.Timestamp
+    raw: pd.DataFrame,
+    station: dict,
+    start: pd.Timestamp,
+    end: pd.Timestamp,
+    *,
+    quality_policy: str = LEGACY_QUALITY_POLICY,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Conservatively retain documented source-223 good values; audit every other flag.
+    """Apply a versioned, source-specific quality policy without imputing values.
 
     Raw GHCNh DATE is a UTC ISO string without a suffix. Values are already in SI units.
     Bounds are half-open UTC instants. No weather after the development end is parsed.
+    The default source-223-only policy retains its original schema. The optional
+    sensitivity policy also retains specified source-412/413 values with blank flags,
+    explicitly marks them unverified, and adds per-variable quality/source metadata.
+    Blank quality never means the observation passed NOAA quality control.
     """
+    if quality_policy not in QUALITY_POLICIES:
+        raise ValueError("Unsupported weather quality policy")
+    include_unverified = quality_policy == UNVERIFIED_QUALITY_POLICY
     for bound in (start, end):
         if pd.isna(bound) or str(bound.tzinfo) != "UTC":
             raise ValueError("Weather boundaries must be explicit UTC instants")
@@ -80,12 +95,31 @@ def parse_observations(
             accepted &= measure.isin(["C", "N", "V"]) & values.ge(0)
         else:
             accepted &= measure.eq("")
+        good = accepted.copy()
+        unverified = pd.Series(False, index=frame.index)
+        if include_unverified and field in FIELDS:
+            blank_flags = present & quality.eq("") & measure.eq("")
+            unverified = blank_flags & source.eq("413") & report.isin(["FM15", "FM16"])
+            if field == "wind_speed":
+                unverified &= values.ge(0)
+            else:
+                unverified |= blank_flags & source.eq("412") & report.isin(["FM12", "FM94_1"])
+            accepted |= unverified
         if field in FIELDS:
             core_present |= present
-            clean[FIELDS[field]] = values.where(accepted)
+            variable = FIELDS[field]
+            clean[variable] = values.where(accepted)
+            if include_unverified:
+                status = pd.Series("missing", index=frame.index)
+                status.loc[present] = "rejected"
+                status.loc[good] = "good"
+                status.loc[unverified] = "unverified"
+                clean[variable + "_quality"] = status
+                clean[variable + "_source"] = source
         else:
             # Precipitation is audited only: traces/accumulations need a separate policy.
             accepted[:] = False
+            good[:] = False
         summary = pd.DataFrame(
             {
                 "month": month,
@@ -97,6 +131,9 @@ def parse_observations(
                 "accepted": accepted,
             }
         )
+        if include_unverified:
+            summary["accepted_good"] = good
+            summary["accepted_unverified"] = unverified
         for keys, group in summary.groupby(
             ["month", "source", "quality", "measurement", "report_type"], dropna=False
         ):
@@ -113,6 +150,14 @@ def parse_observations(
                     present=int(group.present.sum()),
                     accepted=int(group.accepted.sum()),
                     policy_excluded=int((group.present & ~group.accepted).sum()),
+                    **(
+                        {
+                            "accepted_good": int(group.accepted_good.sum()),
+                            "accepted_unverified": int(group.accepted_unverified.sum()),
+                        }
+                        if include_unverified
+                        else {}
+                    ),
                 )
             )
     # Omit unrelated precipitation-only rows, but retain rejected/missing core fields
@@ -125,6 +170,25 @@ def parse_observations(
 def longest_missing_run(present: pd.Series) -> int:
     missing = ~present.astype(bool)
     return int(missing.groupby(present.astype(bool).cumsum()).sum().max()) if len(missing) else 0
+
+
+def snapshot_quality(snapshots: pd.DataFrame, observations: pd.DataFrame) -> pd.DataFrame:
+    """Attach flags from exactly the observation chosen by the past-only as-of join.
+
+    Unmatched/stale snapshots have missing quality and an empty source. A selected
+    observation's missing or rejected field retains that row's own quality and source;
+    neither flags nor measurements are borrowed from an older observation.
+    """
+    metadata = [f"{v}_{suffix}" for v in WEATHER_VALUES for suffix in ("quality", "source")]
+    selected = observations[["station_id", "observed_at", *metadata]].copy()
+    selected["observed_at"] = selected.observed_at.astype("datetime64[ns, UTC]")
+    result = snapshots.merge(
+        selected, on=["station_id", "observed_at"], how="left", validate="many_to_one"
+    )
+    for variable in WEATHER_VALUES:
+        result[variable + "_quality"] = result[variable + "_quality"].fillna("missing")
+        result[variable + "_source"] = result[variable + "_source"].fillna("")
+    return result
 
 
 def audit_weather(
@@ -141,8 +205,9 @@ def audit_weather(
     if start < train_start or end > sealed or start >= end:
         raise ValueError("Weather audit must remain inside the development window")
     policy = spec["policy"]
-    if policy["quality"] != "source-223-good-only" or policy["delays_hours"] != [0, 1, 3, 6]:
+    if policy["quality"] not in QUALITY_POLICIES or policy["delays_hours"] != [0, 1, 3, 6]:
         raise ValueError("Unsupported weather audit policy")
+    include_unverified = policy["quality"] == UNVERIFIED_QUALITY_POLICY
     source_paths = sorted((root / "src").rglob("*.py"))
     before = {str(p.relative_to(root)): sha256(p) for p in source_paths}
     before[str(path.relative_to(root))] = spec_hash
@@ -176,7 +241,9 @@ def audit_weather(
         if not parts:
             raise ValueError("Configured weather station has no assets")
         raw = pd.concat(parts, ignore_index=True)
-        clean, audit = parse_observations(raw, stations[station_id], start, end)
+        clean, audit = parse_observations(
+            raw, stations[station_id], start, end, quality_policy=policy["quality"]
+        )
         observations.append(clean)
         flags.append(audit)
         hours = clean.observed_at.dt.floor("h")
@@ -198,10 +265,19 @@ def audit_weather(
                     "max": clean[variable].max(),
                 }
             )
+            if include_unverified:
+                for quality in ("good", "unverified"):
+                    retained = clean.loc[clean[variable + "_quality"].eq(quality), "observed_at"]
+                    native[-1][f"accepted_{quality}_values"] = len(retained)
+                    native[-1][f"accepted_{quality}_hours"] = int(
+                        targets.isin(retained.dt.floor("h")).sum()
+                    )
     observations = pd.concat(observations, ignore_index=True)
     snapshots, coverage = [], []
     for delay in policy["delays_hours"]:
         current = weather_snapshots(observations, targets, delay, policy["max_age_hours"])
+        if include_unverified:
+            current = snapshot_quality(current, observations)
         current["delay_hours"] = delay
         snapshots.append(current)
         current["month"] = current.hour.dt.tz_convert(TIMEZONE).dt.strftime("%Y-%m")
@@ -219,12 +295,28 @@ def audit_weather(
                     **{f"{v}_hours": int(group[v].notna().sum()) for v in WEATHER_VALUES},
                 }
             )
+            if include_unverified:
+                good_fields, unverified_fields = [], []
+                for variable in WEATHER_VALUES:
+                    good = group[variable + "_quality"].eq("good")
+                    unverified = group[variable + "_quality"].eq("unverified")
+                    good_fields.append(good)
+                    unverified_fields.append(unverified)
+                    coverage[-1][f"{variable}_good_hours"] = int(good.sum())
+                    coverage[-1][f"{variable}_unverified_hours"] = int(unverified.sum())
+                coverage[-1]["complete_good_hours"] = int(
+                    pd.concat(good_fields, axis=1).all(axis=1).sum()
+                )
+                coverage[-1]["complete_unverified_hours"] = int(
+                    (complete & pd.concat(unverified_fields, axis=1).any(axis=1)).sum()
+                )
     for relative, expected in before.items():
         if sha256(root / relative) != expected:
             raise ValueError(f"Weather input/source changed during audit: {relative}")
     audit_id = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid4().hex[:6]
-    output = root / "reports/weather" / audit_id
-    artifact = root / "artifacts/weather" / audit_id
+    stage = "weather_policy" if include_unverified else "weather"
+    output = root / "reports" / stage / audit_id
+    artifact = root / "artifacts" / stage / audit_id
     output.mkdir(parents=True)
     artifact.mkdir(parents=True)
     observations.to_parquet(artifact / "observations.parquet", index=False)
@@ -269,6 +361,6 @@ def audit_weather(
         "test_metrics": None,
     }
     write_json(output / "metrics.json", result)
-    write_json(root / "reports/latest_weather.json", result)
+    write_json(root / "reports" / f"latest_{stage}.json", result)
     print(f"Weather audit: {audit_id}; {len(observations):,} core observations; no model fits")
     return result

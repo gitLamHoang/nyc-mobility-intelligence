@@ -1,5 +1,12 @@
 # Changelog
 
+## September 28, 2026 · conditional weather ablation
+
+- Added `weather-ablation` and executed the six-fit protocol frozen in `95439e9`, using fresh per-fold preprocessing, unchanged temporal controls and 30 quality-aware weather inputs. Every 559,370 validation target is retained with native missing values; no control refits, expanded search or May evaluation.
+- The primary three-hour bundle increases pooled MAE 2.735676% to 3.796854; six-hour sensitivity increases it 2.317405% to 3.781396. Both worsen monthly MAE and pooled RMSE. Sparse/zero-target effects vary; the aggregate-improvement hypothesis fails. Published all outcomes and retained serving unchanged.
+- Added independent four-metric/slice/daily/contrast verification, exact six-attempt and report-hash checks, a visually inspected figure and 47 behavioral tests. All 534 tests and Ruff pass. Thirty-seven prior files remain unchanged, full predictions remain ignored, and no dependencies were added.
+- Froze both weather-versus-temporal uncertainty contrasts before resampling, with 10,000 paired replicates at 7/1/14-day blocks and nominal family correction. No intervals computed today. Historical publication and newer-source quality semantics remain unverified; no live-availability or causal claim.
+
 ## September 27, 2026 · versioned weather quality and feature preparation
 
 - Preserved the strict NOAA audit and added a separate documented-source policy retaining 8,886 additional core values as explicitly unverified. No new official passed-check semantics were found. Three-hour April complete coverage becomes 717/717/642 of 720 hours for LaGuardia/JFK/Central Park; all rely on unverified readings. Precipitation and suspect/calculated values remain excluded.

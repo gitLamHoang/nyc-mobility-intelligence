@@ -10,12 +10,12 @@ Python handles the forecasting pipeline; TypeScript, SQL and CSS turn its eviden
 |---|---|
 | 23,263,775 accepted pickups ingested from six official months | A real acquisition, quality-control and aggregation pipeline; May remains excluded from model evaluation |
 | 559,370 February–April validation zone-hours | Expanding chronological evaluation; original squared-error boosting MAE 3.69295 versus weekly baseline 5.10423 |
-| Small gains and failed hypotheses published | Borough context improves pooled MAE by 0.416% but worsens sparse-zone errors; no automatic promotion |
+| Small gains and failed hypotheses published | Borough context improves MAE by 0.416%; adding weather worsens it by 2.32–2.74%; no automatic promotion |
 | Local API, browser demo and automated checks | Working paths from data to prediction and inspection; no claim of customer deployment |
 
 **Try the product locally:** install Node.js 24.12+, then run `cd web && npm ci && npm run dev`. See the [one-minute walkthrough](docs/EXPLORER.md). The demo displays April 7–8 validation observations, not live forecasts. Operational user value has not yet been validated.
 
-**Research status:** active through October 13, 2026. Data quality, walk-forward validation, latency sensitivity, bounded XGBoost/borough comparisons, a local API and interactive visualization are implemented. Weather ablation, further interpretation and operational monitoring remain open. The May test stays sealed until the documented final freeze. See [ROADMAP.md](ROADMAP.md).
+**Research status:** active through October 13, 2026. Data quality, walk-forward validation, latency sensitivity, bounded XGBoost/borough/weather comparisons, a local API and interactive visualization are implemented. Weather uncertainty, further interpretation and operational monitoring remain open. The May test stays sealed until the documented final freeze. See [ROADMAP.md](ROADMAP.md).
 
 [![Historical April demand explorer with an interactive map and neighborhood trace](docs/images/explorer.png)](https://gitlamhoang.github.io/nyc-mobility-intelligence/)
 
@@ -131,13 +131,23 @@ uv run nyc-mobility weather-audit
 uv run python scripts/verify_weather.py
 ```
 
-Three official stations supply 14,655 development observations. The strict rule accepts no April features. A separate [quality sensitivity](reports/WEATHER_POLICY_REVIEW.md) explicitly labels newer readings unverified and prepares 30 predictors without losing validation targets. Its [six-fit comparison protocol](docs/WEATHER_ABLATION_PROTOCOL.md) is frozen; weather models have not yet been fitted. Historical archive availability remains unverified. Exact reproduction requires pinned ignored snapshots because NOAA's annual URLs can change.
+Three official stations supply 14,655 development observations. The strict rule accepts no April features. A separate [quality sensitivity](reports/WEATHER_POLICY_REVIEW.md) explicitly labels newer readings unverified and prepares 30 predictors without losing validation targets. The [six-fit comparison](reports/WEATHER_ABLATION_REVIEW.md) is complete: adding weather worsens pooled MAE by 2.735676% at three hours and 2.317405% at six hours, with regressions in every validation month. Historical archive availability remains unverified. Exact reproduction requires pinned ignored snapshots because NOAA's annual URLs can change.
 
 ```bash
 uv run nyc-mobility weather-audit --protocol configs/weather_inputs_v2.toml
 uv run nyc-mobility weather-prepare
 uv run python scripts/verify_weather_policy.py
 ```
+
+The separate [weather ablation](reports/WEATHER_ABLATION_REVIEW.md) preserves missing values, quality indicators and all shared targets:
+
+```bash
+OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 uv run nyc-mobility weather-ablation
+uv run python scripts/verify_weather_ablation.py reports/weather_ablation/<run-id>
+uv run python scripts/plot_weather_ablation.py reports/weather_ablation/<run-id>
+```
+
+Fitting requires cached pinned weather inputs and original ignored latency controls. The plot uses tracked summaries alone. Both weather candidates worsen MAE and RMSE; they are not promoted. The [two-contrast uncertainty protocol](docs/WEATHER_UNCERTAINTY_PROTOCOL.md) is frozen for the next no-fit analysis. No weather intervals or May results are claimed.
 
 ## Data and evaluation contract
 

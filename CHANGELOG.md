@@ -1,8 +1,15 @@
 # Changelog
 
+## October 2, 2026 · paired weather uncertainty
+
+- Added `weather-uncertainty` and executed the protocol frozen in `4ba1b30`: two contrasts, 10,000 paired replicates per 7/1/14-day setting, exact DST weights and nominal two-contrast Bonferroni allocation. Reads only tracked daily/metric summaries; no models fitted or target tables loaded.
+- Three-hour weather's primary adjusted MAE interval is [+0.063437, +0.142011]; six-hour weather's is [+0.055109, +0.119552]. Both remain positive across all settings, reinforcing the negative aggregate result without causal, future-performance or live-availability claims. No promotion or May evaluation.
+- Independently checked all six comparisons and 712 daily summaries, reproduced every draw array and CSV byte in isolation, and preserved 50 previous files. Added a visually reviewed figure and 46 behavioral tests; all 580 tests and Ruff pass. Raw/model files and draw arrays stay ignored; no dependencies added.
+- Updated the public-facing evidence and next development priorities. Rechecked the public explorer: HTTP 200 and exact 495,546-byte export match before the October 3 account-link deadline.
+
 ## September 28, 2026 · conditional weather ablation
 
-- Added `weather-ablation` and executed the six-fit protocol frozen in `95439e9`, using fresh per-fold preprocessing, unchanged temporal controls and 30 quality-aware weather inputs. Every 559,370 validation target is retained with native missing values; no control refits, expanded search or May evaluation.
+- Added `weather-ablation` and executed the six-fit protocol frozen in `95439e9`, using fresh per-fold preprocessing, unchanged temporal controls and 30 quality-aware weather inputs. All 559,370 validation targets are retained with native missing values; no control refits, expanded search or May evaluation.
 - The primary three-hour bundle increases pooled MAE 2.735676% to 3.796854; six-hour sensitivity increases it 2.317405% to 3.781396. Both worsen monthly MAE and pooled RMSE. Sparse/zero-target effects vary; the aggregate-improvement hypothesis fails. Published all outcomes and retained serving unchanged.
 - Added independent four-metric/slice/daily/contrast verification, exact six-attempt and report-hash checks, a visually inspected figure and 47 behavioral tests. All 534 tests and Ruff pass. Thirty-seven prior files remain unchanged, full predictions remain ignored, and no dependencies were added.
 - Froze both weather-versus-temporal uncertainty contrasts before resampling, with 10,000 paired replicates at 7/1/14-day blocks and nominal family correction. No intervals computed today. Historical publication and newer-source quality semantics remain unverified; no live-availability or causal claim.

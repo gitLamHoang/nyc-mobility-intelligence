@@ -15,7 +15,7 @@ Python handles the forecasting pipeline; TypeScript, SQL and CSS turn its eviden
 
 **Try the product locally:** install Node.js 24.12+, then run `cd web && npm ci && npm run dev`. See the [one-minute walkthrough](docs/EXPLORER.md). The demo displays April 7–8 validation observations, not live forecasts. Operational user value has not yet been validated.
 
-**Research status:** active through October 13, 2026. Data quality, walk-forward validation, latency sensitivity, bounded XGBoost/borough/weather comparisons, a local API and interactive visualization are implemented. Weather uncertainty, further interpretation and operational monitoring remain open. The May test stays sealed until the documented final freeze. See [ROADMAP.md](ROADMAP.md).
+**Research status:** active through October 13, 2026. Data quality, walk-forward validation, latency sensitivity, bounded XGBoost/borough/weather comparisons, a local API and interactive visualization are implemented. Weather uncertainty is complete; further interpretation and operational monitoring remain open. The May test stays sealed until the documented final freeze. See [ROADMAP.md](ROADMAP.md).
 
 [![Historical April demand explorer with an interactive map and neighborhood trace](docs/images/explorer.png)](https://gitlamhoang.github.io/nyc-mobility-intelligence/)
 
@@ -147,7 +147,17 @@ uv run python scripts/verify_weather_ablation.py reports/weather_ablation/<run-i
 uv run python scripts/plot_weather_ablation.py reports/weather_ablation/<run-id>
 ```
 
-Fitting requires cached pinned weather inputs and original ignored latency controls. The plot uses tracked summaries alone. Both weather candidates worsen MAE and RMSE; they are not promoted. The [two-contrast uncertainty protocol](docs/WEATHER_UNCERTAINTY_PROTOCOL.md) is frozen for the next no-fit analysis. No weather intervals or May results are claimed.
+Fitting requires cached pinned weather inputs and original ignored latency controls. The plot uses tracked summaries alone. Both weather candidates worsen MAE and RMSE; they are not promoted. The [paired uncertainty follow-up](reports/WEATHER_UNCERTAINTY_REVIEW.md) retains higher weather error across all declared block lengths. Primary adjusted MAE-difference intervals (weather minus temporal, 3h / 6h) are [+0.063437, +0.142011] and [+0.055109, +0.119552]. May remains sealed.
+
+The [weather uncertainty analysis](reports/WEATHER_UNCERTAINTY_REVIEW.md) reproduces from tracked summaries alone:
+
+```bash
+uv run nyc-mobility weather-uncertainty
+uv run python scripts/verify_weather_uncertainty.py reports/weather_uncertainty/<run-id>
+uv run python scripts/plot_weather_uncertainty.py reports/weather_uncertainty/<run-id>
+```
+
+Both weather variants remain worse under 1/7/14-day resampling, with no model fitting or test access. The intervals are conditional on the historical archive and fitted models; they do not establish real-time availability or future performance.
 
 ## Data and evaluation contract
 

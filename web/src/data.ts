@@ -85,6 +85,22 @@ export function summarize(d: Demo, hour: number, indices: number[], model: Model
       : 0,
   };
 }
+export function forecastMisses(d: Demo, hour: number, indices: number[], model: Model) {
+  const column = d.columns.indexOf(model);
+  return indices
+    .map((zoneIndex) => {
+      const values = d.hours[hour]!.values[zoneIndex]!;
+      const actual = values[0]!,
+        forecast = values[column]!;
+      return { zoneIndex, actual, forecast, error: forecast - actual };
+    })
+    .sort(
+      (a, b) =>
+        Math.abs(b.error) - Math.abs(a.error) ||
+        d.zones[a.zoneIndex]!.id - d.zones[b.zoneIndex]!.id,
+    )
+    .slice(0, 5);
+}
 export function color(value: number, max: number): string {
   const t = max > 0 ? Math.sqrt(Math.max(0, Math.min(1, value / max))) : 0;
   const a = [225, 235, 219],

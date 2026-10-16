@@ -419,6 +419,63 @@ h4 {
   overflow: hidden;
   clip-path: inset(50%);
 }
+.misses {
+  border-top: 1px solid #dbe3d3;
+  padding: 24px 28px;
+}
+.misses h3 {
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+.misses p,
+.misses caption {
+  font-size: 12px;
+  color: #52634f;
+}
+.misses-scroll {
+  overflow-x: auto;
+}
+.misses table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 510px;
+  font-size: 13px;
+}
+.misses caption {
+  text-align: left;
+  padding: 4px 0 12px;
+}
+.misses th,
+.misses td {
+  border-bottom: 1px solid #dbe3d3;
+  padding: 10px 8px;
+  text-align: right;
+  font-weight: 400;
+}
+.misses th:first-child {
+  text-align: left;
+}
+.misses thead th {
+  font-size: 11px;
+  color: #52634f;
+}
+.misses button {
+  border: 0;
+  background: transparent;
+  color: #17675d;
+  text-align: left;
+  padding: 4px;
+  border-radius: 4px;
+}
+.misses button:hover,
+.misses button[aria-pressed='true'] {
+  background: #e7ecdf;
+}
+.misses button span {
+  display: block;
+  color: #52634f;
+  font-size: 10px;
+}
 .context {
   display: grid;
   grid-template-columns: 1.35fr 1fr 1fr 1fr;

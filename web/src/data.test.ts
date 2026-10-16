@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { parseDemo, zoneIndices, summarize, color } from './data.ts';
+import { parseDemo, zoneIndices, summarize, forecastMisses, color } from './data.ts';
 const raw = JSON.parse(readFileSync(new URL('../public/data/demo.json', import.meta.url), 'utf8'));
 test('published export has complete aligned real observations', () => {
   const d = parseDemo(raw);
@@ -52,4 +52,35 @@ test('empty filter is safe and colors clamp out-of-range values', () => {
   assert.deepEqual(summarize(d, 0, [], 'borough_context'), { actual: 0, forecast: 0, mae: 0 });
   assert.equal(color(0, 0), color(-5, 10));
   assert.equal(color(50, 10), color(10, 10));
+});
+test('ranks only the selected zones by absolute error and retains its direction', () => {
+  const d = parseDemo(structuredClone(raw));
+  d.hours[0]!.values[0] = [10, 4, 10, 0];
+  d.hours[0]!.values[1] = [0, 8, 0, 0];
+  d.hours[0]!.values[2] = [0, 100, 0, 0];
+  assert.deepEqual(forecastMisses(d, 0, [0, 1], 'hist_gradient_boosting'), [
+    { zoneIndex: 1, actual: 0, forecast: 8, error: 8 },
+    { zoneIndex: 0, actual: 10, forecast: 4, error: -6 },
+  ]);
+  assert.equal(forecastMisses(d, 0, [0], 'borough_context')[0]!.error, 0);
+  assert.deepEqual(forecastMisses(d, 0, [], 'previous_week_168h'), []);
+});
+test('miss ranking follows the chosen hour and breaks ties by zone ID', () => {
+  const d = parseDemo(structuredClone(raw));
+  const indices = [0, 1, 2, 3, 4, 5];
+  indices.forEach((i) => {
+    d.hours[1]!.values[i] = [10, 10, 10, 10];
+  });
+  d.hours[1]!.values[5] = [10, 15, 10, 10];
+  const ranked = forecastMisses(d, 1, [...indices].reverse(), 'hist_gradient_boosting');
+  assert.equal(ranked.length, 5);
+  assert.equal(ranked[0]!.zoneIndex, 5);
+  assert.deepEqual(
+    ranked.slice(1).map((row) => d.zones[row.zoneIndex]!.id),
+    indices
+      .slice(0, 5)
+      .map((i) => d.zones[i]!.id)
+      .sort((a, b) => a - b)
+      .slice(0, 4),
+  );
 });

@@ -1,10 +1,13 @@
 # Project state
 
-Updated: October 2, 2026 (America/Los_Angeles), paired weather uncertainty completed and independently reproduced.
+Updated: October 16, 2026 (America/Los_Angeles), explorer forecast-miss ranking and simpler setup documentation.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Verified
+
+- October 16 explorer increment: added the five largest absolute forecast misses for the current hour, borough, and model. Rows show recorded counts, estimates, and under/over direction; selection opens the matching zone trace. Ranking uses the existing April snapshot with no data changes or new fits.
+- Reduced the README to demo setup, code structure, a measured-results table, and the data contract. Moved the existing Python and study commands to [REPRODUCING.md](docs/REPRODUCING.md). Six browser-data tests, strict TypeScript, production build, formatting, two Python export checks, and actual browser filter/row/timeline interactions pass.
 
 - October 2 `weather-uncertainty`: completed the two-contrast protocol frozen in `4ba1b30`, using 712 tracked daily summaries, 10,000 paired replicates per 7/1/14-day block setting and actual DST weights. Primary adjusted absolute-MAE intervals are [+0.063437, +0.142011] for three-hour weather minus temporal and [+0.055109, +0.119552] for six-hour weather minus temporal. Both remain positive in all settings. The fixed weather bundle's aggregate-improvement hypothesis remains unsupported; no model promotion or May evaluation.
 - Run `20261003T040022Z-f821f7` publishes all six comparisons with 97.5% per-contrast intervals for the nominal 95% two-contrast family; relative intervals remain marginal. Historical weather availability, quality semantics, RMSE and sparse-demand limitations remain. No models fitted or target tables loaded. See [WEATHER_UNCERTAINTY_REVIEW.md](reports/WEATHER_UNCERTAINTY_REVIEW.md).

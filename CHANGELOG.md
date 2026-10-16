@@ -1,5 +1,11 @@
 # Changelog
 
+## October 16, 2026 · find forecast misses
+
+- Added a five-row forecast-error ranking for the selected hour, borough, and model. Each row shows recorded pickups, the estimate, and under/over direction. Selecting a row opens the zone trace.
+- Shortened the README and moved the existing Python reproduction steps into one guide. Data, measured scores, frozen protocols, and the May test seal are unchanged.
+- Verified six web tests, TypeScript, production build, formatting, two Python export checks, and browser row/filter/timeline interactions. No dependencies added.
+
 ## October 2, 2026 · paired weather uncertainty
 
 - Added `weather-uncertainty` and executed the protocol frozen in `4ba1b30`: two contrasts, 10,000 paired replicates per 7/1/14-day setting, exact DST weights and nominal two-contrast Bonferroni allocation. Reads only tracked daily/metric summaries; no models fitted or target tables loaded.

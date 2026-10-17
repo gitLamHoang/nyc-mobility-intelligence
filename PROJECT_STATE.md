@@ -1,8 +1,14 @@
 # Project state
 
-Updated: October 16, 2026 (America/Los_Angeles), explorer forecast-miss ranking and simpler setup documentation.
+Updated: October 17, 2026 (America/Los_Angeles), shareable explorer URLs.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
+
+## Current handoff
+
+Shareable explorer URLs preserve hour, borough, model, metric, and stable zone ID; the address and share link update on selection and restore on reload. Invalid parameters fall back within the selected borough. Nine web tests, strict TypeScript, build, formatting, and browser deep-link/row/share/reload flows pass. No data changes or fits.
+
+Next small slice: make the 48-hour chart interactive so a reader can select a plotted hour and inspect its map and miss ranking; include keyboard access and a targeted browser smoke test. Keep the existing historical scope and sealed May evaluation.
 
 ## Verified
 
@@ -40,7 +46,7 @@ Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public �
 - Best validation MAE: histogram gradient boosting 3.47999; weekly baseline 4.30547 (19.17% reduction). RMSE 9.69976, R² 0.97157. SMAPE 104.05% is materially worse than weekly baseline 57.40%.
 - Rendered and visually inspected real temporal EDA and demand/error maps using official geometries. Fixed loading of the official ZIP's nested shapefile directory.
 - HTTP API smoke test with 168 real prior hours: zone 237, April 8 00:00 NYC target, prediction 26.63416 vs actual 31. API matched offline output exactly; short history returned HTTP 422.
-- Daily continuation active at 09:00 America/Los_Angeles, September 14–October 13 inclusive. Automation ID: `build-nyc-mobility-intelligence`; stop/pause instructions and an October 13 end limit are saved.
+- Daily continuation authorized from October 17, 2026 at 10:00 America/Los_Angeles. The user replaced the expired October 13 stop instruction. Automation ID: `build-nyc-mobility-intelligence`; each run has a shared-account usage guard.
 - September 14 `audit-quality`: all-column exact duplicate search found zero excess rows among 19,179,942 eligible December–April pickups. Five alternate-label baseline scores exactly equal the original scores. No canonical labels or model artifacts were changed.
 - Reporting-volume audit: zero citywide zero-count hours; 19 overlapping city/vendor flags. Four city flags are February 23 07:00–10:00 NYC during independently documented blizzard/travel restrictions. A localized Vendor 7 anomaly on January 5–6 remains unresolved. See [DATA_QUALITY_REVIEW.md](reports/DATA_QUALITY_REVIEW.md).
 - Densification now rejects silent count loss, invalid counts and overflow. The real six-month preparation rerun reproduces the original Parquet byte-for-byte. May was processed only for unchanged ingestion verification, not model evaluation.

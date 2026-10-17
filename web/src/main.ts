@@ -1,6 +1,7 @@
 import './style.css';
 import { color, forecastMisses, modelNames, parseDemo, summarize, zoneIndices } from './data.ts';
 import type { Model } from './data.ts';
+import { readView, viewURL } from './view.ts';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const timeFmt = new Intl.DateTimeFormat('en-US', {
@@ -18,16 +19,11 @@ async function start() {
   const response = await fetch(`${import.meta.env.BASE_URL}data/demo.json`);
   if (!response.ok) throw new Error('The study could not be loaded. Please reload.');
   const d = parseDemo(await response.json());
-  let hour = 16,
-    borough = 'All boroughs',
-    model: Model = 'hist_gradient_boosting',
-    metric = 'demand';
-  let selected = d.zones.findIndex((z) => z.name === 'Midtown Center');
-  if (selected < 0) selected = 0;
+  let { hour, borough, model, metric, selected } = readView(new URL(location.href), d);
   app.innerHTML = `
     <header><a class="brand" href="./"><span class="brand-mark">M<span>↗</span></span><span>NYC MOBILITY<br><b>INTELLIGENCE</b></span></a><nav><a href="https://github.com/gitLamHoang/nyc-mobility-intelligence">Code & methodology ↗</a><a href="https://github.com/gitLamHoang">Built by Lam Phan ↗</a></nav></header>
     <main><section class="intro"><div><p class="eyebrow"><span class="dot"></span> OPEN MOBILITY LAB · HISTORICAL EXPLORER</p><h1>A city in motion.<br><span>A forecast you can inspect.</span></h1><p class="lede">Where does taxi demand concentrate—and where do forecasts miss? Explore recorded pickups and model estimates across 262 New York City zones.</p></div><aside class="study-note"><span class="eyebrow">THE STUDY WINDOW</span><strong>07—08 APR <span>2026</span></strong><p>48 hours · 262 zones · official NYC TLC data</p><span class="pill">Historical validation · not a live forecast</span></aside></section>
-    <section class="workspace" aria-label="Demand explorer"><div class="explorer-toolbar"><div><p class="eyebrow">01 / EXPLORE THE CITY</p><h2>Every neighborhood has a rhythm.</h2></div><div class="controls"><label>Borough<select id="borough">${['All boroughs', ...new Set(d.zones.map((z) => z.borough))].map((b) => `<option>${esc(b)}</option>`).join('')}</select></label><label>Compare model<select id="model">${Object.entries(
+    <section class="workspace" aria-label="Demand explorer"><div class="explorer-toolbar"><div><p class="eyebrow">01 / EXPLORE THE CITY</p><h2>Every neighborhood has a rhythm.</h2></div><div class="controls"><a id="share-view" class="text-link">Link to this view ↗</a><label>Borough<select id="borough">${['All boroughs', ...new Set(d.zones.map((z) => z.borough))].map((b) => `<option>${esc(b)}</option>`).join('')}</select></label><label>Compare model<select id="model">${Object.entries(
       modelNames,
     )
       .map(([v, n]) => `<option value="${v}">${n}</option>`)
@@ -103,6 +99,16 @@ async function start() {
         return `<tr><th scope="row"><button data-miss-zone="${zoneIndex}" aria-pressed="${zoneIndex === selected}">${esc(zone.name)}<span>${esc(zone.borough)} · Zone ${zone.id}</span></button></th><td>${fmt.format(actual)}</td><td>${forecast.toFixed(1)}</td><td>${difference}</td></tr>`;
       })
       .join('');
+    (el('borough') as HTMLSelectElement).value = borough;
+    (el('model') as HTMLSelectElement).value = model;
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-metric]')
+      .forEach((button) =>
+        button.setAttribute('aria-pressed', String(button.dataset.metric === metric)),
+      );
+    const url = viewURL(new URL(location.href), d, { hour, borough, model, metric, selected });
+    (el('share-view') as HTMLAnchorElement).href = url.href;
+    if (url.href !== location.href) history.replaceState(null, '', url);
     (el('hour') as HTMLInputElement).value = String(hour);
     el('hour').setAttribute('aria-valuetext', `${time} New York time`);
     (el('previous') as HTMLButtonElement).disabled = hour === 0;
@@ -150,13 +156,14 @@ async function start() {
   });
   document.querySelectorAll<HTMLButtonElement>('[data-metric]').forEach((button) =>
     button.addEventListener('click', () => {
-      metric = button.dataset.metric!;
-      document
-        .querySelectorAll('[data-metric]')
-        .forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+      metric = button.dataset.metric as 'demand' | 'error';
       render();
     }),
   );
+  window.addEventListener('popstate', () => {
+    ({ hour, borough, model, metric, selected } = readView(new URL(location.href), d));
+    render();
+  });
   render();
 }
 start().catch((error) => {

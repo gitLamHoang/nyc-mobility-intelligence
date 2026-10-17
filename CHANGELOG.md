@@ -1,5 +1,10 @@
 # Changelog
 
+## October 17, 2026 · share explorer views
+
+- Explorer URLs now preserve hour, borough, model, map measure, and stable taxi-zone ID. The browser address and a share link follow every selection; reload restores the view. Invalid values and zones outside the selected borough fall back safely.
+- Verified nine web tests, strict TypeScript, production build, formatting, and actual browser deep-link, forecast-miss selection, share-link, and reload interactions. No dependencies, data, or model changes.
+
 ## October 16, 2026 · find forecast misses
 
 - Added a five-row forecast-error ranking for the selected hour, borough, and model. Each row shows recorded pickups, the estimate, and under/over direction. Selecting a row opens the zone trace.

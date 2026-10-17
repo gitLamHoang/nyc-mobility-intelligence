@@ -11,6 +11,7 @@ The intended user is a mobility analyst comparing where demand concentrates and 
 3. Compare the temporal model, borough-context candidate and previous-week baseline.
 4. Switch to forecast-error shading, or use **Largest forecast misses** to find the five largest absolute errors for the current hour, borough, and model.
 5. Select a table row to inspect that zone's 48-hour trace. Under means the estimate fell below recorded pickups; over means it exceeded them.
+6. Copy the browser address or the **Link to this view** link. Opening it restores all five view settings; invalid URL values fall back safely. Changes replace the current address without adding a history entry for every slider movement.
 
 The map uses **April 7–8, 2026, New York time**, with 12,576 zone-hours across 262 zones. It is a historical validation demo, not a live prediction service. The metrics above the map describe only the selected hour and borough. The two-day window was selected for demonstration after evaluation and is not a representative performance estimate. Full February–April results are linked separately.
 
@@ -27,7 +28,7 @@ npm run dev
 npm run build
 ```
 
-The browser validates the schema, aligned zone/hour dimensions and finite nonnegative counts before displaying anything. TypeScript tests exercise invalid data, filter/MAE aggregation, and error ranking with direction and stable ties, and Python tests reconcile the snapshot with the tracked hashes and borough SQL summaries. A keyboard-accessible zone selector provides the same selection behavior as the map. GitHub Actions tests and builds the public site before Pages deployment.
+The browser validates the schema, aligned zone/hour dimensions and finite nonnegative counts before displaying anything. TypeScript tests exercise invalid data, filter/MAE aggregation, error ranking with direction and stable ties, and shared-URL round trips and invalid values, and Python tests reconcile the snapshot with the tracked hashes and borough SQL summaries. A keyboard-accessible zone selector provides the same selection behavior as the map. GitHub Actions tests and builds the public site before Pages deployment.
 
 ## Data path and technology choices
 

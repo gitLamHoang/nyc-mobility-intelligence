@@ -1,10 +1,12 @@
 # Project state
 
-Updated: October 17, 2026 (America/Los_Angeles), shareable explorer URLs.
+Updated: October 17, 2026 (America/Los_Angeles), explorer interface polish and copy sharing.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
+
+Interface polish now includes clearer toolbar instructions, larger labels and touch targets, mobile stacking, tabular numbers, keyboard skip navigation, reduced motion, and a copy-link action with success/fallback feedback. Nine tests, TypeScript, build, formatting, desktop and 390px browser checks pass; no page overflow and key controls ≥44px. Source guidance is linked in docs/EXPLORER.md.
 
 Shareable explorer URLs preserve hour, borough, model, metric, and stable zone ID; the address and share link update on selection and restore on reload. Invalid parameters fall back within the selected borough. Nine web tests, strict TypeScript, build, formatting, and browser deep-link/row/share/reload flows pass. No data changes or fits.
 

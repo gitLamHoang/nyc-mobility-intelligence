@@ -21,14 +21,16 @@ async function start() {
   const d = parseDemo(await response.json());
   let { hour, borough, model, metric, selected } = readView(new URL(location.href), d);
   app.innerHTML = `
-    <header><a class="brand" href="./"><span class="brand-mark">M<span>↗</span></span><span>NYC MOBILITY<br><b>INTELLIGENCE</b></span></a><nav><a href="https://github.com/gitLamHoang/nyc-mobility-intelligence">Code & methodology ↗</a><a href="https://github.com/gitLamHoang">Built by Lam Phan ↗</a></nav></header>
+    <a class="skip-link" href="#explorer">Skip to explorer</a><header><a class="brand" href="./"><span class="brand-mark">M<span>↗</span></span><span>NYC MOBILITY<br><b>INTELLIGENCE</b></span></a><nav><a href="https://github.com/gitLamHoang/nyc-mobility-intelligence">Code & methodology ↗</a><a href="https://github.com/gitLamHoang">Built by Lam Phan ↗</a></nav></header>
     <main><section class="intro"><div><p class="eyebrow"><span class="dot"></span> OPEN MOBILITY LAB · HISTORICAL EXPLORER</p><h1>A city in motion.<br><span>A forecast you can inspect.</span></h1><p class="lede">Where does taxi demand concentrate—and where do forecasts miss? Explore recorded pickups and model estimates across 262 New York City zones.</p></div><aside class="study-note"><span class="eyebrow">THE STUDY WINDOW</span><strong>07—08 APR <span>2026</span></strong><p>48 hours · 262 zones · official NYC TLC data</p><span class="pill">Historical validation · not a live forecast</span></aside></section>
-    <section class="workspace" aria-label="Demand explorer"><div class="explorer-toolbar"><div><p class="eyebrow">01 / EXPLORE THE CITY</p><h2>Every neighborhood has a rhythm.</h2></div><div class="controls"><a id="share-view" class="text-link">Link to this view ↗</a><label>Borough<select id="borough">${['All boroughs', ...new Set(d.zones.map((z) => z.borough))].map((b) => `<option>${esc(b)}</option>`).join('')}</select></label><label>Compare model<select id="model">${Object.entries(
+    <section id="explorer" class="workspace" aria-label="Demand explorer" tabindex="-1"><div class="explorer-toolbar"><div><p class="eyebrow">01 / EXPLORE THE CITY</p><h2>Explore demand. Inspect the misses.</h2><p class="toolbar-help">Choose a borough and model, then select a zone on the map or in the table.</p></div><div class="controls"><label>Borough<select id="borough">${['All boroughs', ...new Set(d.zones.map((z) => z.borough))].map((b) => `<option>${esc(b)}</option>`).join('')}</select></label><label>Compare model<select id="model">${Object.entries(
       modelNames,
     )
       .map(([v, n]) => `<option value="${v}">${n}</option>`)
-      .join('')}</select></label></div></div>
-    <div class="stats" aria-live="polite"><div><span>RECORDED PICKUPS</span><strong id="actual"></strong></div><div><span>MODEL ESTIMATE</span><strong id="forecast"></strong></div><div><span>MEAN ABSOLUTE ERROR / ZONE</span><strong id="mae"></strong></div><p>Selected hour & borough.<br>Counts describe historical pickups.</p></div>
+      .join(
+        '',
+      )}</select></label><div class="share-control"><button id="copy-view" type="button">Copy view link</button><a id="share-view" class="text-link">Open view link ↗</a><span id="share-status" role="status"></span></div></div></div>
+    <div class="stats" aria-live="polite"><div><span>RECORDED PICKUPS</span><strong id="actual"></strong></div><div><span>MODEL ESTIMATE</span><strong id="forecast"></strong></div><div><span>AVG. ABSOLUTE ERROR / ZONE</span><strong id="mae"></strong></div><p>Selected hour & borough.<br>Counts describe historical pickups.</p></div>
     <div class="explorer-grid"><div class="map-panel"><div class="map-top"><div class="segmented" aria-label="Map measure"><button data-metric="demand" aria-pressed="true">Pickups</button><button data-metric="error" aria-pressed="false">Forecast error</button></div><span class="map-hint">Select a zone to inspect →</span></div><svg id="map" viewBox="${d.viewBox.join(' ')}" role="img" aria-label="New York City taxi zone choropleth">${d.zones.map((z, i) => `<path data-zone="${i}" d="${z.path}" fill-rule="evenodd"><title>${esc(z.name)} · ${esc(z.borough)}</title></path>`).join('')}</svg><div class="legend"><span id="legend-label">Fewer pickups</span><span class="gradient"></span><span id="legend-max"></span></div><p class="map-caption">NYC TLC taxi zones · simplified display geometry · scale uses square-root color intensity</p></div>
     <aside class="detail-panel"><p class="eyebrow">02 / INSPECT A NEIGHBORHOOD</p><label class="zone-label">Select a zone<select id="zone"></select></label><p id="zone-borough" class="zone-borough"></p><h3 id="zone-name"></h3><div class="zone-stats"><div><span>Recorded</span><strong id="zone-actual"></strong></div><div><span>Estimate</span><strong id="zone-forecast"></strong></div><div><span>Abs. error</span><strong id="zone-error"></strong></div></div><h4>Its 48-hour rhythm</h4><svg id="chart" viewBox="0 0 360 150" role="img" aria-label="Recorded and estimated hourly pickups for the selected zone"></svg><div class="chart-legend"><span>● Recorded pickups</span><span>— Model estimate</span></div><p class="detail-note">A retrospective comparison: these models were evaluated on April data after training only on earlier months. Values are hourly counts, not individual journeys.</p><a class="text-link" href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/docs/EXPLORER.md">How this demo was built ↗</a></aside></div>
     <div class="timeline"><div><span class="eyebrow">NEW YORK LOCAL TIME</span><strong id="time-label"></strong></div><button id="previous" aria-label="Previous hour">←</button><label class="slider-label" for="hour">Hour in study window</label><input id="hour" type="range" min="0" max="47" value="16" aria-label="Hour in study window"><button id="next" aria-label="Next hour">→</button><span class="timeline-end">48 HOURS</span></div>
@@ -40,6 +42,7 @@ async function start() {
     el(id).textContent = value;
   };
   function render() {
+    text('share-status', '');
     const indices = zoneIndices(d, borough),
       active = new Set(indices),
       column = d.columns.indexOf(model);
@@ -114,6 +117,18 @@ async function start() {
     (el('previous') as HTMLButtonElement).disabled = hour === 0;
     (el('next') as HTMLButtonElement).disabled = hour === d.hours.length - 1;
   }
+  el('copy-view').addEventListener('click', async () => {
+    const button = el('copy-view') as HTMLButtonElement;
+    button.disabled = true;
+    try {
+      await navigator.clipboard.writeText((el('share-view') as HTMLAnchorElement).href);
+      text('share-status', 'Link copied. Ready to share.');
+    } catch {
+      text('share-status', 'Copy the link from your address bar.');
+    } finally {
+      button.disabled = false;
+    }
+  });
   el('borough').addEventListener('change', (e) => {
     borough = (e.target as HTMLSelectElement).value;
     render();
@@ -132,7 +147,12 @@ async function start() {
       selected = Number(button.dataset.missZone);
       render();
       el('zone').focus({ preventScroll: true });
-      el('zone').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      el('zone').scrollIntoView({
+        block: 'nearest',
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'instant'
+          : 'smooth',
+      });
     }
   });
   el('hour').addEventListener('input', (e) => {

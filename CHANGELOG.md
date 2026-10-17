@@ -1,5 +1,11 @@
 # Changelog
 
+## October 17, 2026 · clearer explorer controls
+
+- Applied Vercel interface and UI UX Pro Max guidance: clearer toolbar instructions, larger labels and touch targets, mobile control stacking, tabular numbers, keyboard skip navigation, and reduced motion.
+- Added a copy-view-link action with accessible success and manual-copy fallback feedback.
+- Nine web tests, strict TypeScript, build, formatting and desktop/mobile browser checks pass. At 390px there is no page overflow; key controls are at least 44px high. Verified copy success, keyboard skip, hour changes, and URL updates. No dependencies added.
+
 ## October 17, 2026 · share explorer views
 
 - Explorer URLs now preserve hour, borough, model, map measure, and stable taxi-zone ID. The browser address and a share link follow every selection; reload restores the view. Invalid values and zones outside the selected borough fall back safely.

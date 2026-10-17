@@ -25,7 +25,7 @@ Open the local URL printed by Vite. No Python environment, raw trip download, or
 2. Compare the temporal model, borough-context candidate, and previous-week baseline.
 3. Switch the map to forecast error, or use **Largest forecast misses** to find the five largest absolute errors.
 4. Select a table row or map zone to inspect its 48-hour trace. The table states whether the forecast was under or over the recorded count.
-5. Copy the browser address or **Link to this view** to share the selected hour, borough, model, map measure, and zone.
+5. Use **Copy view link** or copy the browser address to share the selected hour, borough, model, map measure, and zone.
 
 This is a historical validation demo. The two-day view illustrates behavior; it does not estimate full-study performance or provide live forecasts.
 

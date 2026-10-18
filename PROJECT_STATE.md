@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 17, 2026 (America/Los_Angeles), explorer interface polish and copy sharing.
+Updated: October 18, 2026 (America/Los_Angeles), interactive chart hour selection.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-Interface polish now includes clearer toolbar instructions, larger labels and touch targets, mobile stacking, tabular numbers, keyboard skip navigation, reduced motion, and a copy-link action with success/fallback feedback. Nine tests, TypeScript, build, formatting, desktop and 390px browser checks pass; no page overflow and key controls ≥44px. Source guidance is linked in docs/EXPLORER.md.
+The 48-hour zone chart now selects the nearest hour on click/tap and supports arrow keys, Home and End with visible keyboard focus and a descriptive slider value. Selected recorded/estimated points are marked. Selection updates the map, statistics, miss ranking, timeline and share URL through the existing render path; reload restores the selected hour.
 
-Shareable explorer URLs preserve hour, borough, model, metric, and stable zone ID; the address and share link update on selection and restore on reload. Invalid parameters fall back within the selected borough. Nine web tests, strict TypeScript, build, formatting, and browser deep-link/row/share/reload flows pass. No data changes or fits.
+Verified nine web tests, strict TypeScript, production build, formatting and targeted browser flows: chart click to hour 12, synchronized metrics/ranking/URL, reload restoration, arrow navigation, endpoint clamping and retained chart focus. No dependencies, data or model changes; historical April scope and sealed May evaluation remain.
 
-Next small slice: make the 48-hour chart interactive so a reader can select a plotted hour and inspect its map and miss ranking; include keyboard access and a targeted browser smoke test. Keep the existing historical scope and sealed May evaluation.
+Next small slice: add a compact borough comparison for the selected hour/model so readers can find where errors concentrate before choosing a borough. Reuse existing snapshot aggregation and verify filter synchronization; avoid expanding the data window or fitting models.
 
 ## Verified
 

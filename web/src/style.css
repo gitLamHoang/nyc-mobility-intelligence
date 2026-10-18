@@ -35,7 +35,8 @@ select {
 button:focus-visible,
 a:focus-visible,
 select:focus-visible,
-input:focus-visible {
+input:focus-visible,
+#chart:focus-visible {
   outline: 3px solid #bf723f;
   outline-offset: 4px;
 }
@@ -411,7 +412,14 @@ h4 {
   font-weight: 500;
   margin: 24px 0 6px;
 }
+.chart-help {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #52634f;
+  margin: 0 0 10px;
+}
 #chart {
+  cursor: crosshair;
   display: block;
   width: 100%;
 }

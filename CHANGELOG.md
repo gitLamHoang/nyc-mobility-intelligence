@@ -1,5 +1,11 @@
 # Changelog
 
+## October 18, 2026 · select hours on the zone chart
+
+- The 48-hour trace now selects the nearest hour on click/tap and supports arrow keys, Home and End. Added visible keyboard focus, descriptive slider values and markers for selected recorded/estimated counts.
+- Chart selection updates the map, statistics, miss ranking, timeline and share URL, with reload restoration.
+- Nine web tests, strict TypeScript, production build, formatting and actual browser click/keyboard/boundary/reload checks pass. No dependencies, data or model changes.
+
 ## October 17, 2026 · clearer explorer controls
 
 - Applied Vercel interface and UI UX Pro Max guidance: clearer toolbar instructions, larger labels and touch targets, mobile control stacking, tabular numbers, keyboard skip navigation, and reduced motion.

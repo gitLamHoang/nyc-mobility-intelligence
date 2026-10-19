@@ -1,5 +1,13 @@
 import './style.css';
-import { color, forecastMisses, modelNames, parseDemo, summarize, zoneIndices } from './data.ts';
+import {
+  boroughComparisons,
+  color,
+  forecastMisses,
+  modelNames,
+  parseDemo,
+  summarize,
+  zoneIndices,
+} from './data.ts';
 import type { Model } from './data.ts';
 import { readView, viewURL } from './view.ts';
 const app = document.querySelector<HTMLDivElement>('#app')!;
@@ -31,6 +39,7 @@ async function start() {
         '',
       )}</select></label><div class="share-control"><button id="copy-view" type="button">Copy view link</button><a id="share-view" class="text-link">Open view link ↗</a><span id="share-status" role="status"></span></div></div></div>
     <div class="stats" aria-live="polite"><div><span>RECORDED PICKUPS</span><strong id="actual"></strong></div><div><span>MODEL ESTIMATE</span><strong id="forecast"></strong></div><div><span>AVG. ABSOLUTE ERROR / ZONE</span><strong id="mae"></strong></div><p>Selected hour & borough.<br>Counts describe historical pickups.</p></div>
+    <section class="misses" aria-labelledby="boroughs-title"><h3 id="boroughs-title">Compare boroughs</h3><p>All boroughs at the selected hour, ranked by average absolute error per zone. Total absolute error adds zone misses without cancellation. Select a borough to filter the explorer.</p><button id="all-boroughs" type="button">Show all boroughs</button><div class="misses-scroll"><table><caption id="boroughs-scope"></caption><thead><tr><th scope="col">Borough</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Total abs. error</th><th scope="col">Avg. / zone</th></tr></thead><tbody id="boroughs-rows"></tbody></table></div></section>
     <div class="explorer-grid"><div class="map-panel"><div class="map-top"><div class="segmented" aria-label="Map measure"><button data-metric="demand" aria-pressed="true">Pickups</button><button data-metric="error" aria-pressed="false">Forecast error</button></div><span class="map-hint">Select a zone to inspect →</span></div><svg id="map" viewBox="${d.viewBox.join(' ')}" role="img" aria-label="New York City taxi zone choropleth">${d.zones.map((z, i) => `<path data-zone="${i}" d="${z.path}" fill-rule="evenodd"><title>${esc(z.name)} · ${esc(z.borough)}</title></path>`).join('')}</svg><div class="legend"><span id="legend-label">Fewer pickups</span><span class="gradient"></span><span id="legend-max"></span></div><p class="map-caption">NYC TLC taxi zones · simplified display geometry · scale uses square-root color intensity</p></div>
     <aside class="detail-panel"><p class="eyebrow">02 / INSPECT A NEIGHBORHOOD</p><label class="zone-label">Select a zone<select id="zone"></select></label><p id="zone-borough" class="zone-borough"></p><h3 id="zone-name"></h3><div class="zone-stats"><div><span>Recorded</span><strong id="zone-actual"></strong></div><div><span>Estimate</span><strong id="zone-forecast"></strong></div><div><span>Abs. error</span><strong id="zone-error"></strong></div></div><h4>Its 48-hour rhythm</h4><p id="chart-help" class="chart-help">Select an hour on the chart, or focus it and use the arrow keys. Home and End jump to the first and last hour.</p><svg id="chart" viewBox="0 0 360 150" role="slider" tabindex="0" aria-label="Hour on the zone chart" aria-describedby="chart-help" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="47"></svg><div class="chart-legend"><span>● Recorded pickups</span><span>— Model estimate</span></div><p class="detail-note">A retrospective comparison: these models were evaluated on April data after training only on earlier months. Values are hourly counts, not individual journeys.</p><a class="text-link" href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/docs/EXPLORER.md">How this demo was built ↗</a></aside></div>
     <div class="timeline"><div><span class="eyebrow">NEW YORK LOCAL TIME</span><strong id="time-label"></strong></div><button id="previous" aria-label="Previous hour">←</button><label class="slider-label" for="hour">Hour in study window</label><input id="hour" type="range" min="0" max="47" value="16" aria-label="Hour in study window"><button id="next" aria-label="Next hour">→</button><span class="timeline-end">48 HOURS</span></div>
@@ -92,6 +101,14 @@ async function start() {
     el('chart').innerHTML =
       `<line x1="12" y1="125" x2="348" y2="125" stroke="#d6dfd5"/><line x1="${x}" y1="10" x2="${x}" y2="125" stroke="#b2b9ae" stroke-dasharray="3 3"/><polyline points="${line(0)}" fill="none" stroke="#17675d" stroke-width="2.5"/><polyline points="${line(column)}" fill="none" stroke="#c07039" stroke-width="2" stroke-dasharray="5 3"/><circle cx="${x}" cy="${125 - (values[0]! / peak) * 110}" r="3.5" fill="#17675d"/><circle cx="${x}" cy="${125 - (values[column]! / peak) * 110}" r="3" fill="#c07039"/><text x="12" y="144">Apr 7, midnight</text><text x="255" y="144">Apr 8, 11 PM</text>`;
     const time = timeFmt.format(new Date(d.hours[hour]!.time));
+    text('boroughs-scope', `${time} New York time · ${modelNames[model]} · Filter: ${borough}`);
+    el('boroughs-rows').innerHTML = boroughComparisons(d, hour, model)
+      .map(
+        (row) =>
+          `<tr><th scope="row"><button data-borough="${esc(row.borough)}" aria-pressed="${row.borough === borough}">${esc(row.borough)}<span>${row.zones} zones</span></button></th><td>${fmt.format(row.actual)}</td><td>${row.forecast.toFixed(1)}</td><td>${row.absoluteError.toFixed(1)}</td><td>${row.mae.toFixed(2)}</td></tr>`,
+      )
+      .join('');
+    el('all-boroughs').setAttribute('aria-pressed', String(borough === 'All boroughs'));
     text('time-label', time);
     el('chart').setAttribute('aria-valuenow', String(hour));
     el('chart').setAttribute(
@@ -136,6 +153,20 @@ async function start() {
   });
   el('borough').addEventListener('change', (e) => {
     borough = (e.target as HTMLSelectElement).value;
+    render();
+  });
+  el('boroughs-rows').addEventListener('click', (e) => {
+    const button = (e.target as Element).closest<HTMLButtonElement>('button[data-borough]');
+    if (!button) return;
+    borough = button.dataset.borough!;
+    render();
+    // Restore focus after replacing the table rows, including when their order changes.
+    Array.from(el('boroughs-rows').querySelectorAll<HTMLButtonElement>('button'))
+      .find((row) => row.dataset.borough === borough)
+      ?.focus({ preventScroll: true });
+  });
+  el('all-boroughs').addEventListener('click', () => {
+    borough = 'All boroughs';
     render();
   });
   el('model').addEventListener('change', (e) => {

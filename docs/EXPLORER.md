@@ -7,7 +7,7 @@ The intended user is a mobility analyst comparing where demand concentrates and 
 ## Try it in one minute
 
 1. Move the hour slider from midday to the evening peak.
-2. Choose a borough and a neighborhood using the selectors or map.
+2. Use **Compare boroughs** to compare the selected hour/model across all five boroughs, ranked by average absolute error per zone. Total absolute error sums zone misses without cancellation. Select a borough row to filter the explorer, or use **Show all boroughs** to reset; the borough selector stays synchronized. Choose a neighborhood using the selector or map.
 3. Compare the temporal model, borough-context candidate and previous-week baseline.
 4. Switch to forecast-error shading, or use **Largest forecast misses** to find the five largest absolute errors for the current hour, borough, and model.
 5. Select a table row to inspect that zone's 48-hour trace. Click or tap the chart to select an hour; with chart focus, use arrow keys, Home or End. The map, metrics and miss ranking follow that hour. Under means the estimate fell below recorded pickups; over means it exceeded them.

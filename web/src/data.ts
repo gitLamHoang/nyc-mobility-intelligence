@@ -85,6 +85,20 @@ export function summarize(d: Demo, hour: number, indices: number[], model: Model
       : 0,
   };
 }
+export function boroughComparisons(d: Demo, hour: number, model: Model) {
+  return [...new Set(d.zones.map((z) => z.borough))]
+    .map((borough) => {
+      const indices = zoneIndices(d, borough);
+      const stats = summarize(d, hour, indices, model);
+      return {
+        borough,
+        zones: indices.length,
+        ...stats,
+        absoluteError: stats.mae * indices.length,
+      };
+    })
+    .sort((a, b) => b.mae - a.mae || a.borough.localeCompare(b.borough));
+}
 export function forecastMisses(d: Demo, hour: number, indices: number[], model: Model) {
   const column = d.columns.indexOf(model);
   return indices

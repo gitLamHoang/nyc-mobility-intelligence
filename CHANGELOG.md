@@ -1,5 +1,11 @@
 # Changelog
 
+## October 19, 2026 · compare borough forecast errors
+
+- Added an all-borough comparison for the selected hour/model, ranked by average absolute zone error, with zone counts, recorded/estimated totals and summed absolute errors without cancellation.
+- Borough row selection, dropdown and reset synchronize the map, metrics, zone selector, miss ranking and share URL. Keyboard activation retains row focus; reload restores the filter.
+- Eleven web tests, strict TypeScript, production build, formatting and actual production-preview browser selection/hour/model/reset/keyboard/reload checks pass. No dependencies, data or model changes.
+
 ## October 18, 2026 · select hours on the zone chart
 
 - The 48-hour trace now selects the nearest hour on click/tap and supports arrow keys, Home and End. Added visible keyboard focus, descriptive slider values and markers for selected recorded/estimated counts.

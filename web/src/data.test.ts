@@ -1,7 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { parseDemo, zoneIndices, summarize, forecastMisses, color } from './data.ts';
+import {
+  boroughComparisons,
+  modelNames,
+  parseDemo,
+  zoneIndices,
+  summarize,
+  forecastMisses,
+  color,
+} from './data.ts';
 const raw = JSON.parse(readFileSync(new URL('../public/data/demo.json', import.meta.url), 'utf8'));
 test('published export has complete aligned real observations', () => {
   const d = parseDemo(raw);
@@ -23,6 +31,60 @@ test('aggregation uses per-zone absolute error, not aggregate cancellation', () 
     forecast: 10,
     mae: 5,
   });
+});
+test('borough comparison ranks per-zone errors without cancelling opposing misses', () => {
+  const d = parseDemo(structuredClone(raw));
+  d.zones = d.zones.slice(0, 3).map((z, i) => ({ ...z, borough: i < 2 ? 'Brooklyn' : 'Queens' }));
+  d.hours = [
+    {
+      time: d.hours[0]!.time,
+      values: [
+        [10, 5, 10, 0],
+        [0, 5, 0, 0],
+        [20, 14, 20, 0],
+      ],
+    },
+    {
+      time: d.hours[1]!.time,
+      values: [
+        [0, 8, 0, 0],
+        [0, 8, 0, 0],
+        [0, 0, 0, 0],
+      ],
+    },
+  ];
+  assert.deepEqual(boroughComparisons(d, 0, 'hist_gradient_boosting'), [
+    { borough: 'Queens', zones: 1, actual: 20, forecast: 14, mae: 6, absoluteError: 6 },
+    { borough: 'Brooklyn', zones: 2, actual: 10, forecast: 10, mae: 5, absoluteError: 10 },
+  ]);
+  assert.equal(boroughComparisons(d, 1, 'hist_gradient_boosting')[0]!.borough, 'Brooklyn');
+  const exact = boroughComparisons(d, 0, 'borough_context');
+  assert.deepEqual(
+    exact.map((r) => [r.borough, r.mae]),
+    [
+      ['Brooklyn', 0],
+      ['Queens', 0],
+    ],
+  );
+});
+test('borough totals reconcile with every published hour and model', () => {
+  const d = parseDemo(raw);
+  for (let hour = 0; hour < d.hours.length; hour++) {
+    for (const model of Object.keys(modelNames) as (keyof typeof modelNames)[]) {
+      const rows = boroughComparisons(d, hour, model);
+      const all = summarize(d, hour, zoneIndices(d, 'All boroughs'), model);
+      assert.equal(
+        rows.reduce((n, r) => n + r.zones, 0),
+        262,
+      );
+      assert.equal(
+        rows.reduce((n, r) => n + r.actual, 0),
+        all.actual,
+      );
+      assert.ok(Math.abs(rows.reduce((n, r) => n + r.forecast, 0) - all.forecast) < 1e-7);
+      assert.ok(Math.abs(rows.reduce((n, r) => n + r.absoluteError, 0) / 262 - all.mae) < 1e-10);
+    }
+  }
 });
 test('rejects corrupt, unaligned, or non-finite exports', () => {
   for (const mutate of [

@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 18, 2026 (America/Los_Angeles), interactive chart hour selection.
+Updated: October 19, 2026 (America/Los_Angeles), selected-hour borough comparison.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The 48-hour zone chart now selects the nearest hour on click/tap and supports arrow keys, Home and End with visible keyboard focus and a descriptive slider value. Selected recorded/estimated points are marked. Selection updates the map, statistics, miss ranking, timeline and share URL through the existing render path; reload restores the selected hour.
+The explorer now compares all five boroughs for the selected hour/model, ranked by average absolute zone error. Rows show zone counts, recorded pickups, estimates, total absolute error without cancellation, and per-zone averages. Selecting a row filters the map, statistics, zone selector and miss ranking; the dropdown, reset button, pressed state and share URL stay synchronized. Keyboard row activation retains focus, and reload restores the filter.
 
-Verified nine web tests, strict TypeScript, production build, formatting and targeted browser flows: chart click to hour 12, synchronized metrics/ranking/URL, reload restoration, arrow navigation, endpoint clamping and retained chart focus. No dependencies, data or model changes; historical April scope and sealed May evaluation remain.
+Verified eleven web tests (including opposing-error cancellation, ranking/ties and reconciliation across all 48 hours/three models), strict TypeScript, production build, formatting and actual production-preview browser flows: row selection, dropdown synchronization, hour/model updates, reset, keyboard activation and reload restoration. No dependencies, data or model changes; historical April scope and sealed May evaluation remain.
 
-Next small slice: add a compact borough comparison for the selected hour/model so readers can find where errors concentrate before choosing a borough. Reuse existing snapshot aggregation and verify filter synchronization; avoid expanding the data window or fitting models.
+Next small slice: allow downloading a CSV of the currently filtered hour/model zone counts and errors from the existing snapshot. Include stable zone IDs, timestamp and model so the download is interpretable; avoid new data acquisition or model fits.
 
 ## Verified
 

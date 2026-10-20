@@ -10,6 +10,7 @@ import {
 } from './data.ts';
 import type { Model } from './data.ts';
 import { readView, viewURL } from './view.ts';
+import { exportHour } from './export.ts';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const timeFmt = new Intl.DateTimeFormat('en-US', {
@@ -38,6 +39,7 @@ async function start() {
       .join(
         '',
       )}</select></label><div class="share-control"><button id="copy-view" type="button">Copy view link</button><a id="share-view" class="text-link">Open view link ↗</a><span id="share-status" role="status"></span></div></div></div>
+    <div class="export-control"><button id="download-csv" type="button">Download selected hour CSV</button><p>All zones in the selected hour and borough, for the chosen model.<br>CSV errors use estimate minus recorded pickups.</p><span id="download-status" role="status"></span></div>
     <div class="stats" aria-live="polite"><div><span>RECORDED PICKUPS</span><strong id="actual"></strong></div><div><span>MODEL ESTIMATE</span><strong id="forecast"></strong></div><div><span>AVG. ABSOLUTE ERROR / ZONE</span><strong id="mae"></strong></div><p>Selected hour & borough.<br>Counts describe historical pickups.</p></div>
     <section class="misses" aria-labelledby="boroughs-title"><h3 id="boroughs-title">Compare boroughs</h3><p>All boroughs at the selected hour, ranked by average absolute error per zone. Total absolute error adds zone misses without cancellation. Select a borough to filter the explorer.</p><button id="all-boroughs" type="button">Show all boroughs</button><div class="misses-scroll"><table><caption id="boroughs-scope"></caption><thead><tr><th scope="col">Borough</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Total abs. error</th><th scope="col">Avg. / zone</th></tr></thead><tbody id="boroughs-rows"></tbody></table></div></section>
     <div class="explorer-grid"><div class="map-panel"><div class="map-top"><div class="segmented" aria-label="Map measure"><button data-metric="demand" aria-pressed="true">Pickups</button><button data-metric="error" aria-pressed="false">Forecast error</button></div><span class="map-hint">Select a zone to inspect →</span></div><svg id="map" viewBox="${d.viewBox.join(' ')}" role="img" aria-label="New York City taxi zone choropleth">${d.zones.map((z, i) => `<path data-zone="${i}" d="${z.path}" fill-rule="evenodd"><title>${esc(z.name)} · ${esc(z.borough)}</title></path>`).join('')}</svg><div class="legend"><span id="legend-label">Fewer pickups</span><span class="gradient"></span><span id="legend-max"></span></div><p class="map-caption">NYC TLC taxi zones · simplified display geometry · scale uses square-root color intensity</p></div>
@@ -52,6 +54,7 @@ async function start() {
   };
   function render() {
     text('share-status', '');
+    text('download-status', '');
     const indices = zoneIndices(d, borough),
       active = new Set(indices),
       column = d.columns.indexOf(model);
@@ -139,6 +142,21 @@ async function start() {
     (el('previous') as HTMLButtonElement).disabled = hour === 0;
     (el('next') as HTMLButtonElement).disabled = hour === d.hours.length - 1;
   }
+  el('download-csv').addEventListener('click', () => {
+    const file = exportHour(d, hour, borough, model);
+    const url = URL.createObjectURL(new Blob([file.csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = file.filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    text(
+      'download-status',
+      `CSV prepared: ${file.count} zones · ${borough} · ${modelNames[model]}.`,
+    );
+  });
   el('copy-view').addEventListener('click', async () => {
     const button = el('copy-view') as HTMLButtonElement;
     button.disabled = true;

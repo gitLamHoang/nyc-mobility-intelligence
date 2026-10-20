@@ -13,6 +13,8 @@ The intended user is a mobility analyst comparing where demand concentrates and 
 5. Select a table row to inspect that zone's 48-hour trace. Click or tap the chart to select an hour; with chart focus, use arrow keys, Home or End. The map, metrics and miss ranking follow that hour. Under means the estimate fell below recorded pickups; over means it exceeded them.
 6. Use **Copy view link** or copy the browser address. Clipboard failures show a manual-copy fallback. Opening it restores all five view settings; invalid URL values fall back safely. Changes replace the current address without adding a history entry for every slider movement.
 
+7. Use **Download selected hour CSV** to export every zone in the current borough filter for the selected hour/model. The CSV includes study ID and historical scope, UTC timestamps, stable zone IDs, recorded pickups, unrounded estimates, signed error (estimate minus recorded) and absolute error. The filename identifies UTC hour, borough and model; choosing a single zone does not narrow this export.
+
 The map uses **April 7–8, 2026, New York time**, with 12,576 zone-hours across 262 zones. It is a historical validation demo, not a live prediction service. The metrics above the map describe only the selected hour and borough. The two-day window was selected for demonstration after evaluation and is not a representative performance estimate. Full February–April results are linked separately.
 
 ## Run without downloading trip records

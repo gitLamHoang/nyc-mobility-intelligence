@@ -195,7 +195,8 @@ h1 span {
   gap: 6px;
   padding-top: 24px;
 }
-#copy-view {
+#copy-view,
+#download-csv {
   min-height: 44px;
   padding: 10px 16px;
   border: 1px solid var(--accent);
@@ -205,13 +206,27 @@ h1 span {
   font-size: 14px;
   font-weight: 600;
 }
-#copy-view:hover {
+#copy-view:hover,
+#download-csv:hover {
   background: #124c45;
 }
 #share-status {
   max-width: 180px;
   font-size: 12px;
   color: var(--ink);
+}
+.export-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 28px 20px;
+}
+.export-control p,
+#download-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 #share-status:empty {
   display: none;
@@ -661,6 +676,9 @@ footer {
   .explorer-toolbar {
     display: block;
     padding: 20px;
+  }
+  .export-control {
+    padding: 0 20px 20px;
   }
   .controls {
     margin-top: 18px;

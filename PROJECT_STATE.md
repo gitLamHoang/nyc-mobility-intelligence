@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 19, 2026 (America/Los_Angeles), selected-hour borough comparison.
+Updated: October 20, 2026 (America/Los_Angeles), filtered hourly CSV download.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The explorer now compares all five boroughs for the selected hour/model, ranked by average absolute zone error. Rows show zone counts, recorded pickups, estimates, total absolute error without cancellation, and per-zone averages. Selecting a row filters the map, statistics, zone selector and miss ranking; the dropdown, reset button, pressed state and share URL stay synchronized. Keyboard row activation retains focus, and reload restores the filter.
+The explorer now downloads a CSV of every zone in the selected hour/borough/model. Each row includes source study ID and historical scope, UTC timestamp, stable zone ID, name, borough, model key, recorded pickups, unrounded estimate, signed error (estimate minus recorded), and absolute error. Filename identifies UTC hour, borough and model; selecting one zone does not narrow the export. Filter changes clear the accessible download status.
 
-Verified eleven web tests (including opposing-error cancellation, ranking/ties and reconciliation across all 48 hours/three models), strict TypeScript, production build, formatting and actual production-preview browser flows: row selection, dropdown synchronization, hour/model updates, reset, keyboard activation and reload restoration. No dependencies, data or model changes; historical April scope and sealed May evaluation remain.
+Verified thirteen web tests, including CSV reconciliation across all 48 hours, six borough scopes and three models, plus quoted names/newlines and UTC filename handling. Strict TypeScript, production build, formatting and actual production-preview browser downloads pass: defaults, borough/model/hour changes, keyboard activation, reload and reset. Download bytes match the snapshot export; mobile has no page overflow and a 44px download control. No dependencies, data or model changes; April provenance and sealed May evaluation remain. Prior commit a428b65 passed both GitHub workflows.
 
-Next small slice: allow downloading a CSV of the currently filtered hour/model zone counts and errors from the existing snapshot. Include stable zone IDs, timestamp and model so the download is interpretable; avoid new data acquisition or model fits.
+Next small slice: let users compare all three models for the selected zone/hour in the detail panel, using existing snapshot values; selecting a model should synchronize the current model control, trace, map and share URL. Avoid new data acquisition or model fits.
 
 ## Verified
 

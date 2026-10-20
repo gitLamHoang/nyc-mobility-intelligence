@@ -26,6 +26,7 @@ Open the local URL printed by Vite. No Python environment, raw trip download, or
 3. Switch the map to forecast error, or use **Largest forecast misses** to find the five largest absolute errors.
 4. Select a table row or map zone to inspect its 48-hour trace. The table states whether the forecast was under or over the recorded count.
 5. Use **Copy view link** or copy the browser address to share the selected hour, borough, model, map measure, and zone.
+6. Use **Download selected hour CSV** to export all filtered zones with UTC time, stable zone IDs, recorded counts, estimates and errors.
 
 This is a historical validation demo. The two-day view illustrates behavior; it does not estimate full-study performance or provide live forecasts.
 

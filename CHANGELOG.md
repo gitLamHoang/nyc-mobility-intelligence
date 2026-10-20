@@ -1,5 +1,10 @@
 # Changelog
 
+## October 20, 2026 · download filtered hourly CSV
+
+- Added a CSV download for all zones in the selected hour, borough and model, including stable IDs, UTC time, study provenance, recorded counts, unrounded estimates and signed/absolute errors. Filename identifies scope; accessible status clears when the view changes.
+- Thirteen web tests pass, including all-hour/borough/model reconciliation and CSV quoting. Strict TypeScript, production build, formatting and actual browser download bytes, filter/model/hour/reset/reload/keyboard and mobile checks pass. No dependencies, data or model changes.
+
 ## October 19, 2026 · compare borough forecast errors
 
 - Added an all-borough comparison for the selected hour/model, ranked by average absolute zone error, with zone counts, recorded/estimated totals and summed absolute errors without cancellation.

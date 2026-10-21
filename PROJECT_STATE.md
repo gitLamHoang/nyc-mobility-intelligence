@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 20, 2026 (America/Los_Angeles), filtered hourly CSV download.
+Updated: October 21, 2026 (America/Los_Angeles), selected zone/hour model comparison.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The explorer now downloads a CSV of every zone in the selected hour/borough/model. Each row includes source study ID and historical scope, UTC timestamp, stable zone ID, name, borough, model key, recorded pickups, unrounded estimate, signed error (estimate minus recorded), and absolute error. Filename identifies UTC hour, borough and model; selecting one zone does not narrow the export. Filter changes clear the accessible download status.
+The zone detail panel now compares all three models at the selected hour, with estimates and absolute errors from the existing snapshot. Selecting a model synchronizes the dropdown, map, trace, statistics, rankings, CSV export and share URL. Stable buttons preserve keyboard focus and expose pressed state. The table identifies the selected zone/time and explains that a single zone-hour does not establish overall model quality. The filtered hourly CSV export and other explorer controls remain available.
 
-Verified thirteen web tests, including CSV reconciliation across all 48 hours, six borough scopes and three models, plus quoted names/newlines and UTC filename handling. Strict TypeScript, production build, formatting and actual production-preview browser downloads pass: defaults, borough/model/hour changes, keyboard activation, reload and reset. Download bytes match the snapshot export; mobile has no page overflow and a 44px download control. No dependencies, data or model changes; April provenance and sealed May evaluation remain. Prior commit a428b65 passed both GitHub workflows.
+Verified thirteen existing web tests, strict TypeScript, production build, formatting and actual production-preview browser flows. Browser checks reconcile comparison values with the snapshot, cover zero recorded demand and hour/borough/zone changes, and verify all three model buttons against dropdown-driven map/trace/statistics/rankings. Keyboard activation/focus, CSV model choice, URL/reload, 390px mobile and 1024px tablet fit and 44px button targets pass; mobile screenshot inspected. No dependencies, data or model changes; April provenance and sealed May evaluation remain. Previous commit acc793d passed both GitHub workflows.
 
-Next small slice: let users compare all three models for the selected zone/hour in the detail panel, using existing snapshot values; selecting a model should synchronize the current model control, trace, map and share URL. Avoid new data acquisition or model fits.
+Next small slice: add a compact 48-hour comparison for the selected zone using existing snapshot values, with per-model mean absolute error and clear two-day historical scope. Keep the hourly comparison and shared selection behavior; avoid new data acquisition or model fits.
 
 ## Verified
 

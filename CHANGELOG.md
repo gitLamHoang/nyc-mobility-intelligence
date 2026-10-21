@@ -1,5 +1,10 @@
 # Changelog
 
+## October 21, 2026 · compare models for a zone and hour
+
+- Added all three models' estimates and absolute errors to the selected zone panel. Model buttons synchronize the existing controls, map, trace, statistics, rankings, CSV export and share URL, preserve keyboard focus and expose pressed state. A scoped caption and explanation limit interpretation to the selected historical zone-hour.
+- Thirteen existing web tests, strict TypeScript, production build, formatting and browser snapshot reconciliation, all-model synchronization, zero-demand/hour/borough/zone, keyboard, CSV, URL/reload and mobile/tablet checks pass. No dependencies, data or model changes.
+
 ## October 20, 2026 · download filtered hourly CSV
 
 - Added a CSV download for all zones in the selected hour, borough and model, including stable IDs, UTC time, study provenance, recorded counts, unrounded estimates and signed/absolute errors. Filename identifies scope; accessible status clears when the view changes.

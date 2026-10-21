@@ -22,7 +22,7 @@ npm run dev
 Open the local URL printed by Vite. No Python environment, raw trip download, or model file is needed.
 
 1. Choose an hour and borough.
-2. Compare the temporal model, borough-context candidate, and previous-week baseline.
+2. Compare all three estimates and absolute errors in the zone panel; select a model there to update the map and trace.
 3. Switch the map to forecast error, or use **Largest forecast misses** to find the five largest absolute errors.
 4. Select a table row or map zone to inspect its 48-hour trace. The table states whether the forecast was under or over the recorded count.
 5. Use **Copy view link** or copy the browser address to share the selected hour, borough, model, map measure, and zone.

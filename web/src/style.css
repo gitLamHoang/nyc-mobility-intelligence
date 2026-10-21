@@ -427,6 +427,44 @@ h4 {
   font-weight: 500;
   margin: 24px 0 6px;
 }
+.model-comparison p,
+.model-comparison caption {
+  font-size: 12px;
+  color: #52634f;
+  text-align: left;
+}
+.model-comparison table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.model-comparison caption {
+  padding-bottom: 8px;
+}
+.model-comparison th,
+.model-comparison td {
+  border-bottom: 1px solid #dbe3d3;
+  text-align: right;
+  padding: 6px 4px;
+  font-weight: 400;
+}
+.model-comparison th:first-child {
+  text-align: left;
+}
+.model-comparison button {
+  border: 0;
+  border-radius: 4px;
+  padding: 6px;
+  min-height: 44px;
+  background: transparent;
+  color: #17675d;
+  text-align: left;
+}
+.model-comparison button:hover,
+.model-comparison button[aria-pressed='true'] {
+  background: #e7ecdf;
+}
 .chart-help {
   font-size: 12px;
   line-height: 1.5;

@@ -1,5 +1,10 @@
 # Changelog
 
+## October 22, 2026 · compare zone errors over 48 hours
+
+- Added per-model 48-hour mean absolute error to the selected zone comparison, including zero-demand hours. Clear April 7–8 scope and interpretation limits accompany hourly estimates/errors.
+- Fourteen web tests, TypeScript, production build, formatting and browser reconciliation, model/zone/hour/borough/reload, keyboard, CSV, URL and mobile/tablet checks pass. No dependencies, data or model changes.
+
 ## October 21, 2026 · compare models for a zone and hour
 
 - Added all three models' estimates and absolute errors to the selected zone panel. Model buttons synchronize the existing controls, map, trace, statistics, rankings, CSV export and share URL, preserve keyboard focus and expose pressed state. A scoped caption and explanation limit interpretation to the selected historical zone-hour.

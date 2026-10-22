@@ -9,6 +9,7 @@ import {
   summarize,
   forecastMisses,
   color,
+  zoneModelErrors,
 } from './data.ts';
 const raw = JSON.parse(readFileSync(new URL('../public/data/demo.json', import.meta.url), 'utf8'));
 test('published export has complete aligned real observations', () => {
@@ -144,5 +145,22 @@ test('miss ranking follows the chosen hour and breaks ties by zone ID', () => {
       .map((i) => d.zones[i]!.id)
       .sort((a, b) => a - b)
       .slice(0, 4),
+  );
+});
+
+test('zone MAE averages absolute hourly errors including zero demand without cancellation', () => {
+  const d = parseDemo(structuredClone(raw));
+  d.hours = d.hours.slice(0, 2);
+  d.hours[0]!.values[0] = [10, 5, 10, 0];
+  d.hours[1]!.values[0] = [0, 5, 0, 0];
+  d.hours[0]!.values[1] = [1000, 0, 0, 0];
+  assert.deepEqual(zoneModelErrors(d, 0), [
+    { model: 'hist_gradient_boosting', mae: 5 },
+    { model: 'borough_context', mae: 0 },
+    { model: 'previous_week_168h', mae: 5 },
+  ]);
+  assert.equal(
+    zoneModelErrors(d, 1)[0]!.mae,
+    (1000 + Math.abs(d.hours[1]!.values[1]![1]! - d.hours[1]!.values[1]![0]!)) / 2,
   );
 });

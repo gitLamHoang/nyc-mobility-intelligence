@@ -121,3 +121,15 @@ export function color(value: number, max: number): string {
     b = [19, 103, 93];
   return `rgb(${a.map((v, i) => Math.round(v + (b[i]! - v) * t)).join(',')})`;
 }
+
+export function zoneModelErrors(d: Demo, zoneIndex: number) {
+  return Object.keys(modelNames).map((key) => {
+    const model = key as Model;
+    const column = d.columns.indexOf(model);
+    const total = d.hours.reduce((sum, hour) => {
+      const row = hour.values[zoneIndex]!;
+      return sum + Math.abs(row[column]! - row[0]!);
+    }, 0);
+    return { model, mae: total / d.hours.length };
+  });
+}

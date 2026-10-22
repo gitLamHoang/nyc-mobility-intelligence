@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 21, 2026 (America/Los_Angeles), selected zone/hour model comparison.
+Updated: October 22, 2026 (America/Los_Angeles), selected zone 48-hour model MAE.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The zone detail panel now compares all three models at the selected hour, with estimates and absolute errors from the existing snapshot. Selecting a model synchronizes the dropdown, map, trace, statistics, rankings, CSV export and share URL. Stable buttons preserve keyboard focus and expose pressed state. The table identifies the selected zone/time and explains that a single zone-hour does not establish overall model quality. The filtered hourly CSV export and other explorer controls remain available.
+The selected zone's model comparison now includes 48-hour mean absolute error for all three models, alongside the selected hour's estimate and absolute error. It averages absolute errors over all April 7–8 snapshot hours, including zero recorded pickups, and follows zone selection. The interface explicitly limits interpretation to this two-day historical snapshot; model buttons retain shared selection behavior.
 
-Verified thirteen existing web tests, strict TypeScript, production build, formatting and actual production-preview browser flows. Browser checks reconcile comparison values with the snapshot, cover zero recorded demand and hour/borough/zone changes, and verify all three model buttons against dropdown-driven map/trace/statistics/rankings. Keyboard activation/focus, CSV model choice, URL/reload, 390px mobile and 1024px tablet fit and 44px button targets pass; mobile screenshot inspected. No dependencies, data or model changes; April provenance and sealed May evaluation remain. Previous commit acc793d passed both GitHub workflows.
+Verified fourteen web tests, strict TypeScript, production build, formatting and actual production-preview browser flows. Browser checks independently reconcile each MAE with snapshot values across zone/hour/borough changes and reload, exercise model buttons, keyboard/focus, synchronized map/trace/statistics/rankings, CSV and URL, and check 390px mobile/1024px tablet fit and 44px model buttons. Mobile screenshot visually inspected. No dependencies, data or model changes; April provenance and sealed May evaluation remain.
 
-Next small slice: add a compact 48-hour comparison for the selected zone using existing snapshot values, with per-model mean absolute error and clear two-day historical scope. Keep the hourly comparison and shared selection behavior; avoid new data acquisition or model fits.
+Next small slice: add a signed average error for the selected zone across the same 48 hours, clearly distinguishing persistent under/over estimation from MAE. Reuse the comparison table and existing snapshot; no new data or fits.
 
 ## Verified
 

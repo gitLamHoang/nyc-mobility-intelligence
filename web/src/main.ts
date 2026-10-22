@@ -7,6 +7,7 @@ import {
   parseDemo,
   summarize,
   zoneIndices,
+  zoneModelErrors,
 } from './data.ts';
 import type { Model } from './data.ts';
 import { readView, viewURL } from './view.ts';
@@ -43,12 +44,12 @@ async function start() {
     <div class="stats" aria-live="polite"><div><span>RECORDED PICKUPS</span><strong id="actual"></strong></div><div><span>MODEL ESTIMATE</span><strong id="forecast"></strong></div><div><span>AVG. ABSOLUTE ERROR / ZONE</span><strong id="mae"></strong></div><p>Selected hour & borough.<br>Counts describe historical pickups.</p></div>
     <section class="misses" aria-labelledby="boroughs-title"><h3 id="boroughs-title">Compare boroughs</h3><p>All boroughs at the selected hour, ranked by average absolute error per zone. Total absolute error adds zone misses without cancellation. Select a borough to filter the explorer.</p><button id="all-boroughs" type="button">Show all boroughs</button><div class="misses-scroll"><table><caption id="boroughs-scope"></caption><thead><tr><th scope="col">Borough</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Total abs. error</th><th scope="col">Avg. / zone</th></tr></thead><tbody id="boroughs-rows"></tbody></table></div></section>
     <div class="explorer-grid"><div class="map-panel"><div class="map-top"><div class="segmented" aria-label="Map measure"><button data-metric="demand" aria-pressed="true">Pickups</button><button data-metric="error" aria-pressed="false">Forecast error</button></div><span class="map-hint">Select a zone to inspect →</span></div><svg id="map" viewBox="${d.viewBox.join(' ')}" role="img" aria-label="New York City taxi zone choropleth">${d.zones.map((z, i) => `<path data-zone="${i}" d="${z.path}" fill-rule="evenodd"><title>${esc(z.name)} · ${esc(z.borough)}</title></path>`).join('')}</svg><div class="legend"><span id="legend-label">Fewer pickups</span><span class="gradient"></span><span id="legend-max"></span></div><p class="map-caption">NYC TLC taxi zones · simplified display geometry · scale uses square-root color intensity</p></div>
-    <aside class="detail-panel"><p class="eyebrow">02 / INSPECT A NEIGHBORHOOD</p><label class="zone-label">Select a zone<select id="zone"></select></label><p id="zone-borough" class="zone-borough"></p><h3 id="zone-name"></h3><div class="zone-stats"><div><span>Recorded</span><strong id="zone-actual"></strong></div><div><span>Estimate</span><strong id="zone-forecast"></strong></div><div><span>Abs. error</span><strong id="zone-error"></strong></div></div><section class="model-comparison" aria-labelledby="models-title"><h4 id="models-title">Compare models at this hour</h4><p>Absolute error is the gap from recorded pickups. One zone-hour does not establish overall model quality.</p><table><caption id="models-scope"></caption><thead><tr><th scope="col">Model</th><th scope="col">Estimate</th><th scope="col">Abs. error</th></tr></thead><tbody>${Object.entries(
+    <aside class="detail-panel"><p class="eyebrow">02 / INSPECT A NEIGHBORHOOD</p><label class="zone-label">Select a zone<select id="zone"></select></label><p id="zone-borough" class="zone-borough"></p><h3 id="zone-name"></h3><div class="zone-stats"><div><span>Recorded</span><strong id="zone-actual"></strong></div><div><span>Estimate</span><strong id="zone-forecast"></strong></div><div><span>Abs. error</span><strong id="zone-error"></strong></div></div><section class="model-comparison" aria-labelledby="models-title"><h4 id="models-title">Compare models for this zone</h4><p>Estimate and absolute error describe the selected hour. 48-hour MAE averages hourly absolute errors over April 7–8, 2026, New York time, including zero pickups. Lower is better within this snapshot; this two-day view does not establish overall model quality.</p><table><caption id="models-scope"></caption><thead><tr><th scope="col">Model</th><th scope="col">Estimate</th><th scope="col">Abs. error</th><th scope="col">48-hour MAE</th></tr></thead><tbody>${Object.entries(
       modelNames,
     )
       .map(
         ([key, name]) =>
-          `<tr><th scope="row"><button type="button" data-compare-model="${key}" aria-pressed="false">${name}</button></th><td id="estimate-${key}"></td><td id="error-${key}"></td></tr>`,
+          `<tr><th scope="row"><button type="button" data-compare-model="${key}" aria-pressed="false">${name}</button></th><td id="estimate-${key}"></td><td id="error-${key}"></td><td id="mae-${key}"></td></tr>`,
       )
       .join(
         '',
@@ -122,6 +123,9 @@ async function start() {
       .join('');
     el('all-boroughs').setAttribute('aria-pressed', String(borough === 'All boroughs'));
     text('models-scope', `${z.name} · ${time} New York time`);
+    for (const row of zoneModelErrors(d, selected)) {
+      text(`mae-${row.model}`, row.mae.toFixed(2));
+    }
     document.querySelectorAll<HTMLButtonElement>('[data-compare-model]').forEach((button) => {
       const key = button.dataset.compareModel as Model;
       const estimate = values[d.columns.indexOf(key)]!;

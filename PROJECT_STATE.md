@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 22, 2026 (America/Los_Angeles), selected zone 48-hour model MAE.
+Updated: October 23, 2026 (America/Los_Angeles), selected zone signed average error.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The selected zone's model comparison now includes 48-hour mean absolute error for all three models, alongside the selected hour's estimate and absolute error. It averages absolute errors over all April 7–8 snapshot hours, including zero recorded pickups, and follows zone selection. The interface explicitly limits interpretation to this two-day historical snapshot; model buttons retain shared selection behavior.
+The selected zone comparison now shows each model's signed 48-hour average error alongside MAE and hourly estimates/errors. Error is estimate minus recorded pickups per hour: positive means overestimation and negative means underestimation. It includes zero pickups, explains cancellation, and retains the April 7–8 snapshot limits. Values rounded to zero display as 0.00, avoiding misleading negative zero.
 
-Verified fourteen web tests, strict TypeScript, production build, formatting and actual production-preview browser flows. Browser checks independently reconcile each MAE with snapshot values across zone/hour/borough changes and reload, exercise model buttons, keyboard/focus, synchronized map/trace/statistics/rankings, CSV and URL, and check 390px mobile/1024px tablet fit and 44px model buttons. Mobile screenshot visually inspected. No dependencies, data or model changes; April provenance and sealed May evaluation remain.
+Verified fifteen web tests (including opposing errors, positive/negative direction, zero demand and all-zone/model reconciliation), strict TypeScript, production build, formatting and actual production-preview browser flows. Browser checks independently reconcile both 48-hour metrics after zone/hour/borough changes and reload, exercise model buttons/keyboard/focus, synchronized map/trace/statistics/rankings, CSV/URL and 390px mobile/1024px tablet fit with 44px model buttons. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed.
 
-Next small slice: add a signed average error for the selected zone across the same 48 hours, clearly distinguishing persistent under/over estimation from MAE. Reuse the comparison table and existing snapshot; no new data or fits.
+Next small slice: add a clear reset-view action restoring the initial hour, all boroughs, temporal model, pickup shading and default zone through the existing shared-state path. Verify URL, controls and chart remain synchronized; keep it one action without new dependencies.
 
 ## Verified
 

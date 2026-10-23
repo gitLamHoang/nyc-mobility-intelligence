@@ -1,5 +1,10 @@
 # Changelog
 
+## October 23, 2026 · show signed average zone error
+
+- Added each model's signed 48-hour average error beside MAE. Positive means overestimation, negative means underestimation; the explanation covers cancellation, zero pickups and the two-day historical scope. Rounded zero displays without a negative sign.
+- Fifteen web tests, strict TypeScript, build, formatting, independent browser metric reconciliation, model/filter/hour/zone/reload/keyboard, CSV/URL and mobile/tablet checks pass. No dependencies, data or model changes.
+
 ## October 22, 2026 · compare zone errors over 48 hours
 
 - Added per-model 48-hour mean absolute error to the selected zone comparison, including zero-demand hours. Clear April 7–8 scope and interpretation limits accompany hourly estimates/errors.

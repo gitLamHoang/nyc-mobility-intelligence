@@ -155,12 +155,34 @@ test('zone MAE averages absolute hourly errors including zero demand without can
   d.hours[1]!.values[0] = [0, 5, 0, 0];
   d.hours[0]!.values[1] = [1000, 0, 0, 0];
   assert.deepEqual(zoneModelErrors(d, 0), [
-    { model: 'hist_gradient_boosting', mae: 5 },
-    { model: 'borough_context', mae: 0 },
-    { model: 'previous_week_168h', mae: 5 },
+    { model: 'hist_gradient_boosting', mae: 5, meanError: 0 },
+    { model: 'borough_context', mae: 0, meanError: 0 },
+    { model: 'previous_week_168h', mae: 5, meanError: -5 },
   ]);
   assert.equal(
     zoneModelErrors(d, 1)[0]!.mae,
     (1000 + Math.abs(d.hours[1]!.values[1]![1]! - d.hours[1]!.values[1]![0]!)) / 2,
   );
+});
+
+test('zone average error retains overestimation and reconciles every model and zone', () => {
+  const d = parseDemo(structuredClone(raw));
+  d.hours = d.hours.slice(0, 2);
+  d.hours[0]!.values[0] = [0, 8, 0, 0];
+  d.hours[1]!.values[0] = [4, 6, 4, 4];
+  assert.deepEqual(zoneModelErrors(d, 0)[0], {
+    model: 'hist_gradient_boosting',
+    mae: 5,
+    meanError: 5,
+  });
+  const published = parseDemo(raw);
+  for (let zone = 0; zone < published.zones.length; zone++) {
+    for (const row of zoneModelErrors(published, zone)) {
+      const column = published.columns.indexOf(row.model);
+      const estimates = published.hours.reduce((sum, h) => sum + h.values[zone]![column]!, 0);
+      const recorded = published.hours.reduce((sum, h) => sum + h.values[zone]![0]!, 0);
+      assert.ok(Math.abs(row.meanError - (estimates - recorded) / published.hours.length) < 1e-10);
+      assert.ok(Math.abs(row.meanError) <= row.mae + 1e-10);
+    }
+  }
 });

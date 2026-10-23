@@ -126,10 +126,18 @@ export function zoneModelErrors(d: Demo, zoneIndex: number) {
   return Object.keys(modelNames).map((key) => {
     const model = key as Model;
     const column = d.columns.indexOf(model);
-    const total = d.hours.reduce((sum, hour) => {
+    let absoluteError = 0;
+    let signedError = 0;
+    for (const hour of d.hours) {
       const row = hour.values[zoneIndex]!;
-      return sum + Math.abs(row[column]! - row[0]!);
-    }, 0);
-    return { model, mae: total / d.hours.length };
+      const error = row[column]! - row[0]!;
+      absoluteError += Math.abs(error);
+      signedError += error;
+    }
+    return {
+      model,
+      mae: absoluteError / d.hours.length,
+      meanError: signedError / d.hours.length,
+    };
   });
 }

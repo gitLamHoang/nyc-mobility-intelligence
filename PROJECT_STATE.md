@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 23, 2026 (America/Los_Angeles), selected zone signed average error.
+Updated: October 24, 2026 (America/Los_Angeles), reset explorer view.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The selected zone comparison now shows each model's signed 48-hour average error alongside MAE and hourly estimates/errors. Error is estimate minus recorded pickups per hour: positive means overestimation and negative means underestimation. It includes zero pickups, explains cancellation, and retains the April 7–8 snapshot limits. Values rounded to zero display as 0.00, avoiding misleading negative zero.
+Reset view now restores April 7 at 4 PM New York time, all boroughs, temporal model, pickup shading and Midtown Center using the existing URL defaults and render path. It updates the share URL, clears stale CSV status, announces completion and keeps keyboard focus. Unrelated URL parameters and the fragment remain intact.
 
-Verified fifteen web tests (including opposing errors, positive/negative direction, zero demand and all-zone/model reconciliation), strict TypeScript, production build, formatting and actual production-preview browser flows. Browser checks independently reconcile both 48-hour metrics after zone/hour/borough changes and reload, exercise model buttons/keyboard/focus, synchronized map/trace/statistics/rankings, CSV/URL and 390px mobile/1024px tablet fit with 44px model buttons. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed.
+Verified fifteen web tests, strict TypeScript, production build, formatting and actual Chrome production-preview flows. Browser smoke compares the full default controls, map fills/selection, chart, statistics, model comparison, borough/miss rankings and URLs after resetting a reloaded customized link. Repeated reset, keyboard/focus, CSV/status clearing, reload, 390px mobile and 1024px tablet fit and 44px reset target pass. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed.
 
-Next small slice: add a clear reset-view action restoring the initial hour, all boroughs, temporal model, pickup shading and default zone through the existing shared-state path. Verify URL, controls and chart remain synchronized; keep it one action without new dependencies.
+Next small slice: add previous/next day navigation to the 48-hour explorer, preserving the hour of day and other selections through the current render/URL path. Disable each button at its study boundary; verify chart, URL, statistics and reload synchronization.
 
 ## Verified
 

@@ -196,6 +196,7 @@ h1 span {
   padding-top: 24px;
 }
 #copy-view,
+#reset-view,
 #download-csv {
   min-height: 44px;
   padding: 10px 16px;
@@ -207,6 +208,7 @@ h1 span {
   font-weight: 600;
 }
 #copy-view:hover,
+#reset-view:hover,
 #download-csv:hover {
   background: #124c45;
 }

@@ -39,7 +39,7 @@ async function start() {
       .map(([v, n]) => `<option value="${v}">${n}</option>`)
       .join(
         '',
-      )}</select></label><div class="share-control"><button id="copy-view" type="button">Copy view link</button><a id="share-view" class="text-link">Open view link ↗</a><span id="share-status" role="status"></span></div></div></div>
+      )}</select></label><div class="share-control"><button id="copy-view" type="button">Copy view link</button><button id="reset-view" type="button">Reset view</button><a id="share-view" class="text-link">Open view link ↗</a><span id="share-status" role="status"></span></div></div></div>
     <div class="export-control"><button id="download-csv" type="button">Download selected hour CSV</button><p>All zones in the selected hour and borough, for the chosen model.<br>CSV errors use estimate minus recorded pickups.</p><span id="download-status" role="status"></span></div>
     <div class="stats" aria-live="polite"><div><span>RECORDED PICKUPS</span><strong id="actual"></strong></div><div><span>MODEL ESTIMATE</span><strong id="forecast"></strong></div><div><span>AVG. ABSOLUTE ERROR / ZONE</span><strong id="mae"></strong></div><p>Selected hour & borough.<br>Counts describe historical pickups.</p></div>
     <section class="misses" aria-labelledby="boroughs-title"><h3 id="boroughs-title">Compare boroughs</h3><p>All boroughs at the selected hour, ranked by average absolute error per zone. Total absolute error adds zone misses without cancellation. Select a borough to filter the explorer.</p><button id="all-boroughs" type="button">Show all boroughs</button><div class="misses-scroll"><table><caption id="boroughs-scope"></caption><thead><tr><th scope="col">Borough</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Total abs. error</th><th scope="col">Avg. / zone</th></tr></thead><tbody id="boroughs-rows"></tbody></table></div></section>
@@ -165,6 +165,14 @@ async function start() {
     (el('previous') as HTMLButtonElement).disabled = hour === 0;
     (el('next') as HTMLButtonElement).disabled = hour === d.hours.length - 1;
   }
+  el('reset-view').addEventListener('click', () => {
+    ({ hour, borough, model, metric, selected } = readView(
+      new URL(location.pathname, location.origin),
+      d,
+    ));
+    render();
+    text('share-status', 'Default view restored.');
+  });
   el('download-csv').addEventListener('click', () => {
     const file = exportHour(d, hour, borough, model);
     const url = URL.createObjectURL(new Blob([file.csv], { type: 'text/csv;charset=utf-8' }));

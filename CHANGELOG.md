@@ -1,5 +1,10 @@
 # Changelog
 
+## October 24, 2026 · reset explorer view
+
+- Added Reset view to restore the initial hour, all boroughs, temporal model, pickup shading and Midtown Center through existing URL defaults and rendering. Accessible feedback confirms completion; keyboard focus and unrelated URL context are preserved.
+- Fifteen web tests, TypeScript, build, formatting and production-preview reset/deep-link/reload/keyboard, full render synchronization, CSV/status, repeated reset and mobile/tablet checks pass. No dependencies, data or model changes.
+
 ## October 23, 2026 · show signed average zone error
 
 - Added each model's signed 48-hour average error beside MAE. Positive means overestimation, negative means underestimation; the explanation covers cancellation, zero pickups and the two-day historical scope. Rounded zero displays without a negative sign.

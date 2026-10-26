@@ -54,7 +54,8 @@ async function start() {
       .join(
         '',
       )}</tbody></table></section><h4>Its 48-hour rhythm</h4><p id="chart-help" class="chart-help">Select an hour on the chart, or focus it and use the arrow keys. Home and End jump to the first and last hour.</p><svg id="chart" viewBox="0 0 360 150" role="slider" tabindex="0" aria-label="Hour on the zone chart" aria-describedby="chart-help" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="47"></svg><div class="chart-legend"><span>● Recorded pickups</span><span>— Model estimate</span></div><p class="detail-note">A retrospective comparison: these models were evaluated on April data after training only on earlier months. Values are hourly counts, not individual journeys.</p><a class="text-link" href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/docs/EXPLORER.md">How this demo was built ↗</a></aside></div>
-    <div class="timeline"><div><span class="eyebrow">NEW YORK LOCAL TIME</span><strong id="time-label"></strong></div><button id="previous" aria-label="Previous hour">←</button><label class="slider-label" for="hour">Hour in study window</label><input id="hour" type="range" min="0" max="47" value="16" aria-label="Hour in study window"><button id="next" aria-label="Next hour">→</button><span class="timeline-end">48 HOURS</span></div>
+    <div class="timeline"><div><span class="eyebrow">NEW YORK LOCAL TIME</span><strong id="time-label" role="status"></strong></div><button id="previous" aria-label="Previous hour">←</button><label class="slider-label" for="hour">Hour in study window</label><input id="hour" type="range" min="0" max="47" value="16" aria-label="Hour in study window"><button id="next" aria-label="Next hour">→</button><span class="timeline-end">48 HOURS</span></div>
+    <div class="day-navigation" role="group" aria-label="Compare days"><button id="previous-day" type="button">← Previous day</button><button id="next-day" type="button">Next day →</button><p>Same hour, New York time · April 7–8</p></div>
     <section class="misses" aria-labelledby="misses-title"><h3 id="misses-title">Largest forecast misses</h3><p>Select a zone to inspect its trace. Under means the estimate fell below recorded pickups; over means it exceeded them.</p><div class="misses-scroll"><table><caption id="misses-scope"></caption><thead><tr><th scope="col">Zone</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Forecast error</th></tr></thead><tbody id="misses-rows"></tbody></table></div></section></section>
     <section class="context"><div><p class="eyebrow">03 / WHAT THE EVIDENCE SAYS</p><h2>Better decisions start<br>with honest comparisons.</h2><p>The question: could demand forecasts help mobility teams plan where capacity is needed? This prototype makes the evidence inspectable. Operational value still needs validation with users.</p></div><article><span class="card-number">01</span><h3>A baseline is part of the product.</h3><p>Switch to “Previous week” to compare with a simple same-hour baseline. This two-day view illustrates behavior; it is not the full evaluation.</p></article><article><span class="card-number">02</span><h3>Small gains deserve scrutiny.</h3><p>Borough context reduced pooled February–April MAE by 0.416%, while worsening errors in sparse zones. It has not replaced the serving model.</p><a href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/reports/borough/20260924T162406Z-c35816/metrics.json">Inspect the measured experiment ↗</a></article><article><span class="card-number">03</span><h3>Keep the final test honest.</h3><p>May 2026 remains sealed until the documented model freeze. Public demo data comes from April validation only. No customer deployment is claimed.</p></article></section>
     </main><footer><span>NYC Mobility Intelligence · Built by Lam Phan</span><a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">Official data source ↗</a><a href="https://github.com/gitLamHoang/nyc-mobility-intelligence">Reproduce the work ↗</a></footer>`;
@@ -162,6 +163,8 @@ async function start() {
     if (url.href !== location.href) history.replaceState(null, '', url);
     (el('hour') as HTMLInputElement).value = String(hour);
     el('hour').setAttribute('aria-valuetext', `${time} New York time`);
+    (el('previous-day') as HTMLButtonElement).disabled = hour < 24;
+    (el('next-day') as HTMLButtonElement).disabled = hour + 24 >= d.hours.length;
     (el('previous') as HTMLButtonElement).disabled = hour === 0;
     (el('next') as HTMLButtonElement).disabled = hour === d.hours.length - 1;
   }
@@ -276,6 +279,18 @@ async function start() {
     hour = Number((e.target as HTMLInputElement).value);
     render();
   });
+  // Both days in the fixed April 7–8 snapshot have 24 New York local hours.
+  for (const [id, offset] of [
+    ['previous-day', -24],
+    ['next-day', 24],
+  ] as const) {
+    el(id).addEventListener('click', () => {
+      const target = hour + offset;
+      if (target < 0 || target >= d.hours.length) return;
+      hour = target;
+      render();
+    });
+  }
   el('previous').addEventListener('click', () => {
     hour = Math.max(0, hour - 1);
     render();

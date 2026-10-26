@@ -1,5 +1,10 @@
 # Changelog
 
+## October 25, 2026 · compare the same hour across days
+
+- Added Previous day / Next day below the timeline, preserving the local hour and current filters with study-boundary disabling and an announced time label.
+- Fifteen web tests, TypeScript, build, formatting and production-preview checks pass. Browser verification covers all 48 hours against slider rendering, boundaries, URL/reload, keyboard, CSV/status/reset and mobile/tablet layout. No dependencies, data or model changes.
+
 ## October 24, 2026 · reset explorer view
 
 - Added Reset view to restore the initial hour, all boroughs, temporal model, pickup shading and Midtown Center through existing URL defaults and rendering. Accessible feedback confirms completion; keyboard focus and unrelated URL context are preserved.

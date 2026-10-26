@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 24, 2026 (America/Los_Angeles), reset explorer view.
+Updated: October 25, 2026 (America/Los_Angeles), same-hour day navigation.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-Reset view now restores April 7 at 4 PM New York time, all boroughs, temporal model, pickup shading and Midtown Center using the existing URL defaults and render path. It updates the share URL, clears stale CSV status, announces completion and keeps keyboard focus. Unrelated URL parameters and the fragment remain intact.
+Previous day / Next day below the timeline switch between April 7 and April 8 at the same New York hour, preserving borough, zone, model and map measure through the existing render/URL path. Buttons disable at study boundaries; the time label announces updates. The fixed snapshot contains two 24-hour local days. Reset and existing hourly/chart navigation update day-button availability.
 
-Verified fifteen web tests, strict TypeScript, production build, formatting and actual Chrome production-preview flows. Browser smoke compares the full default controls, map fills/selection, chart, statistics, model comparison, borough/miss rankings and URLs after resetting a reloaded customized link. Repeated reset, keyboard/focus, CSV/status clearing, reload, 390px mobile and 1024px tablet fit and 44px reset target pass. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed.
+Verified fifteen web tests, strict TypeScript, production build, formatting and an actual Chrome production-preview smoke. All 48 day-navigation results match the slider's full map/chart/statistics/model/borough/miss rendering and URL state. Boundary buttons, keyboard Enter/Space, reload, CSV timestamp/status, reset, 390px mobile and 1024px tablet fit and 44px day-button targets pass. Mobile screenshot visually inspected. Smoke initially expected the wrong CSV filename format; corrected to the existing compact UTC filename and reran successfully. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
 
-Next small slice: add previous/next day navigation to the 48-hour explorer, preserving the hour of day and other selections through the current render/URL path. Disable each button at its study boundary; verify chart, URL, statistics and reload synchronization.
+Next small slice: add a compact selected-zone comparison of April 7 vs April 8 recorded pickup totals, model estimates and mean absolute hourly errors, so same-hour navigation has a daily overview. Reuse the existing snapshot and model selection; label the two-day historical scope and verify sums against source values.
 
 ## Verified
 

@@ -21,7 +21,7 @@ npm run dev
 
 Open the local URL printed by Vite. No Python environment, raw trip download, or model file is needed.
 
-1. Choose an hour and borough.
+1. Choose an hour and borough. Use **Previous day** / **Next day** below the timeline to compare the same New York hour across April 7–8 while keeping your filters.
 2. Compare hourly estimates, absolute errors, and 48-hour MAE and average signed error in the zone panel; select a model there to update the map and trace.
 3. Switch the map to forecast error, or use **Largest forecast misses** to find the five largest absolute errors.
 4. Select a table row or map zone to inspect its 48-hour trace. The table states whether the forecast was under or over the recorded count.

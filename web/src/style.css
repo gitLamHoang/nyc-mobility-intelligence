@@ -537,6 +537,30 @@ h4 {
   min-height: 44px;
   accent-color: #285d49;
 }
+.day-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 0 15px 21px;
+}
+.day-navigation button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #d8e0d0;
+  border-radius: 6px;
+  background: #f4f6ee;
+  color: #294d3c;
+}
+.day-navigation button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.day-navigation p {
+  margin: 0;
+  font-size: 12px;
+  color: #52634f;
+}
 .timeline-end {
   font-size: 9px;
   color: #52634f;

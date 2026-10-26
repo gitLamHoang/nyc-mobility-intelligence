@@ -10,6 +10,7 @@ import {
   forecastMisses,
   color,
   zoneModelErrors,
+  zoneDailySummaries,
 } from './data.ts';
 const raw = JSON.parse(readFileSync(new URL('../public/data/demo.json', import.meta.url), 'utf8'));
 test('published export has complete aligned real observations', () => {
@@ -183,6 +184,73 @@ test('zone average error retains overestimation and reconciles every model and z
       const recorded = published.hours.reduce((sum, h) => sum + h.values[zone]![0]!, 0);
       assert.ok(Math.abs(row.meanError - (estimates - recorded) / published.hours.length) < 1e-10);
       assert.ok(Math.abs(row.meanError) <= row.mae + 1e-10);
+    }
+  }
+});
+
+test('daily summaries group by New York date and average hourly absolute errors', () => {
+  const d = parseDemo(structuredClone(raw));
+  d.hours = [
+    {
+      time: '2026-04-08T02:00:00Z',
+      values: [
+        [10, 5, 10, 0],
+        [999, 0, 0, 0],
+      ],
+    },
+    {
+      time: '2026-04-08T03:00:00Z',
+      values: [
+        [0, 5, 0, 0],
+        [999, 0, 0, 0],
+      ],
+    },
+    {
+      time: '2026-04-08T04:00:00Z',
+      values: [
+        [4, 10, 4, 0],
+        [999, 0, 0, 0],
+      ],
+    },
+  ];
+  assert.deepEqual(zoneDailySummaries(d, 0, 'hist_gradient_boosting'), [
+    { day: 'Apr 7, 2026', hours: 2, actual: 10, forecast: 10, mae: 5 },
+    { day: 'Apr 8, 2026', hours: 1, actual: 4, forecast: 10, mae: 6 },
+  ]);
+  assert.deepEqual(
+    zoneDailySummaries(d, 0, 'borough_context').map((r) => r.mae),
+    [0, 0],
+  );
+});
+
+test('daily totals and MAE reconcile every published zone and model with source hours', () => {
+  const d = parseDemo(raw);
+  for (let zone = 0; zone < d.zones.length; zone++) {
+    for (const model of Object.keys(modelNames) as (keyof typeof modelNames)[]) {
+      const days = zoneDailySummaries(d, zone, model);
+      assert.deepEqual(
+        days.map((r) => [r.day, r.hours]),
+        [
+          ['Apr 7, 2026', 24],
+          ['Apr 8, 2026', 24],
+        ],
+      );
+      days.forEach((day, i) => {
+        const rows = d.hours.slice(i * 24, (i + 1) * 24).map((h) => h.values[zone]!);
+        const column = d.columns.indexOf(model);
+        assert.equal(
+          day.actual,
+          rows.reduce((n, row) => n + row[0]!, 0),
+        );
+        assert.equal(
+          day.forecast,
+          rows.reduce((n, row) => n + row[column]!, 0),
+        );
+        assert.equal(
+          day.mae,
+          rows.reduce((n, row) => n + Math.abs(row[column]! - row[0]!), 0) / 24,
+        );
+      });
     }
   }
 });

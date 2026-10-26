@@ -141,3 +141,31 @@ export function zoneModelErrors(d: Demo, zoneIndex: number) {
     };
   });
 }
+
+export function zoneDailySummaries(d: Demo, zoneIndex: number, model: Model) {
+  const date = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  const column = d.columns.indexOf(model);
+  const days = new Map<
+    string,
+    { day: string; hours: number; actual: number; forecast: number; absoluteError: number }
+  >();
+  for (const hour of d.hours) {
+    const day = date.format(new Date(hour.time));
+    const summary = days.get(day) ?? { day, hours: 0, actual: 0, forecast: 0, absoluteError: 0 };
+    const row = hour.values[zoneIndex]!;
+    summary.hours++;
+    summary.actual += row[0]!;
+    summary.forecast += row[column]!;
+    summary.absoluteError += Math.abs(row[column]! - row[0]!);
+    days.set(day, summary);
+  }
+  return [...days.values()].map(({ absoluteError, ...day }) => ({
+    ...day,
+    mae: absoluteError / day.hours,
+  }));
+}

@@ -1,5 +1,10 @@
 # Changelog
 
+## October 26, 2026 · compare daily zone totals
+
+- Added selected-zone April 7–8 recorded/estimated daily totals and hourly MAE for the chosen model, grouped by New York date with zero pickups included and opposing errors kept separate.
+- Seventeen web tests, TypeScript, production build, formatting and production-preview browser checks pass, including source reconciliation, model/zone/day/keyboard/reload/reset interactions and mobile/tablet fit. No dependencies, data or model changes.
+
 ## October 25, 2026 · compare the same hour across days
 
 - Added Previous day / Next day below the timeline, preserving the local hour and current filters with study-boundary disabling and an announced time label.

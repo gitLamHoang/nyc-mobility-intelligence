@@ -8,6 +8,7 @@ import {
   summarize,
   zoneIndices,
   zoneModelErrors,
+  zoneDailySummaries,
 } from './data.ts';
 import type { Model } from './data.ts';
 import { readView, viewURL } from './view.ts';
@@ -53,7 +54,7 @@ async function start() {
       )
       .join(
         '',
-      )}</tbody></table></section><h4>Its 48-hour rhythm</h4><p id="chart-help" class="chart-help">Select an hour on the chart, or focus it and use the arrow keys. Home and End jump to the first and last hour.</p><svg id="chart" viewBox="0 0 360 150" role="slider" tabindex="0" aria-label="Hour on the zone chart" aria-describedby="chart-help" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="47"></svg><div class="chart-legend"><span>● Recorded pickups</span><span>— Model estimate</span></div><p class="detail-note">A retrospective comparison: these models were evaluated on April data after training only on earlier months. Values are hourly counts, not individual journeys.</p><a class="text-link" href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/docs/EXPLORER.md">How this demo was built ↗</a></aside></div>
+      )}</tbody></table></section><section class="model-comparison" aria-labelledby="days-title"><h4 id="days-title">Compare days for this zone</h4><p>Historical daily totals for April 7–8, 2026, New York time. Hourly MAE averages absolute errors within each day, including zero pickups; opposing misses do not cancel. Each day contains 24 hours in this snapshot.</p><table><caption id="days-scope"></caption><thead><tr><th scope="col">Day</th><th scope="col">Recorded total</th><th scope="col">Estimate total</th><th scope="col">Hourly MAE</th></tr></thead><tbody id="days-rows"></tbody></table></section><h4>Its 48-hour rhythm</h4><p id="chart-help" class="chart-help">Select an hour on the chart, or focus it and use the arrow keys. Home and End jump to the first and last hour.</p><svg id="chart" viewBox="0 0 360 150" role="slider" tabindex="0" aria-label="Hour on the zone chart" aria-describedby="chart-help" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="47"></svg><div class="chart-legend"><span>● Recorded pickups</span><span>— Model estimate</span></div><p class="detail-note">A retrospective comparison: these models were evaluated on April data after training only on earlier months. Values are hourly counts, not individual journeys.</p><a class="text-link" href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/docs/EXPLORER.md">How this demo was built ↗</a></aside></div>
     <div class="timeline"><div><span class="eyebrow">NEW YORK LOCAL TIME</span><strong id="time-label" role="status"></strong></div><button id="previous" aria-label="Previous hour">←</button><label class="slider-label" for="hour">Hour in study window</label><input id="hour" type="range" min="0" max="47" value="16" aria-label="Hour in study window"><button id="next" aria-label="Next hour">→</button><span class="timeline-end">48 HOURS</span></div>
     <div class="day-navigation" role="group" aria-label="Compare days"><button id="previous-day" type="button">← Previous day</button><button id="next-day" type="button">Next day →</button><p>Same hour, New York time · April 7–8</p></div>
     <section class="misses" aria-labelledby="misses-title"><h3 id="misses-title">Largest forecast misses</h3><p>Select a zone to inspect its trace. Under means the estimate fell below recorded pickups; over means it exceeded them.</p><div class="misses-scroll"><table><caption id="misses-scope"></caption><thead><tr><th scope="col">Zone</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Forecast error</th></tr></thead><tbody id="misses-rows"></tbody></table></div></section></section>
@@ -123,6 +124,13 @@ async function start() {
       )
       .join('');
     el('all-boroughs').setAttribute('aria-pressed', String(borough === 'All boroughs'));
+    text('days-scope', `${z.name} · ${modelNames[model]} · New York time`);
+    el('days-rows').innerHTML = zoneDailySummaries(d, selected, model)
+      .map(
+        (row) =>
+          `<tr><th scope="row">${esc(row.day)}</th><td>${fmt.format(row.actual)}</td><td>${row.forecast.toFixed(1)}</td><td>${row.mae.toFixed(2)}</td></tr>`,
+      )
+      .join('');
     text('models-scope', `${z.name} · ${time} New York time`);
     for (const row of zoneModelErrors(d, selected)) {
       text(`mae-${row.model}`, row.mae.toFixed(2));

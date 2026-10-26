@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 25, 2026 (America/Los_Angeles), same-hour day navigation.
+Updated: October 26, 2026 (America/Los_Angeles), selected-zone daily comparison.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-Previous day / Next day below the timeline switch between April 7 and April 8 at the same New York hour, preserving borough, zone, model and map measure through the existing render/URL path. Buttons disable at study boundaries; the time label announces updates. The fixed snapshot contains two 24-hour local days. Reset and existing hourly/chart navigation update day-button availability.
+The zone panel now compares April 7 and April 8 recorded totals, selected-model estimate totals and hourly mean absolute error. Aggregation uses New York calendar dates and includes zero pickups without cancelling opposing errors. The caption tracks the selected zone/model; the historical two-day scope and 24-hour daily coverage are explicit. Existing URL, filters, model buttons, day navigation and reset update through the same render path.
 
-Verified fifteen web tests, strict TypeScript, production build, formatting and an actual Chrome production-preview smoke. All 48 day-navigation results match the slider's full map/chart/statistics/model/borough/miss rendering and URL state. Boundary buttons, keyboard Enter/Space, reload, CSV timestamp/status, reset, 390px mobile and 1024px tablet fit and 44px day-button targets pass. Mobile screenshot visually inspected. Smoke initially expected the wrong CSV filename format; corrected to the existing compact UTC filename and reran successfully. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
+Verified seventeen web tests, strict TypeScript, production build, formatting, diff checks and an actual Chrome production-preview smoke. Tests reconcile both days for every zone/model and exercise the UTC/New York date boundary and error cancellation. Browser checks independently reconcile source values across all models and multiple boroughs/zones, then verify day navigation, keyboard model selection, reload, miss-row selection, reset and desktop/390px mobile/1024px tablet fit. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
 
-Next small slice: add a compact selected-zone comparison of April 7 vs April 8 recorded pickup totals, model estimates and mean absolute hourly errors, so same-hour navigation has a daily overview. Reuse the existing snapshot and model selection; label the two-day historical scope and verify sums against source values.
+Next small slice: add a selected-zone 48-hour CSV download for the chosen model, including UTC timestamps, recorded counts, estimates and errors, so the trace and daily comparison can be inspected offline. Reuse existing CSV escaping/provenance conventions and verify hourly rows reconcile with daily totals.
 
 ## Verified
 

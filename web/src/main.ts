@@ -12,7 +12,7 @@ import {
 } from './data.ts';
 import type { Model } from './data.ts';
 import { readView, viewURL } from './view.ts';
-import { exportHour } from './export.ts';
+import { exportHour, exportZone } from './export.ts';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const timeFmt = new Intl.DateTimeFormat('en-US', {
@@ -54,7 +54,7 @@ async function start() {
       )
       .join(
         '',
-      )}</tbody></table></section><section class="model-comparison" aria-labelledby="days-title"><h4 id="days-title">Compare days for this zone</h4><p>Historical daily totals for April 7–8, 2026, New York time. Hourly MAE averages absolute errors within each day, including zero pickups; opposing misses do not cancel. Each day contains 24 hours in this snapshot.</p><table><caption id="days-scope"></caption><thead><tr><th scope="col">Day</th><th scope="col">Recorded total</th><th scope="col">Estimate total</th><th scope="col">Hourly MAE</th></tr></thead><tbody id="days-rows"></tbody></table></section><h4>Its 48-hour rhythm</h4><p id="chart-help" class="chart-help">Select an hour on the chart, or focus it and use the arrow keys. Home and End jump to the first and last hour.</p><svg id="chart" viewBox="0 0 360 150" role="slider" tabindex="0" aria-label="Hour on the zone chart" aria-describedby="chart-help" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="47"></svg><div class="chart-legend"><span>● Recorded pickups</span><span>— Model estimate</span></div><p class="detail-note">A retrospective comparison: these models were evaluated on April data after training only on earlier months. Values are hourly counts, not individual journeys.</p><a class="text-link" href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/docs/EXPLORER.md">How this demo was built ↗</a></aside></div>
+      )}</tbody></table></section><section class="model-comparison" aria-labelledby="days-title"><h4 id="days-title">Compare days for this zone</h4><p>Historical daily totals for April 7–8, 2026, New York time. Hourly MAE averages absolute errors within each day, including zero pickups; opposing misses do not cancel. Each day contains 24 hours in this snapshot.</p><table><caption id="days-scope"></caption><thead><tr><th scope="col">Day</th><th scope="col">Recorded total</th><th scope="col">Estimate total</th><th scope="col">Hourly MAE</th></tr></thead><tbody id="days-rows"></tbody></table></section><h4>Its 48-hour rhythm</h4><p id="chart-help" class="chart-help">Select an hour on the chart, or focus it and use the arrow keys. Home and End jump to the first and last hour.</p><svg id="chart" viewBox="0 0 360 150" role="slider" tabindex="0" aria-label="Hour on the zone chart" aria-describedby="chart-help" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="47"></svg><div class="chart-legend"><span>● Recorded pickups</span><span>— Model estimate</span></div><div class="zone-export"><button id="download-zone-csv" type="button" aria-describedby="zone-export-scope">Download zone 48-hour CSV</button><p id="zone-export-scope"></p><span id="zone-download-status" role="status"></span></div><p class="detail-note">A retrospective comparison: these models were evaluated on April data after training only on earlier months. Values are hourly counts, not individual journeys.</p><a class="text-link" href="https://github.com/gitLamHoang/nyc-mobility-intelligence/blob/main/docs/EXPLORER.md">How this demo was built ↗</a></aside></div>
     <div class="timeline"><div><span class="eyebrow">NEW YORK LOCAL TIME</span><strong id="time-label" role="status"></strong></div><button id="previous" aria-label="Previous hour">←</button><label class="slider-label" for="hour">Hour in study window</label><input id="hour" type="range" min="0" max="47" value="16" aria-label="Hour in study window"><button id="next" aria-label="Next hour">→</button><span class="timeline-end">48 HOURS</span></div>
     <div class="day-navigation" role="group" aria-label="Compare days"><button id="previous-day" type="button">← Previous day</button><button id="next-day" type="button">Next day →</button><p>Same hour, New York time · April 7–8</p></div>
     <section class="misses" aria-labelledby="misses-title"><h3 id="misses-title">Largest forecast misses</h3><p>Select a zone to inspect its trace. Under means the estimate fell below recorded pickups; over means it exceeded them.</p><div class="misses-scroll"><table><caption id="misses-scope"></caption><thead><tr><th scope="col">Zone</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Forecast error</th></tr></thead><tbody id="misses-rows"></tbody></table></div></section></section>
@@ -67,6 +67,7 @@ async function start() {
   function render() {
     text('share-status', '');
     text('download-status', '');
+    text('zone-download-status', '');
     const indices = zoneIndices(d, borough),
       active = new Set(indices),
       column = d.columns.indexOf(model);
@@ -124,6 +125,10 @@ async function start() {
       )
       .join('');
     el('all-boroughs').setAttribute('aria-pressed', String(borough === 'All boroughs'));
+    text(
+      'zone-export-scope',
+      `${z.name} · ${modelNames[model]} · April 7–8, 2026, New York time. All 48 hours, including zero pickups. UTC timestamps; errors use estimate minus recorded pickups.`,
+    );
     text('days-scope', `${z.name} · ${modelNames[model]} · New York time`);
     el('days-rows').innerHTML = zoneDailySummaries(d, selected, model)
       .map(
@@ -184,8 +189,7 @@ async function start() {
     render();
     text('share-status', 'Default view restored.');
   });
-  el('download-csv').addEventListener('click', () => {
-    const file = exportHour(d, hour, borough, model);
+  function downloadCSV(file: { csv: string; filename: string }) {
     const url = URL.createObjectURL(new Blob([file.csv], { type: 'text/csv;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;
@@ -194,6 +198,18 @@ async function start() {
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  el('download-zone-csv').addEventListener('click', () => {
+    const file = exportZone(d, selected, model);
+    downloadCSV(file);
+    text(
+      'zone-download-status',
+      `CSV prepared: ${file.count} hours · ${d.zones[selected]!.name} · ${modelNames[model]}.`,
+    );
+  });
+  el('download-csv').addEventListener('click', () => {
+    const file = exportHour(d, hour, borough, model);
+    downloadCSV(file);
     text(
       'download-status',
       `CSV prepared: ${file.count} zones · ${borough} · ${modelNames[model]}.`,

@@ -1,5 +1,10 @@
 # Changelog
 
+## October 27, 2026 · download a zone's 48-hour trace
+
+- Added a selected-zone CSV download for the chosen model, with all 48 UTC hours, study provenance, stable zone identity, counts, unrounded estimates and signed/absolute errors. Both download paths share schema, quoting and browser logic.
+- Nineteen web tests, TypeScript, production build, formatting and production-preview browser checks pass. Verification covers source/daily-total reconciliation, zero pickups, escaping, UTC boundaries, controls, keyboard download, reload/reset, existing hourly export and mobile/tablet fit. No dependencies, data or model changes.
+
 ## October 26, 2026 · compare daily zone totals
 
 - Added selected-zone April 7–8 recorded/estimated daily totals and hourly MAE for the chosen model, grouped by New York date with zero pickups included and opposing errors kept separate.

@@ -197,7 +197,8 @@ h1 span {
 }
 #copy-view,
 #reset-view,
-#download-csv {
+#download-csv,
+#download-zone-csv {
   min-height: 44px;
   padding: 10px 16px;
   border: 1px solid var(--accent);
@@ -209,7 +210,8 @@ h1 span {
 }
 #copy-view:hover,
 #reset-view:hover,
-#download-csv:hover {
+#download-csv:hover,
+#download-zone-csv:hover {
   background: #124c45;
 }
 #share-status {
@@ -225,7 +227,9 @@ h1 span {
   padding: 0 28px 20px;
 }
 .export-control p,
-#download-status {
+#download-status,
+.zone-export p,
+#zone-download-status {
   margin: 0;
   color: var(--muted);
   font-size: 13px;
@@ -832,4 +836,10 @@ a {
   #map path {
     transition: none;
   }
+}
+
+.zone-export {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
 }

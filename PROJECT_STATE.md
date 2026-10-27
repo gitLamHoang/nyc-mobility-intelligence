@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 26, 2026 (America/Los_Angeles), selected-zone daily comparison.
+Updated: October 27, 2026 (America/Los_Angeles), selected-zone 48-hour CSV export.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The zone panel now compares April 7 and April 8 recorded totals, selected-model estimate totals and hourly mean absolute error. Aggregation uses New York calendar dates and includes zero pickups without cancelling opposing errors. The caption tracks the selected zone/model; the historical two-day scope and 24-hour daily coverage are explicit. Existing URL, filters, model buttons, day navigation and reset update through the same render path.
+The zone panel now downloads all 48 hours for the selected zone and model. CSV rows retain study ID, historical scope, UTC timestamps, stable zone ID/name/borough, recorded counts, unrounded estimates and signed/absolute errors. Filename identifies the zone, UTC range and model. The scoped explanation tracks zone/model; accessible feedback clears on view changes. Both CSV paths share the existing schema, escaping and browser download logic.
 
-Verified seventeen web tests, strict TypeScript, production build, formatting, diff checks and an actual Chrome production-preview smoke. Tests reconcile both days for every zone/model and exercise the UTC/New York date boundary and error cancellation. Browser checks independently reconcile source values across all models and multiple boroughs/zones, then verify day navigation, keyboard model selection, reload, miss-row selection, reset and desktop/390px mobile/1024px tablet fit. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
+Verified nineteen web tests, strict TypeScript, production build, formatting, diff checks and actual Chrome production-preview downloads. Tests reconcile every zone/model/hour and daily totals, including zero pickups, quoted names, UTC boundaries and signed errors. Browser smoke independently parses downloaded CSV bytes, compares source values and daily display totals, and exercises all models, borough/zone/miss selection, keyboard download, day navigation, reload, reset, the original hourly export and 390px mobile/1024px tablet fit. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
 
-Next small slice: add a selected-zone 48-hour CSV download for the chosen model, including UTC timestamps, recorded counts, estimates and errors, so the trace and daily comparison can be inspected offline. Reuse existing CSV escaping/provenance conventions and verify hourly rows reconcile with daily totals.
+Next small slice: add a selected-zone largest-miss hour action that jumps the existing timeline/chart to that zone's largest absolute error for the chosen model. Keep scope within these 48 historical hours, use earliest-hour tie breaking and verify model/zone/URL synchronization.
 
 ## Verified
 

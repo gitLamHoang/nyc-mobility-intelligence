@@ -1,46 +1,44 @@
 import { zoneIndices } from './data.ts';
 import type { Demo, Model } from './data.ts';
 
-export function exportHour(d: Demo, hour: number, borough: string, model: Model) {
+const columns = [
+  'study_id',
+  'scope',
+  'time_utc',
+  'zone_id',
+  'zone_name',
+  'borough',
+  'model',
+  'recorded_pickups',
+  'estimate',
+  'error_estimate_minus_recorded',
+  'absolute_error',
+];
+
+function exportRow(d: Demo, hour: number, zoneIndex: number, model: Model) {
   const snapshot = d.hours[hour]!;
-  const indices = zoneIndices(d, borough);
-  const column = d.columns.indexOf(model);
-  const rows = [
-    [
-      'study_id',
-      'scope',
-      'time_utc',
-      'zone_id',
-      'zone_name',
-      'borough',
-      'model',
-      'recorded_pickups',
-      'estimate',
-      'error_estimate_minus_recorded',
-      'absolute_error',
-    ],
-    ...indices.map((i) => {
-      const zone = d.zones[i]!;
-      const actual = snapshot.values[i]![0]!;
-      const forecast = snapshot.values[i]![column]!;
-      const error = forecast - actual;
-      return [
-        d.studyId,
-        d.scope,
-        new Date(snapshot.time).toISOString(),
-        zone.id,
-        zone.name,
-        zone.borough,
-        model,
-        actual,
-        forecast,
-        error,
-        Math.abs(error),
-      ];
-    }),
+  const zone = d.zones[zoneIndex]!;
+  const actual = snapshot.values[zoneIndex]![0]!;
+  const forecast = snapshot.values[zoneIndex]![d.columns.indexOf(model)]!;
+  const error = forecast - actual;
+  return [
+    d.studyId,
+    d.scope,
+    new Date(snapshot.time).toISOString(),
+    zone.id,
+    zone.name,
+    zone.borough,
+    model,
+    actual,
+    forecast,
+    error,
+    Math.abs(error),
   ];
-  const csv =
-    rows
+}
+
+function serialize(rows: (string | number)[][]) {
+  return (
+    [columns, ...rows]
       .map((row) =>
         row
           .map((cell) => {
@@ -49,11 +47,27 @@ export function exportHour(d: Demo, hour: number, borough: string, model: Model)
           })
           .join(','),
       )
-      .join('\r\n') + '\r\n';
-  const stamp = new Date(snapshot.time).toISOString().slice(0, 13).replaceAll(/[-:T]/g, '');
+      .join('\r\n') + '\r\n'
+  );
+}
+
+function stamp(time: string) {
+  return new Date(time).toISOString().slice(0, 13).replaceAll(/[-:T]/g, '');
+}
+
+export function exportHour(d: Demo, hour: number, borough: string, model: Model) {
+  const indices = zoneIndices(d, borough);
   return {
-    csv,
+    csv: serialize(indices.map((i) => exportRow(d, hour, i, model))),
     count: indices.length,
-    filename: `nyc-mobility-${stamp}Z-${borough.toLowerCase().replaceAll(' ', '-')}-${model}.csv`,
+    filename: `nyc-mobility-${stamp(d.hours[hour]!.time)}Z-${borough.toLowerCase().replaceAll(' ', '-')}-${model}.csv`,
+  };
+}
+
+export function exportZone(d: Demo, zoneIndex: number, model: Model) {
+  return {
+    csv: serialize(d.hours.map((_, hour) => exportRow(d, hour, zoneIndex, model))),
+    count: d.hours.length,
+    filename: `nyc-mobility-zone-${d.zones[zoneIndex]!.id}-${stamp(d.hours[0]!.time)}Z-${stamp(d.hours.at(-1)!.time)}Z-${model}.csv`,
   };
 }

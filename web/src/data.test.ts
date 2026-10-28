@@ -11,6 +11,7 @@ import {
   color,
   zoneModelErrors,
   zoneDailySummaries,
+  zoneLargestMissHour,
 } from './data.ts';
 const raw = JSON.parse(readFileSync(new URL('../public/data/demo.json', import.meta.url), 'utf8'));
 test('published export has complete aligned real observations', () => {
@@ -251,6 +252,37 @@ test('daily totals and MAE reconcile every published zone and model with source 
           rows.reduce((n, row) => n + Math.abs(row[column]! - row[0]!), 0) / 24,
         );
       });
+    }
+  }
+});
+
+test('largest zone miss uses absolute error, model and earliest-hour ties including zero pickups', () => {
+  const d = parseDemo(structuredClone(raw));
+  d.hours = d.hours.slice(0, 3);
+  d.hours[0]!.values[0] = [10, 10, 0, 10];
+  d.hours[1]!.values[0] = [0, 8, 0, 0];
+  d.hours[2]!.values[0] = [8, 0, 8, 8];
+  d.hours[0]!.values[1] = [0, 0, 0, 0];
+  d.hours[1]!.values[1] = [0, 0, 0, 0];
+  d.hours[2]!.values[1] = [0, 20, 0, 0];
+  assert.equal(zoneLargestMissHour(d, 0, 'hist_gradient_boosting'), 1);
+  assert.equal(zoneLargestMissHour(d, 0, 'borough_context'), 0);
+  assert.equal(zoneLargestMissHour(d, 0, 'previous_week_168h'), 0);
+  assert.equal(zoneLargestMissHour(d, 1, 'hist_gradient_boosting'), 2);
+});
+
+test('largest miss hour matches an independent ranking for every published zone and model', () => {
+  const d = parseDemo(raw);
+  for (let zone = 0; zone < d.zones.length; zone++) {
+    for (const model of Object.keys(modelNames) as (keyof typeof modelNames)[]) {
+      const column = d.columns.indexOf(model);
+      const ranked = d.hours
+        .map((h, i) => ({
+          hour: i,
+          error: Math.abs(h.values[zone]![column]! - h.values[zone]![0]!),
+        }))
+        .sort((a, b) => b.error - a.error || a.hour - b.hour);
+      assert.equal(zoneLargestMissHour(d, zone, model), ranked[0]!.hour);
     }
   }
 });

@@ -1,5 +1,10 @@
 # Changelog
 
+## October 28, 2026 · jump to a zone’s largest miss
+
+- Added a keyboard-accessible action above the zone trace to select its greatest absolute error for the chosen model across these 48 historical hours, breaking ties at the earliest hour. Scoped New York time and under/over details follow the current zone/model; chart, timeline and share URL stay synchronized.
+- Twenty-one web tests, TypeScript, production build, formatting and real Chrome production-preview checks pass, including independent source-ranking checks, all models, filters, URL/reload, focus, reset, CSV and mobile/tablet fit. No dependencies, data or model changes.
+
 ## October 27, 2026 · download a zone's 48-hour trace
 
 - Added a selected-zone CSV download for the chosen model, with all 48 UTC hours, study provenance, stable zone identity, counts, unrounded estimates and signed/absolute errors. Both download paths share schema, quoting and browser logic.

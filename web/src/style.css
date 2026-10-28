@@ -198,7 +198,8 @@ h1 span {
 #copy-view,
 #reset-view,
 #download-csv,
-#download-zone-csv {
+#download-zone-csv,
+#largest-zone-miss {
   min-height: 44px;
   padding: 10px 16px;
   border: 1px solid var(--accent);
@@ -211,7 +212,8 @@ h1 span {
 #copy-view:hover,
 #reset-view:hover,
 #download-csv:hover,
-#download-zone-csv:hover {
+#download-zone-csv:hover,
+#largest-zone-miss:hover {
   background: #124c45;
 }
 #share-status {

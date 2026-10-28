@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 27, 2026 (America/Los_Angeles), selected-zone 48-hour CSV export.
+Updated: October 28, 2026 (America/Los_Angeles), selected-zone largest-miss navigation.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The zone panel now downloads all 48 hours for the selected zone and model. CSV rows retain study ID, historical scope, UTC timestamps, stable zone ID/name/borough, recorded counts, unrounded estimates and signed/absolute errors. Filename identifies the zone, UTC range and model. The scoped explanation tracks zone/model; accessible feedback clears on view changes. Both CSV paths share the existing schema, escaping and browser download logic.
+The zone trace now has **Jump to largest miss**, selecting the hour with the greatest absolute error for the current zone/model across the 48-hour April snapshot. Ties choose the earliest hour, including all-exact traces. A scoped description shows the zone, model, New York timestamp and under/over error. Existing rendering synchronizes the chart, timeline, map, statistics and share URL while preserving filters and keyboard focus.
 
-Verified nineteen web tests, strict TypeScript, production build, formatting, diff checks and actual Chrome production-preview downloads. Tests reconcile every zone/model/hour and daily totals, including zero pickups, quoted names, UTC boundaries and signed errors. Browser smoke independently parses downloaded CSV bytes, compares source values and daily display totals, and exercises all models, borough/zone/miss selection, keyboard download, day navigation, reload, reset, the original hourly export and 390px mobile/1024px tablet fit. Mobile screenshot visually inspected. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
+Verified 21 web tests, strict TypeScript, production build, formatting and diff checks. Targeted tests cover opposite-sign ties, zero pickups, exact models, zone/model changes and independent source-ranking reconciliation for every published zone/model. Actual Chrome production-preview smoke covers three models, three boroughs, chart/timeline/URL synchronization, reload, keyboard focus, chart Home, miss-row selection, reset, existing zone CSV and mobile/tablet fit. Corrected the new button's touch target to 44px. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
 
-Next small slice: add a selected-zone largest-miss hour action that jumps the existing timeline/chart to that zone's largest absolute error for the chosen model. Keep scope within these 48 historical hours, use earliest-hour tie breaking and verify model/zone/URL synchronization.
+Next small slice: make the 262-zone selector searchable by name or stable zone ID, keeping borough filtering and share URL selection consistent with a clear empty-result state. Read current remote and state first.
 
 ## Verified
 

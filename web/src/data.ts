@@ -169,3 +169,19 @@ export function zoneDailySummaries(d: Demo, zoneIndex: number, model: Model) {
     mae: absoluteError / day.hours,
   }));
 }
+
+export function zoneLargestMissHour(d: Demo, zoneIndex: number, model: Model): number {
+  const column = d.columns.indexOf(model);
+  let largest = 0;
+  let maxError = -1;
+  for (let hour = 0; hour < d.hours.length; hour++) {
+    const row = d.hours[hour]!.values[zoneIndex]!;
+    const error = Math.abs(row[column]! - row[0]!);
+    // Strict comparison keeps the earliest hour when absolute errors tie.
+    if (error > maxError) {
+      largest = hour;
+      maxError = error;
+    }
+  }
+  return largest;
+}

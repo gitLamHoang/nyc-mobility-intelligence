@@ -24,7 +24,7 @@ Open the local URL printed by Vite. No Python environment, raw trip download, or
 1. Choose an hour and borough. Use **Previous day** / **Next day** below the timeline to compare the same New York hour across April 7–8 while keeping your filters.
 2. Compare hourly estimates, absolute errors, and 48-hour MAE and average signed error in the zone panel; select a model there to update the map and trace. The daily comparison below shows each day's recorded/estimated totals and hourly MAE for that zone and model.
 3. Switch the map to forecast error, or use **Largest forecast misses** to find the five largest absolute errors.
-4. Select a table row or map zone to inspect its 48-hour trace. The table states whether the forecast was under or over the recorded count.
+4. Select a table row or map zone to inspect its 48-hour trace. The table states whether the forecast was under or over the recorded count. Use **Jump to largest miss** above the chart to inspect that zone’s greatest absolute error for the chosen model across these 48 hours (earliest hour for ties).
 5. Use **Copy view link** or copy the browser address to share the selected hour, borough, model, map measure, and zone.
 6. Use **Download selected hour CSV** for all filtered zones, or **Download zone 48-hour CSV** below the trace for the selected zone and model. Both include UTC time, stable zone IDs, recorded counts, estimates and errors.
 7. Use **Reset view** to return to April 7 at 4 PM New York time, all boroughs, the temporal model, pickup shading and Midtown Center.

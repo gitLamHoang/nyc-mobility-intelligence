@@ -1,16 +1,16 @@
 # Project state
 
-Updated: October 28, 2026 (America/Los_Angeles), selected-zone largest-miss navigation.
+Updated: October 29, 2026 (America/Los_Angeles), searchable zone selector.
 
 Repository: https://github.com/gitLamHoang/nyc-mobility-intelligence · public · main.
 
 ## Current handoff
 
-The zone trace now has **Jump to largest miss**, selecting the hour with the greatest absolute error for the current zone/model across the 48-hour April snapshot. Ties choose the earliest hour, including all-exact traces. A scoped description shows the zone, model, New York timestamp and under/over error. Existing rendering synchronizes the chart, timeline, map, statistics and share URL while preserving filters and keyboard focus.
+The zone selector now supports case-insensitive name search and exact stable zone IDs within the chosen borough. Typing only narrows the options; it preserves the inspected zone, map, statistics and share URL until a result is selected. Options show stable IDs. A live result count, explicit no-match state and Clear search action support recovery. Map/table selection, Reset view and history navigation clear the local search; search text is not serialized into shared URLs.
 
-Verified 21 web tests, strict TypeScript, production build, formatting and diff checks. Targeted tests cover opposite-sign ties, zero pickups, exact models, zone/model changes and independent source-ranking reconciliation for every published zone/model. Actual Chrome production-preview smoke covers three models, three boroughs, chart/timeline/URL synchronization, reload, keyboard focus, chart Home, miss-row selection, reset, existing zone CSV and mobile/tablet fit. Corrected the new button's touch target to 44px. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
+Verified 23 web tests, strict TypeScript, production build, formatting and diff checks. Search tests cover normalized names, whitespace, every stable ID and borough exclusion. Actual Chrome production-preview smoke covers every borough, source counts, selection, empty/clear states, keyboard focus/clear, URL/reload, map/table synchronization, reset, existing CSV/largest-miss actions and 390px mobile/1024px tablet fit. Native picker selection used browser automation; headless native keyboard selection was not verified. No dependencies, data or model changes; May remains sealed. Hosted deployment/CI completion not checked in this run.
 
-Next small slice: make the 262-zone selector searchable by name or stable zone ID, keeping borough filtering and share URL selection consistent with a clear empty-result state. Read current remote and state first.
+Next small slice: add previous/next zone navigation in the detail panel using the current borough's alphabetical zone order, with accessible position and boundary feedback. Reuse existing selection/render/URL behavior and define how it interacts with a nonempty search. Read current remote and state first.
 
 ## Verified
 

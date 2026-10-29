@@ -7,6 +7,7 @@ import {
   parseDemo,
   summarize,
   zoneIndices,
+  searchZoneIndices,
   zoneModelErrors,
   zoneDailySummaries,
   zoneLargestMissHour,
@@ -46,7 +47,7 @@ async function start() {
     <div class="stats" aria-live="polite"><div><span>RECORDED PICKUPS</span><strong id="actual"></strong></div><div><span>MODEL ESTIMATE</span><strong id="forecast"></strong></div><div><span>AVG. ABSOLUTE ERROR / ZONE</span><strong id="mae"></strong></div><p>Selected hour & borough.<br>Counts describe historical pickups.</p></div>
     <section class="misses" aria-labelledby="boroughs-title"><h3 id="boroughs-title">Compare boroughs</h3><p>All boroughs at the selected hour, ranked by average absolute error per zone. Total absolute error adds zone misses without cancellation. Select a borough to filter the explorer.</p><button id="all-boroughs" type="button">Show all boroughs</button><div class="misses-scroll"><table><caption id="boroughs-scope"></caption><thead><tr><th scope="col">Borough</th><th scope="col">Recorded</th><th scope="col">Estimate</th><th scope="col">Total abs. error</th><th scope="col">Avg. / zone</th></tr></thead><tbody id="boroughs-rows"></tbody></table></div></section>
     <div class="explorer-grid"><div class="map-panel"><div class="map-top"><div class="segmented" aria-label="Map measure"><button data-metric="demand" aria-pressed="true">Pickups</button><button data-metric="error" aria-pressed="false">Forecast error</button></div><span class="map-hint">Select a zone to inspect →</span></div><svg id="map" viewBox="${d.viewBox.join(' ')}" role="img" aria-label="New York City taxi zone choropleth">${d.zones.map((z, i) => `<path data-zone="${i}" d="${z.path}" fill-rule="evenodd"><title>${esc(z.name)} · ${esc(z.borough)}</title></path>`).join('')}</svg><div class="legend"><span id="legend-label">Fewer pickups</span><span class="gradient"></span><span id="legend-max"></span></div><p class="map-caption">NYC TLC taxi zones · simplified display geometry · scale uses square-root color intensity</p></div>
-    <aside class="detail-panel"><p class="eyebrow">02 / INSPECT A NEIGHBORHOOD</p><label class="zone-label">Select a zone<select id="zone"></select></label><p id="zone-borough" class="zone-borough"></p><h3 id="zone-name"></h3><div class="zone-stats"><div><span>Recorded</span><strong id="zone-actual"></strong></div><div><span>Estimate</span><strong id="zone-forecast"></strong></div><div><span>Abs. error</span><strong id="zone-error"></strong></div></div><section class="model-comparison" aria-labelledby="models-title"><h4 id="models-title">Compare models for this zone</h4><p>Estimate and absolute error describe the selected hour. 48-hour MAE averages hourly absolute errors over April 7–8, 2026, New York time, including zero pickups. Average error is estimate minus recorded pickups per hour: positive means overestimation, negative means underestimation. Opposing errors can cancel, so read it alongside MAE. This two-day view does not establish overall model quality.</p><table><caption id="models-scope"></caption><thead><tr><th scope="col">Model</th><th scope="col">Estimate</th><th scope="col">Abs. error</th><th scope="col">48-hour MAE</th><th scope="col">48-hour avg. error</th></tr></thead><tbody>${Object.entries(
+    <aside class="detail-panel"><p class="eyebrow">02 / INSPECT A NEIGHBORHOOD</p><label class="zone-label" for="zone-search">Find a zone by name or ID</label><input id="zone-search" type="search" placeholder="e.g. Midtown or 161" aria-controls="zone" aria-describedby="zone-search-help zone-search-status"><p id="zone-search-help" class="chart-help">Search within the chosen borough. IDs match exactly. Select a result to inspect it.</p><button id="clear-zone-search" type="button">Clear search</button><p id="zone-search-status" class="chart-help" role="status"></p><label class="zone-label">Select a zone<select id="zone" aria-describedby="zone-search-status"></select></label><p id="zone-borough" class="zone-borough"></p><h3 id="zone-name"></h3><div class="zone-stats"><div><span>Recorded</span><strong id="zone-actual"></strong></div><div><span>Estimate</span><strong id="zone-forecast"></strong></div><div><span>Abs. error</span><strong id="zone-error"></strong></div></div><section class="model-comparison" aria-labelledby="models-title"><h4 id="models-title">Compare models for this zone</h4><p>Estimate and absolute error describe the selected hour. 48-hour MAE averages hourly absolute errors over April 7–8, 2026, New York time, including zero pickups. Average error is estimate minus recorded pickups per hour: positive means overestimation, negative means underestimation. Opposing errors can cancel, so read it alongside MAE. This two-day view does not establish overall model quality.</p><table><caption id="models-scope"></caption><thead><tr><th scope="col">Model</th><th scope="col">Estimate</th><th scope="col">Abs. error</th><th scope="col">48-hour MAE</th><th scope="col">48-hour avg. error</th></tr></thead><tbody>${Object.entries(
       modelNames,
     )
       .map(
@@ -65,6 +66,36 @@ async function start() {
   const text = (id: string, value: string) => {
     el(id).textContent = value;
   };
+  const zoneSearch = el('zone-search') as HTMLInputElement;
+  function renderZoneOptions() {
+    const matches = searchZoneIndices(d, borough, zoneSearch.value);
+    const zoneSelect = el('zone') as HTMLSelectElement;
+    const hasSelected = matches.includes(selected);
+    zoneSelect.innerHTML =
+      (hasSelected
+        ? ''
+        : `<option value="" disabled selected>${matches.length ? 'Select a search result' : 'No matching zones'}</option>`) +
+      matches
+        .map(
+          (i) =>
+            `<option value="${i}"${i === selected ? ' selected' : ''}>${esc(d.zones[i]!.name)} · Zone ${d.zones[i]!.id}</option>`,
+        )
+        .join('');
+    zoneSelect.disabled = matches.length === 0;
+    (el('clear-zone-search') as HTMLButtonElement).disabled = zoneSearch.value === '';
+    text(
+      'zone-search-status',
+      matches.length
+        ? `${matches.length} matching ${matches.length === 1 ? 'zone' : 'zones'} · ${borough}.${hasSelected ? '' : ` Still inspecting ${d.zones[selected]!.name}; select a result to change zones.`}`
+        : `No matching zones in ${borough}. Clear the search or change borough. Still inspecting ${d.zones[selected]!.name}.`,
+    );
+  }
+  zoneSearch.addEventListener('input', renderZoneOptions);
+  el('clear-zone-search').addEventListener('click', () => {
+    zoneSearch.value = '';
+    renderZoneOptions();
+    zoneSearch.focus();
+  });
   function render() {
     text('share-status', '');
     text('download-status', '');
@@ -88,14 +119,7 @@ async function start() {
     });
     text('legend-label', metric === 'demand' ? '0 pickups' : '0 absolute error');
     text('legend-max', max.toFixed(0));
-    const zoneSelect = el('zone') as HTMLSelectElement;
-    zoneSelect.innerHTML = [...indices]
-      .sort((a, b) => d.zones[a]!.name.localeCompare(d.zones[b]!.name))
-      .map(
-        (i) =>
-          `<option value="${i}"${i === selected ? ' selected' : ''}>${esc(d.zones[i]!.name)}</option>`,
-      )
-      .join('');
+    renderZoneOptions();
     const z = d.zones[selected]!,
       values = d.hours[hour]!.values[selected]!;
     text('zone-name', z.name);
@@ -198,6 +222,7 @@ async function start() {
     render();
   });
   el('reset-view').addEventListener('click', () => {
+    zoneSearch.value = '';
     ({ hour, borough, model, metric, selected } = readView(
       new URL(location.pathname, location.origin),
       d,
@@ -279,6 +304,7 @@ async function start() {
     const button = (e.target as Element).closest<HTMLButtonElement>('button[data-miss-zone]');
     if (button) {
       selected = Number(button.dataset.missZone);
+      zoneSearch.value = '';
       render();
       el('zone').focus({ preventScroll: true });
       el('zone').scrollIntoView({
@@ -343,6 +369,7 @@ async function start() {
     const path = (e.target as Element).closest<SVGPathElement>('path[data-zone]');
     if (path && !path.classList.contains('inactive')) {
       selected = Number(path.dataset.zone);
+      zoneSearch.value = '';
       render();
     }
   });
@@ -353,6 +380,7 @@ async function start() {
     }),
   );
   window.addEventListener('popstate', () => {
+    zoneSearch.value = '';
     ({ hour, borough, model, metric, selected } = readView(new URL(location.href), d));
     render();
   });

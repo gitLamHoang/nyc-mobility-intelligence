@@ -74,6 +74,18 @@ export function zoneIndices(d: Demo, borough: string): number[] {
     borough === 'All boroughs' || z.borough === borough ? [i] : [],
   );
 }
+// Search only the selector; typing must not change the inspected zone or map scope.
+export function searchZoneIndices(d: Demo, borough: string, query: string): number[] {
+  const term = query.trim().toLowerCase().replace(/\s+/g, ' ');
+  return zoneIndices(d, borough)
+    .filter((i) => {
+      const zone = d.zones[i]!;
+      return /^\d+$/.test(term)
+        ? zone.id === Number(term)
+        : zone.name.toLowerCase().replace(/\s+/g, ' ').includes(term);
+    })
+    .sort((a, b) => d.zones[a]!.name.localeCompare(d.zones[b]!.name));
+}
 export function summarize(d: Demo, hour: number, indices: number[], model: Model) {
   const column = d.columns.indexOf(model);
   const rows = indices.map((i) => d.hours[hour]!.values[i]!);

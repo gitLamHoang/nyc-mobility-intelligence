@@ -1,5 +1,10 @@
 # Changelog
 
+## October 29, 2026 · search zones by name or ID
+
+- Added name/exact-ID search within the chosen borough, stable IDs in selector options, live result counts, an explicit empty state and Clear search. Typing preserves the inspected zone and share URL; selecting a result updates the existing view. Map/table selection and reset clear the local query.
+- Twenty-three web tests, TypeScript, production build, formatting and Chrome production-preview checks pass, covering all boroughs, source counts, selection, empty/clear states, keyboard focus/clear, URL/reload, map/table/reset, CSV/largest-miss actions and mobile/tablet fit. Native keyboard picker selection was not verified headlessly. No dependencies, data or model changes.
+
 ## October 28, 2026 · jump to a zone’s largest miss
 
 - Added a keyboard-accessible action above the zone trace to select its greatest absolute error for the chosen model across these 48 historical hours, breaking ties at the earliest hour. Scoped New York time and under/over details follow the current zone/model; chart, timeline and share URL stay synchronized.

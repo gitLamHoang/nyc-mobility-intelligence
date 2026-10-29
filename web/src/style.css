@@ -399,9 +399,24 @@ select {
   display: block;
   margin-top: 25px;
 }
-.zone-label select {
+.zone-label select,
+#zone-search {
   width: 100%;
   font-size: 16px;
+}
+#zone-search {
+  display: block;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid #b4c3ad;
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+}
+#clear-zone-search {
+  min-height: 44px;
+  padding: 8px 14px;
 }
 .zone-borough {
   text-transform: uppercase;

@@ -6,6 +6,7 @@ import {
   modelNames,
   parseDemo,
   zoneIndices,
+  searchZoneIndices,
   summarize,
   forecastMisses,
   color,
@@ -285,4 +286,32 @@ test('largest miss hour matches an independent ranking for every published zone 
       assert.equal(zoneLargestMissHour(d, zone, model), ranked[0]!.hour);
     }
   }
+});
+
+test('zone search normalizes names and keeps alphabetical borough scope', () => {
+  const d = parseDemo(raw);
+  const expected = zoneIndices(d, 'All boroughs')
+    .filter((i) => d.zones[i]!.name.toLowerCase().includes('midtown'))
+    .sort((a, b) => d.zones[a]!.name.localeCompare(d.zones[b]!.name));
+  assert.ok(expected.length > 1);
+  assert.deepEqual(searchZoneIndices(d, 'All boroughs', '  MiDtOwN  '), expected);
+  assert.deepEqual(searchZoneIndices(d, 'Manhattan', 'midtown'), expected);
+  assert.deepEqual(searchZoneIndices(d, 'Queens', 'midtown'), []);
+  assert.deepEqual(
+    searchZoneIndices(d, 'All boroughs', 'Midtown   Center'),
+    d.zones.flatMap((z, i) => (z.name === 'Midtown Center' ? [i] : [])),
+  );
+  assert.equal(searchZoneIndices(d, 'All boroughs', '   ').length, 262);
+  assert.equal(searchZoneIndices(d, 'Queens', '').length, zoneIndices(d, 'Queens').length);
+  assert.deepEqual(searchZoneIndices(d, 'All boroughs', '<unknown>'), []);
+});
+test('zone search uses exact stable IDs rather than indices or numeric substrings', () => {
+  const d = parseDemo(raw);
+  for (const [i, zone] of d.zones.entries()) {
+    assert.deepEqual(searchZoneIndices(d, 'All boroughs', ` ${zone.id} `), [i]);
+    assert.deepEqual(searchZoneIndices(d, zone.borough, String(zone.id)), [i]);
+    const other = d.zones.find((z) => z.borough !== zone.borough)!.borough;
+    assert.deepEqual(searchZoneIndices(d, other, String(zone.id)), []);
+  }
+  assert.deepEqual(searchZoneIndices(d, 'All boroughs', '9999'), []);
 });
